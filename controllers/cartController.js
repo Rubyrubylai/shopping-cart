@@ -1,6 +1,6 @@
 const cartController = {
   getCart: (req, res) => {
-    res.send('cart!')
+    res.render('cart')
   }
 }
 

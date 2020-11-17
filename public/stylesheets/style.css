@@ -1,0 +1,17 @@
+.container {
+  margin-top: 40px;
+}
+
+.nav-custom {
+  display: inline;
+  margin-right: 15px;
+}
+
+.a-custom {
+  color: black;
+}
+
+.card {
+  margin: 10px;
+  width: 15rem;
+}

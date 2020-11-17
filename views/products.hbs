@@ -1,0 +1,14 @@
+<div class="row">
+{{#each products}}
+  <div class="card co-3">
+    <a href="/product/{{this.id}}" class="a-custom" style="text-decoration:none;">
+      <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{this.name}}</h5>
+        <p class="card-text">${{this.price}}</p>
+      </div>
+    </a>
+  </div>
+{{/each}}
+</div>
+

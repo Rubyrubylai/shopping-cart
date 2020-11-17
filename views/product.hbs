@@ -6,12 +6,13 @@
     <h5>{{product.name}}</h5>
     <p>${{product.price}}</p>
     <p>{{product.description}}</p>
-    <form action="">
+    <form action="/cart/{{product.id}}" method="POST">
       <div class="add-min-button">
         <input id="min" type="button" value="-" >
         <input id="num" name="num" value="1" readonly="true">
-        <input id="add" type="button" value="+" >
+        <input id="add" type="button" value="+">
       </div>
+      <input type="hidden" name="productId" value="{{product.id}}">
       <button type="submit" class="btn btn-primary">Add To Cart</button>
     </form>
   </div>

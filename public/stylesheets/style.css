@@ -63,6 +63,14 @@
 }
 
 
+#num {
+  width: 40px;
+  text-align:center;
+}
+
+.add-min-button {
+  margin-bottom: 20px;
+}
 
 
 

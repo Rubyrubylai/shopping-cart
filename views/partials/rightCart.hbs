@@ -1,0 +1,24 @@
+<div class="modal right fade" id="cartModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel2">Cart</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        {{#each cartItems}}
+        <div class="row">
+          <div class="col-5">
+            <img src="" alt="cartItem photo">
+          </div>
+          <div class="col-7">
+            {{this.quantity}}
+          </div>
+        </div>
+        
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+	

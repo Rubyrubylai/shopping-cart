@@ -5,6 +5,7 @@
 .nav-custom {
   display: inline;
   margin-right: 15px;
+  border: none;
 }
 
 .a-custom {
@@ -15,3 +16,54 @@
   margin: 10px;
   width: 15rem;
 }
+
+.nav-bottom {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  margin-right: 50px;
+}
+
+
+/*Right*/
+.modal.right .modal-dialog {
+  position: fixed;
+  margin: auto;
+  width: 320px;
+  height: 100%;
+  -webkit-transform: translate3d(0%, 0, 0);
+      -ms-transform: translate3d(0%, 0, 0);
+        -o-transform: translate3d(0%, 0, 0);
+          transform: translate3d(0%, 0, 0);
+}
+
+.modal.right .modal-content {
+  height: 100%;
+  overflow-y: auto;
+} 
+
+.modal.right.fade .modal-dialog {
+  right: -0px;
+  -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+		   -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+		     -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+		        transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+
+/*MODAL STYLE*/
+.modal-content {
+  border-radius: 0;
+  border: none;
+}
+
+.modal-header {
+  border-bottom-color: #EEEEEE;
+  background-color: #FAFAFA;
+}
+
+
+
+
+
+

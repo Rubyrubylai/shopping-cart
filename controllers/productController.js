@@ -1,7 +1,8 @@
 const db = require('../models')
 const Product = db.Product
+const CartItem = db.CartItem
 
-const productContoller = {
+const productController = {
   getProducts: (req, res) => {
     //每頁幾個商品及偏移多少
     let pageLimit = 8
@@ -24,7 +25,15 @@ const productContoller = {
       let prev = (currentPage = 1) ? currentPage : currentPage - 1
       let post = (currentPage = pages) ? currentPage : currentPage + 1
 
-      res.render('products', { products: products.rows, page, prev, post })
+      //購物車
+      CartItem.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(cartItems => {
+        return res.render('products', { products: products.rows, page, prev, post, cartItems })
+      })
+      
     })
   },
 
@@ -40,4 +49,4 @@ const productContoller = {
   }
 }
 
-module.exports = productContoller
+module.exports = productController

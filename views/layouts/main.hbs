@@ -9,14 +9,26 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-light bg-light">
+  <nav class="navbar navbar-expand navbar-light bg-light">
     <a class="navbar-brand" href="/">SHOP</a>
-      <div class="navbar-nav nav-custom">       
-        <a class="nav-item nav-link nav-custom" href="#"><i class="fas fa-user fa-lg"></i></a>
-        <button class="btn nav-custom" data-toggle="modal" data-target="#cartModal">
-        <i class="fas fa-shopping-cart fa-lg"></i>   
+
+      <div class="navbar-nav">
+        <div class="dropdown">
+          <button class="btn dropdown-toggle" data-toggle="dropdown" >
+            <i class="fas fa-user fa-lg"></i>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Order Tracking</a>
+            <a class="dropdown-item" href="#">Account</a>
+            <a class="dropdown-item" href="#">Log Out</a>
+          </div>
+        </div>
+        <button class="btn " data-toggle="modal" data-target="#cartModal">
+          <i class="fas fa-shopping-cart fa-lg"></i>   
         </button>
       </div> 
+
+      
   </nav>
   <div class="container">
     {{{body}}}

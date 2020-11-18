@@ -1,5 +1,4 @@
 const db = require('../models')
-const cart = require('../models/cart')
 const Product = db.Product
 const Cart = db.Cart
 const CartItem = db.CartItem

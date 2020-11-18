@@ -64,6 +64,7 @@ const productController = {
 function rightCartItem(cart) {
   return items = cart ? cart.dataValues.items.map(item => ({
     ...item.dataValues,
+    cartItemId: item.CartItem.dataValues.id,
     quantity: item.CartItem.dataValues.quantity
   })) : null
 }

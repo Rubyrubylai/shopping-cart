@@ -39,12 +39,7 @@ const cartController = {
   },
 
   removeCart: (req, res) => {
-    CartItem.findOne({ 
-      where: {
-        CartId: req.session.cartId,
-        ProductId: req.body.ProductId
-      }
-    })
+    CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
       cartItem.destroy().then(cartItem => {
         console.log(cartItem)

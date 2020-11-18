@@ -33,10 +33,7 @@ const cartController = {
           })
         })
         .catch(err => console.error(err))
-        
-      })
-     
-      
+      })  
     })
   }
 }

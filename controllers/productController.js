@@ -1,5 +1,7 @@
 const db = require('../models')
+const cart = require('../models/cart')
 const Product = db.Product
+const Cart = db.Cart
 const CartItem = db.CartItem
 
 const productController = {
@@ -26,12 +28,14 @@ const productController = {
       let post = (currentPage = pages) ? currentPage : currentPage + 1
 
       //購物車
-      CartItem.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(cartItems => {
-        return res.render('products', { products: products.rows, page, prev, post, cartItems })
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => {     
+        let items = rightCartItem(cart)
+        let totalPrice = items ? rightCartPrice(items) : 0
+        return res.render('products', { products: products.rows, page, prev, post, items, totalPrice })
       })
       
     })
@@ -44,9 +48,35 @@ const productController = {
       } 
     })
     .then(product => {
-      res.render('product', { product: product.toJSON() })
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => {     
+        let items = rightCartItem(cart)
+        let totalPrice = items ? rightCartPrice(items) : 0
+        return res.render('product', { product: product.toJSON(), items, totalPrice })
+      })
     })
   }
+}
+
+//顯示在購物上的商品
+function rightCartItem(cart) {
+  return items = cart ? cart.dataValues.items.map(item => ({
+    ...item.dataValues,
+    quantity: item.CartItem.dataValues.quantity
+  })) : null
+}
+
+//總計
+function rightCartPrice(items) {
+  let totalPrice = 0
+  items.forEach(item => {
+    totalPrice += item.price * item.quantity
+  })
+  return totalPrice
+
 }
 
 module.exports = productController

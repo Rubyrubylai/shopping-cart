@@ -1,9 +1,8 @@
-window.onload = function(){ //這裡是加減按鈕都啟用的情況
+window.onload = function(){
   var num = document.getElementById('num')
   var add = document.getElementById('add')
   var min = document.getElementById('min')
   add.onclick = function() {
-    console.log('add')
     num.value = parseInt(num.value) + 1
   }
   min.onclick = function() {

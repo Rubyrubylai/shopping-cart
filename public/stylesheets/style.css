@@ -1,5 +1,6 @@
 .container {
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .nav-custom {
@@ -76,7 +77,11 @@
   display: inline;
 }
 
-.subtotal {
+.inline-block {
+  display: inline-block;
+}
+
+.div-subtotal {
   padding-right: 120px;
 }
 
@@ -84,8 +89,14 @@
   float: left;
 }
 
-.fa-trash-alt {
-  color: red;
+.trash {
+  margin-top: -4px;
 }
 
+.list-group {
+  margin-bottom: 20px;
+}
 
+.checkOut-btn {
+  width: 200px;
+}

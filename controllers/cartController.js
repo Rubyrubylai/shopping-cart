@@ -45,7 +45,7 @@ const cartController = {
         .then(cartItem => {
           req.session.cartId = cart.id
           return req.session.save(() => {
-            req.flash('success_msg', '此商品已經成功加入購物車!')
+            req.flash('success_msg', 'The item has been successfully added!')
             return res.redirect('back')
           })
         })
@@ -58,7 +58,7 @@ const cartController = {
     CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
       cartItem.destroy().then(cartItem => {
-        req.flash('success_msg', '此商品已經成功從購物車中移除囉!')
+        req.flash('success_msg', 'The item has been successfully removed!')
         return res.redirect('back')
       })
       
@@ -78,7 +78,15 @@ const cartController = {
   },
 
   minCartItem: (req, res) => {
-
+    CartItem.findByPk(req.params.id)
+    .then(cartItem => {
+      cartItem.update({
+        quantity: (cartItem.quantity = 1) ? 1 : cartItem.quantity
+      })
+      .then(cartItem => {
+        return res.redirect('back')
+      })
+    })
   }
 }
 

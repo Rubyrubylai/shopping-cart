@@ -36,6 +36,23 @@ const cartController = {
         .catch(err => console.error(err))
       })  
     })
+  },
+
+  removeCart: (req, res) => {
+    CartItem.findOne({ 
+      where: {
+        CartId: req.session.cartId,
+        ProductId: req.body.ProductId
+      }
+    })
+    .then(cartItem => {
+      cartItem.destroy().then(cartItem => {
+        console.log(cartItem)
+        req.flash('success_msg', '此商品已經成功從購物車中移除囉!')
+        return res.redirect('back')
+      })
+      
+    })
   }
 }
 

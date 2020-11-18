@@ -20,8 +20,11 @@
               <input id="num" name="num" value="{{this.quantity}}" readonly="true">
               <input id="add" type="button" value="+">
             </div>
-            <div class="horizontal-right">
-              <i class="fas fa-trash-alt fa-lg"></i>
+            <div>
+              <form action="/cart?_method=DELETE" method="POST">
+                <input type="hidden" name="ProductId" value="{{this.id}}">
+                <button type="submit" class="btn"><i class="fas fa-trash-alt fa-lg"></i></button>
+              </form>
             </div>  
           </div>
         </div>
@@ -32,7 +35,7 @@
           <h6 class="inline">Subtotal: </h6>
           <p class="inline">${{totalPrice}}</p>
         </div>
-        <form action="">
+        <form action="" method="GET">
           <button type="submit" class="btn btn-primary">check out</button>
         </form>
       </div>

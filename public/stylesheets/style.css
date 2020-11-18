@@ -84,12 +84,6 @@
   float: left;
 }
 
-.horizontal-right {
-  float: right;
-  margin-top: 4px;
-  margin-right: 10px;
-}
-
 .fa-trash-alt {
   color: red;
 }

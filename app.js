@@ -1,6 +1,8 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
+const session = require('express-session')
 const app = express()
 const port = 3000
 
@@ -13,6 +15,15 @@ app.set('view engine', 'hbs')
 app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(cookieParser())
+app.use(session({
+  secret: 'ac',
+    name: 'ac',
+    cookie: {maxAge: 80000 },
+    resave: false,
+    saveUninitialized: true,
+}))
 
 app.listen(port, () => {
   console.log(`app is running on http://localhost:${port}`)

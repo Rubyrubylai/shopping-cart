@@ -8,17 +8,35 @@ const cartController = {
   },
 
   postCart: (req, res) => {
-    Cart.create()
-    .then(cart => {
-      CartItem.create({
-        quantity: req.body.num,
-        ProductId: req.params.id,
-        CartId: cart.id
+    Cart.findOrCreate({
+      where: { id: req.session.cartId || 0 }
+    })
+    .spread((cart, created) => {
+      CartItem.findOrCreate({
+        where: {
+          CartId: cart.id,
+          ProductId: req.params.id
+        },
+        default: {
+          CartId: cart.id,
+          ProductId: req.params.id
+        }
       })
-      .then(cartItem => {
-        console.log(cartItem)
-        return res.redirect(`/product/${req.params.id}`)
+      .spread((cartItem, created) => {
+        cartItem.update({
+          quantity: Number(cartItem.quantity || 0)  + Number(req.body.num)
+        })
+        .then(cartItem => {
+          req.session.cartId = cart.id
+          return req.session.save(() => {
+            return res.redirect('back')
+          })
+        })
+        .catch(err => console.error(err))
+        
       })
+     
+      
     })
   }
 }

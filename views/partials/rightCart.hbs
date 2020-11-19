@@ -6,6 +6,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
+        {{#if noItems}}
+        <div>
+          <p>The cart is empty.</p>
+        </div>
+        {{/if}}
         {{#each items}}
         <div class="row" style="margin-bottom: 10px;">
           <div class="col-7">
@@ -35,6 +40,9 @@
         {{/each}}
       </div>
       <div class="modal-footer">
+        {{#if noItems}}
+        <button class="btn btn-primary"><a href="/product" style="text-decoration: none; color:white">Keep Shopping</a></button>
+        {{else}}
         <div class="div-subtotal">
           <h6 class="inline">Subtotal: </h6>
           <p class="inline">${{totalPrice}}</p>
@@ -42,6 +50,7 @@
         <form action="/cart" method="GET">
           <button type="submit" class="btn btn-primary">check out</button>
         </form>
+        {{/if}}
       </div>
     </div>
   </div>

@@ -1,3 +1,5 @@
+{{>alert}}
+
 <table class="table">
   <thead>
     <tr>
@@ -12,14 +14,13 @@
     {{#each orders}}
       <tr>
         <th scope="row">
-          <a href="/orders/{{this.dataValues.id}}" style="text-decoration: none;" class="a-custom">#{{this.dataValues.id}}</a>
+          <a href="/order/{{this.dataValues.id}}" style="text-decoration: none;" class="a-custom">#{{this.dataValues.id}}</a>
         </th>
         <td>{{Date this.dataValues.createdAt}}</td>
         <td>{{this.dataValues.shipping_status}}</td>
         <td>{{this.dataValues.Payments.payment_method}}</td>
         <td>
-          <form action="?_method=DELETE" method="POST">
-            <input type="hidden" name="orderId" value="{{this.dataValues.id}}">
+          <form action="/order/{{this.dataValues.id}}/cancel" method="POST">
             <button type="submit" class="btn btn-secondary">Cancel</button>
           </form>
         </td>

@@ -57,7 +57,7 @@
   </li>
 </ul>
 
-<form action="/orders" method="POST">
+<form action="/order" method="POST">
   <ul class="list-group">
     <li class="list-group-item list-group-item-dark">Shipping Information</li>
     <li class="list-group-item">
@@ -107,8 +107,12 @@
   </ul>
 
   <center>
+    {{#if noItems}}
+    <button class="btn btn-secondary checkOut-btn"><a href="/product" style="text-decoration: none; color:white">Keep Shopping</a></button>
+    {{else}}
     <input type="hidden" name="cartId" value="{{cart.dataValues.id}}">
     <input type="hidden" name="amount" value="{{totalPrice}}">
     <button type="submit" class="btn btn-secondary checkOut-btn">Check Out</button>
+    {{/if}}
   </center>
 </form>

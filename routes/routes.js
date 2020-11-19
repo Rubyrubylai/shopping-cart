@@ -17,7 +17,8 @@ router.post('/cartItem/:id/min', cartController.minCartItem)
 router.delete('/cartItem', cartController.removeCartItem)
 
 router.get('/orders', orderController.getOrders)
-router.get('/orders/:id', orderController.getOrder)
-router.post('/orders', orderController.postOrder)
+router.get('/order/:id', orderController.getOrder)
+router.post('/order', orderController.postOrder)
+router.post('/order/:id/cancel', orderController.cancelOrder)
 
 module.exports = router

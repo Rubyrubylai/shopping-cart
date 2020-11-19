@@ -32,9 +32,18 @@ const productController = {
         { include: [{ model: Product, as: 'items' }] }
         )
       .then(cart => {     
-        let items = rightCartItem(cart)
-        let totalPrice = items ? rightCartPrice(items) : 0
-        return res.render('products', { products: products.rows, page, prev, post, items, totalPrice })
+        let noItems
+        let items
+        let totalPrice = 0
+        items = rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = rightCartPrice(items, totalPrice)
+        }
+
+        return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems })
       })
       
     })
@@ -52,9 +61,17 @@ const productController = {
         { include: [{ model: Product, as: 'items' }] }
         )
       .then(cart => {     
-        let items = rightCartItem(cart)
-        let totalPrice = items ? rightCartPrice(items) : 0
-        return res.render('product', { product: product.toJSON(), items, totalPrice })
+        let noItems
+        let items
+        let totalPrice = 0
+        items = rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = rightCartPrice(items, totalPrice)
+        }
+        return res.render('product', { product: product.toJSON(), items, totalPrice, noItems })
       })
     })
   }
@@ -70,8 +87,7 @@ function rightCartItem(cart) {
 }
 
 //總計
-function rightCartPrice(items) {
-  let totalPrice = 0
+function rightCartPrice(items, totalPrice) {
   items.forEach(item => {
     totalPrice += item.price * item.quantity
   })

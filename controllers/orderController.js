@@ -42,27 +42,46 @@ const orderController = {
       include: [{ model: Product, as: 'items' }]
     })
     .then(cart => {
-      const { name, phone, address, amount } = req.body
-      Order.create({
-        name,
-        phone,
-        address,
-        amount
-      })
-      .then(order => {
-        cart.dataValues.items.forEach(items => {
-          OrderItem.create({
-            price: items.dataValues.price,
-            quantity: items.dataValues.CartItem.quantity,
-            ProductId: items.dataValues.id,
-            OrderId: order.id
-          })
-          .then(orderItem => {
-            return res.redirect(`/orders/${order.id}`)
+      const { name, phone, email, address, amount } = req.body
+      if (!name || !phone || !email || !address) {
+        req.flash('warning_msg', 'All fields are required!')
+        return res.redirect('back')
+      }
+      else {       
+        Order.create({
+          name,
+          phone,
+          address,
+          amount
+        })
+        .then(order => {
+          cart.dataValues.items.forEach(items => {
+            OrderItem.create({
+              price: items.dataValues.price,
+              quantity: items.dataValues.CartItem.quantity,
+              ProductId: items.dataValues.id,
+              OrderId: order.id
+            })
+            .then(orderItem => {
+              return res.redirect(`/order/${order.id}`)
+            })
           })
         })
-        
+      } 
+    })
+  },
+
+  cancelOrder: (req, res) => {
+    Order.findByPk(req.params.id)
+    .then(order => {
+      order.update({
+        payment_status: '-1',
+        shipping_status: '-1'
       })
+      .then(order => {
+        req.flash('success_msg', 'The order has been successfully cancelled!')
+        return res.redirect('/orders')
+      })  
     })
   }
 }

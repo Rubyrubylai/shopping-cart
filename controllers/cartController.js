@@ -10,16 +10,22 @@ const cartController = {
       { include: [{ model: Product, as: 'items' }] }
       )
     .then(cart => { 
-      let items = rightCartItem(cart)
-      let totalPrice = items ? rightCartPrice(items) : 0
+      let noItems
+      let items
+      let totalPrice = 0
       let totalQty = 0
-      if (items) {
+      items = rightCartItem(cart)
+      if (!items || (items.length === 0)) {
+        noItems = true
+      }
+      else {
+        totalPrice = rightCartPrice(items, totalPrice)
         items.forEach(item => {
           totalQty += item.quantity
         })
       }
-      
-      return res.render('cart', { cart, items, totalPrice, totalQty })
+    
+      return res.render('cart', { cart, items, totalPrice, totalQty, noItems })
     })
   },
 
@@ -101,8 +107,7 @@ function rightCartItem(cart) {
 }
 
 //總計
-function rightCartPrice(items) {
-  let totalPrice = 0
+function rightCartPrice(items, totalPrice) {
   items.forEach(item => {
     totalPrice += item.price * item.quantity
   })

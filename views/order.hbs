@@ -2,7 +2,7 @@
   <div class="col-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
-        <strong>Order Number:</strong>
+        <strong>Order Number: #{{order.id}}</strong>
       </li>
       <li class="list-group-item">
         <table class="table">
@@ -84,5 +84,7 @@
 </div>
 
 <center>
-  <button class="btn btn-secondary checkOut-btn">Cancel Order</button>
+  <form action="/order/{{order.id}}/cancel" method="POST">
+    <button type="submit" class="btn btn-secondary checkOut-btn">Cancel Order</button>
+  </form>
 </center>

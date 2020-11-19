@@ -9,7 +9,7 @@ const cartController = {
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }
       )
-    .then(cart => {     
+    .then(cart => { 
       let items = rightCartItem(cart)
       let totalPrice = items ? rightCartPrice(items) : 0
       let totalQty = 0
@@ -19,7 +19,7 @@ const cartController = {
         })
       }
       
-      return res.render('cart', { items, totalPrice, totalQty })
+      return res.render('cart', { cart, items, totalPrice, totalQty })
     })
   },
 

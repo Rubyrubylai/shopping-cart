@@ -10,18 +10,21 @@
   </thead>
   <tbody>
     {{#each orders}}
-    <tr>
-      <th scope="row">{{this.dataValues.id}}</th>
-      <td>{{this.dataValues.createdAt}}</td>
-      <td>{{this.dataValues.shipping_status}}</td>
-      <td>{{this.dataValues.Payments.payment_method}}</td>
-      <td>
-        <form action="?_method=DELETE" method="POST">
-          <input type="hidden" name="orderId" value="{{this.dataValues.id}}">
-          <button type="submit" class="btn btn-secondary">Cancel</button>
-        </form>
-      </td>
-    </tr>
+      <tr>
+        <th scope="row">
+          <a href="/orders/{{this.dataValues.id}}" style="text-decoration: none;" class="a-custom">#{{this.dataValues.id}}</a>
+        </th>
+        <td>{{Date this.dataValues.createdAt}}</td>
+        <td>{{this.dataValues.shipping_status}}</td>
+        <td>{{this.dataValues.Payments.payment_method}}</td>
+        <td>
+          <form action="?_method=DELETE" method="POST">
+            <input type="hidden" name="orderId" value="{{this.dataValues.id}}">
+            <button type="submit" class="btn btn-secondary">Cancel</button>
+          </form>
+        </td>
+      </tr>
+    
     {{/each}}
   </tbody>
 </table>

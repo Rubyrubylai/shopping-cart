@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-6">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Order Number:</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <tr>
+            <th scope="row">Order Date</th>
+            <td>{{Date order.createdAt}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Shipping Status</th>
+            <td>{{order.shipping_status}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Shipping Date</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Status</th>
+            <td>{{order.payment_status}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Method</th>
+            <td>{{order.createAt}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Shipping Information</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{order.name}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Phone</th>
+            <td>{{order.phone}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Address</th>
+            <td>{{order.address}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+  <div class="col-6">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Order Details</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          {{#each items}}
+          <tr>
+            <td scope="row">{{this.name}}</td>
+            <td>{{this.quantity}}</td>
+            <td>${{this.price}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <td scope="row">Total</td>
+            <td>{{totalQty}}</td>
+            <td>${{totalPrice}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<center>
+  <button class="btn btn-secondary checkOut-btn">Cancel Order</button>
+</center>

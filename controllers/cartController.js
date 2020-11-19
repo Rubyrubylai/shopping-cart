@@ -93,6 +93,27 @@ const cartController = {
         return res.redirect('back')
       })
     })
+  },
+
+  checkCart: (req, res) => {
+    Cart.findByPk(
+      req.session.cartId,
+      { include: [{ model: Product, as: 'items' }] }
+      )
+    .then(cart => { 
+      let items
+      let totalPrice = 0
+      let totalQty = 0
+      items = rightCartItem(cart)
+      if (items) {
+        totalPrice = rightCartPrice(items, totalPrice)
+        items.forEach(item => {
+          totalQty += item.quantity
+        })
+      }
+    
+      return res.render('check', { cart, items, totalPrice, totalQty })
+    })
   }
 }
 

@@ -19,7 +19,7 @@ router.delete('/cartItem', cartController.removeCartItem)
 
 router.get('/orders', orderController.getOrders)
 router.get('/order/:id', orderController.getOrder)
-router.post('/order', orderController.postOrder)
+router.post('/newebpay/callback', orderController.postOrderAndPayment)
 router.post('/order/:id/cancel', orderController.cancelOrder)
 
 module.exports = router

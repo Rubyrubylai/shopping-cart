@@ -5,6 +5,15 @@ const Product = db.Product
 const Cart = db.Cart
 const OrderItem = db.OrderItem
 
+const URL = process.env.URL
+const MerchantID = process.env.MerchantID
+const HashKey = process.env.HashKey
+const HashIV = process.env.HashIV
+const PayGateWay = "https://ccore.newebpay.com/MPG/mpg_gateway"
+const ReturnURL = URL+"/newebpay/callback?from=ReturnURL"
+const NotifyURL = URL+"/newebpay/callback?from=NotifyURL"
+const ClientBackURL = URL+"/orders"
+
 const orderController = {
   getOrders: (req, res) => {
     Order.findAll({ include: [ Payment ]})
@@ -37,22 +46,27 @@ const orderController = {
     })
   },
 
-  postOrder: (req, res) => {
-    Cart.findByPk(req.body.cartId, {
+  postOrderAndPayment: (req, res) => {
+    return Cart.findByPk(req.body.cartId, {
       include: [{ model: Product, as: 'items' }]
     })
     .then(cart => {
-      const { name, phone, email, address, amount } = req.body
+      const { name, phone, email, address, amount, MerchantOrderNo, TradeInfo } = req.body
       if (!name || !phone || !email || !address) {
         req.flash('warning_msg', 'All fields are required!')
         return res.redirect('back')
       }
-      else {       
+      else {
+
+        const data = JSON.parse(create_mpg_aes_decrypt(TradeInfo))
+        console.log(data)
+
         Order.create({
           name,
           phone,
           address,
-          amount
+          amount,
+          sn: MerchantOrderNo
         })
         .then(order => {
           cart.dataValues.items.forEach(items => {
@@ -84,6 +98,15 @@ const orderController = {
       })  
     })
   }
+}
+
+function create_mpg_aes_decrypt(TradeInfo) {
+  let decrypt = crypt.createDecipheriv('ase256', HashKey, HashIV)
+  decrypt.setAutoPadding(false)
+  let text = decrypt.update(TradeInfo, 'hex', 'utf8')
+  let plainText = text + decrypt.final('utf8')
+  let result = plainText.replace(/[\x00-\x20]+/g, '')
+  return result
 }
 
 module.exports = orderController

@@ -5,6 +5,7 @@ const methodOverride = require('method-override')
 var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
+require('dotenv').config()
 
 const app = express()
 const port = 3000

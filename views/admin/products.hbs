@@ -1,3 +1,5 @@
+{{> alert}}
+
 <h2 id="title">後台</h2>
 <a href="/admin/products" style="text-decoration: none;">Product</a> |
 <a href="/admin/orders" style="text-decoration: none;">Order</a>
@@ -26,8 +28,8 @@
         <a href="/admin/products/{{this.id}}">Edit Detail</a>
       </td>
       <td>
-        <form action="/admin/products?_method=DELETE" method="POST">
-          <button type="submit" class="btn"><i class="fas fa-trash-alt"></i></button>
+        <form action="/admin/products/{{this.id}}?_method=DELETE" method="POST">
+          <button type="submit" class="btn" style="margin-top: -6px;"><i class="fas fa-trash-alt"></i></button>
         </form>
       </td>
     </tr>

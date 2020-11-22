@@ -107,7 +107,16 @@ adminController = {
         
       }
     })
+  },
 
+  removeProduct: (req, res) => {
+    Product.findByPk(req.params.id)
+    .then(product => {
+      product.destroy().then(product => {
+        req.flash('success_msg', 'The item has been successfully removed!')
+        return res.redirect('back')
+      })
+    })
   }
 }
 

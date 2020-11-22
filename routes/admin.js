@@ -11,6 +11,7 @@ router.get('/products/new', adminController.getNewProduct)
 router.post('/products/new', upload.single('image'), adminController.postProduct)
 router.get('/products/:id', adminController.editProduct)
 router.put('/products/:id', upload.single('image'), adminController.putProduct)
+router.delete('/products/:id', adminController.removeProduct)
 
 router.get('/orders', adminController.getOrders)
 

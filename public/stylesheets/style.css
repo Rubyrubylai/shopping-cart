@@ -118,3 +118,8 @@
 #title {
   margin-bottom: 20px;
 }
+
+.card-custom {
+  width: 300px;
+  margin-right: 10px;
+}

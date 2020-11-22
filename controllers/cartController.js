@@ -108,8 +108,6 @@ const cartController = {
   },
 
   checkCart: (req, res) => {
-    console.log(process.env)
-    console.log(MerchantID)
     //購物車
     Cart.findByPk(
       req.session.cartId,

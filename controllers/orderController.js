@@ -47,6 +47,7 @@ const orderController = {
   },
 
   postOrderAndPayment: (req, res) => {
+    console.log(req.body.cartId)
     return Cart.findByPk(req.body.cartId, {
       include: [{ model: Product, as: 'items' }]
     })

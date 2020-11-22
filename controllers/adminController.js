@@ -26,7 +26,8 @@ adminController = {
   },
 
   getNewProduct: (req, res) => {
-    return res.render('admin/newProduct')
+    let newProduct = true
+    return res.render('admin/product', { newProduct })
   },
 
   postProduct: (req, res) => {
@@ -49,8 +50,17 @@ adminController = {
         })
       })
     }
-    
-    
+  },
+
+  editProduct: (req, res) => {
+    Product.findByPk(req.params.id)
+    .then(product => {
+      return res.render('admin/product', { product: product.toJSON() })
+    })
+  },
+
+  putProduct: (req, res) => {
+
   }
 }
 

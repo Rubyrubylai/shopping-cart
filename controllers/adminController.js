@@ -3,6 +3,7 @@ const Product = db.Product
 const Order = db.Order
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const status = require('../config/status')
 
 adminController = {
   getProducts: (req, res) => {
@@ -21,6 +22,8 @@ adminController = {
       nest: true
     })
     .then(orders => {
+      status.orders(orders)
+      
       return res.render('admin/orders', { orders })
     })
   },

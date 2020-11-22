@@ -4,6 +4,7 @@ const Payment = db.Payment
 const Product = db.Product
 const Cart = db.Cart
 const OrderItem = db.OrderItem
+const status = require('../config/status')
 
 const URL = process.env.URL
 const MerchantID = process.env.MerchantID
@@ -17,7 +18,9 @@ const ClientBackURL = URL+"/orders"
 const orderController = {
   getOrders: (req, res) => {
     Order.findAll({ include: [ Payment ]})
-    .then(orders => { 
+    .then(orders => {
+      status.orders(orders)
+
       return res.render('orders', { orders })
     })
   },
@@ -42,6 +45,9 @@ const orderController = {
           totalQty += item.quantity
         })
       }
+
+      status.order(order)
+
       return res.render('order', { order: order.toJSON(), items, totalPrice, totalQty })
     })
   },

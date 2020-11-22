@@ -31,11 +31,12 @@ adminController = {
   },
 
   postProduct: (req, res) => {
+    let newProduct = true
     const { file } = req
-    const { name, price, description } = req.body
+    const { name, price, description, image } = req.body
     if (!name || !price || !description || !file) {
       req.flash('warning_msg', 'All fields are required!')
-      return res.redirect('back')
+      return res.render('admin/product', { product : { name, image, description, price }, newProduct })
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)

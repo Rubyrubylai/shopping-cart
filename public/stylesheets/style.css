@@ -103,3 +103,14 @@
 .nav-item {
   display: inline-block;
 }
+
+.custom-table-width {
+  overflow-x: auto;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.add-btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

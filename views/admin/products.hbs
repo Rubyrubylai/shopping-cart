@@ -1,0 +1,36 @@
+<h2>後台</h2>
+<a href="" style="text-decoration: none;">Product</a> |
+<a href="" style="text-decoration: none;">Order</a>
+<br>
+<a href="" type="button" class="btn btn-primary add-btn">Add New Product</a>
+
+<table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col custom-table-width">Product Name</th>
+      <th scope="col custom-table-width">Image</th>
+      <th scope="col">Price</th>
+      <th scope="col">Option</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>
+        <img class="card-img-top" style="width: 200px;" src="{{this.image}}" alt="product_photo">
+      </td>
+      <td>${{this.price}}</td>
+      <td>
+        <a href="">Edit Detail</a>
+      </td>
+      <td>
+        <form action="/admin/products?_method=DELETE" method="POST">
+          <button type="submit" class="btn"><i class="fas fa-trash-alt"></i></button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

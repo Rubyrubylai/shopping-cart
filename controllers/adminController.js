@@ -117,6 +117,30 @@ adminController = {
         return res.redirect('back')
       })
     })
+  },
+
+  editOrder: (req, res) => {
+    Order.findByPk(req.params.id, {
+      include: [{ model: Product, as: 'items' }]
+    })
+    .then(order => {
+      items = order.items.map(item => ({
+        price: item.dataValues.price,
+        quantity: item.dataValues.OrderItem.dataValues.quantity
+      }))
+      let totalPrice = 0
+      let totalQty = 0
+      if (items) {
+        items.forEach(item => {
+          totalPrice += item.price * item.quantity
+        })
+        items.forEach(item => {
+          totalQty += item.quantity
+        })
+      }
+      
+      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty })
+    })
   }
 }
 

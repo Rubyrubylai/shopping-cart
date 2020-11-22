@@ -1,6 +1,8 @@
 const db = require('../models')
 const Product = db.Product
 const Order = db.Order
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 adminController = {
   getProducts: (req, res) => {
@@ -21,7 +23,34 @@ adminController = {
     .then(orders => {
       return res.render('admin/orders', { orders })
     })
+  },
 
+  getNewProduct: (req, res) => {
+    return res.render('admin/newProduct')
+  },
+
+  postProduct: (req, res) => {
+    const { file } = req
+    const { name, price, description } = req.body
+    if (!name || !price || !description || !file) {
+      req.flash('warning_msg', 'All fields are required!')
+      return res.redirect('/admin/products/new')
+    }
+    else {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return Product.create({
+          name,
+          price,
+          description,
+          image: file ? img.data.link : null
+        }).then(product => {
+          return res.redirect('/admin/products')
+        })
+      })
+    }
+    
+    
   }
 }
 

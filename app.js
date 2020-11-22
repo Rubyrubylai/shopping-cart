@@ -41,6 +41,8 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
 app.listen(port, () => {
   console.log(`app is running on http://localhost:${port}`)
 })

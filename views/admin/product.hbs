@@ -2,11 +2,11 @@
 
 {{#if newProduct}}
 <h2 id="title">Add New Product</h2>
+<form action="/admin/products/new" method="POST" enctype="multipart/form-data">
 {{else}}
 <h2 id="title">Edit Product</h2>
+<form action="/admin/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
 {{/if}}
-
-<form action="/admin/products/new" method="POST" enctype="multipart/form-data">
   <div class="form-group">
     <input type="text" class="form-control" name="name" value="{{product.name}}" placeholder="Product Name">
   </div>
@@ -18,7 +18,7 @@
     {{/if}}
     <div class="inline-block">
       <label for="image">Upload File</label>
-      <input id="file" type="file" class="form-control-file" id="image" name="image">
+      <input id="file" type="file" class="form-control-file" id="image" name="image" value="{{product.image}}">
     </div>
   </div>
   <div class="form-group">

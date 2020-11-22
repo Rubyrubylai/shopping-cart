@@ -35,7 +35,7 @@ adminController = {
     const { name, price, description } = req.body
     if (!name || !price || !description || !file) {
       req.flash('warning_msg', 'All fields are required!')
-      return res.redirect('/admin/products/new')
+      return res.redirect('back')
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
@@ -60,6 +60,52 @@ adminController = {
   },
 
   putProduct: (req, res) => {
+    Product.findByPk(req.params.id)
+    .then(product => {
+      const { file } = req
+      const { name, image, description, price } = req.body
+      console.log(image)
+      if(!name ||　!description || !price) {
+        console.log('no info')
+        req.flash('warning_msg', 'All fields are required!')
+        
+        console.log(description)
+        console.log(price)
+        return res.redirect('back')
+        return res.render('admin/product', { product : { name, image, description, price } })
+      }
+      else {
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        console.log(name)
+        if (file) {
+          imgur.upload(file.path, (err, img) => {
+            return product.update({
+              name,
+              image: file ? img.data.link : null,
+              description,
+              price
+            })
+            .then(product => {
+              return res.redirect('/admin/products')
+            })
+          })
+        }
+        else {
+          console.log('product')
+            product.update({
+              name,
+              image,
+              description,
+              price
+            })
+            .then(product => {
+              return res.redirect('/admin/products')
+            })
+          
+        }
+        
+      }
+    })
 
   }
 }

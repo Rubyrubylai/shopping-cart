@@ -1,0 +1,32 @@
+<h2>後台</h2>
+<a href="/admin/products" style="text-decoration: none;">Product</a> |
+<a href="/admin/orders" style="text-decoration: none;">Order</a>
+<br>
+<a href="/admin/products/new" type="button" class="btn btn-primary add-btn">Add New Product</a>
+
+<table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col custom-table-width">Order Number</th>
+      <th scope="col custom-table-width">Price</th>
+      <th scope="col">Payment Method</th>
+      <th scope="col">Payment Status</th>
+      <th scope="col">Shipping Status</th>
+      <th scope="col">Order Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+    <tr>
+      <td>#{{this.id}}</td>
+      <td>${{this.amount}}</td>
+      <td></td>
+      <td>{{this.payment_status}}</td>
+      <td>{{this.shipping_status}}</td>
+      <td>
+        <a href="">Edit Detail</a>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -8,15 +8,15 @@ reset.addEventListener('click', function(e) {
   confirm.innerHTML += `
   <div class="form-group">
     <label for="oldPassword">Old Password</label>
-    <input type="password" id="oldPassword" class="form-control" placeholder="Old Password">
+    <input type="password" id="oldPassword" name="oldPassword" class="form-control" placeholder="Old Password">
   </div>
   <div class="form-group">
     <label for="newPassword">New Password</label>
-    <input type="password" id="newPassword" class="form-control" placeholder="New Password">
+    <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New Password">
   </div>
   <div class="form-group">
     <label for="confirmPassword">Confirm Password</label>
-    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password">
+    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password">
   </div>
   `
   e.preventDefault()

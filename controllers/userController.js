@@ -9,6 +9,10 @@ const userController = {
 
   registerPage: (req, res) => {
     res.render('user/register')
+  },
+
+  login: (req, res) => {
+    return res.redirect('/')
   }
 }
 

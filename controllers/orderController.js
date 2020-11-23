@@ -18,6 +18,7 @@ const orderController = {
   getOrders: (req, res) => {
     Order.findAll({ include: [ Payment ]})
     .then(orders => {
+      console.log(orders[0].dataValues.Payments[0].dataValues.payment_method)
       return res.render('orders', { orders })
     })
   },
@@ -28,6 +29,7 @@ const orderController = {
       { include: [{ model: Product, as: 'items' }, Payment]}
     )
     .then(order => {
+      
       items = order.dataValues.items.map(item => ({
         ...item.dataValues,
         quantity: item.dataValues.OrderItem.dataValues.quantity

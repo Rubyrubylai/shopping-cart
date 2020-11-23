@@ -64,16 +64,17 @@ adminController = {
     Product.findByPk(req.params.id)
     .then(product => {
       const { file } = req
+      const { id } = req.params
       const { name, image, description, price } = req.body
-      console.log(image)
+      console.log(file)
       if(!name ||　!description || !price) {
         console.log('no info')
         req.flash('warning_msg', 'All fields are required!')
         
         console.log(description)
         console.log(price)
-        return res.redirect('back')
-        return res.render('admin/product', { product : { name, image, description, price } })
+        //return res.redirect('back')
+        return res.render('admin/product', { product : { id, name, image, description, price } })
       }
       else {
         imgur.setClientID(IMGUR_CLIENT_ID)
@@ -125,7 +126,7 @@ adminController = {
     })
     .then(order => {
       items = order.items.map(item => ({
-        price: item.dataValues.price,
+        ...item.dataValues,
         quantity: item.dataValues.OrderItem.dataValues.quantity
       }))
       let totalPrice = 0
@@ -146,11 +147,10 @@ adminController = {
   putOrder: (req, res) => {
     Order.findByPk(req.params.id)
     .then(order => {
-      const { shipping_status } = req.body
-      console.log("----------------")
-      console.log(shipping_status)
+      const { shipping_status, payment_status } = req.body
       order.update({
-        shipping_status
+        shipping_status,
+        payment_status
       })
       .then(order => {
         req.flash('success_msg', 'The order has been successfully updated!')

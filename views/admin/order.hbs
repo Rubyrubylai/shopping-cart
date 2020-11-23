@@ -15,7 +15,7 @@
             <th scope="row">Shipping Status</th>
             <td>
               <select class="form-control" name="shipping_status">
-                <option value="-1" {{#ifEquals order.shipping_status '-1'}}selected{{/ifEquals}}>Not Shipped</option>
+                <option value="-1" {{#ifEquals order.shipping_status '-1'}}selected{{/ifEquals}}>Preparing</option>
                 <option value="0" {{#ifEquals order.shipping_status '0'}}selected{{/ifEquals}}>Shipping</option>
                 <option value="1" {{#ifEquals order.shipping_status '1'}}selected{{/ifEquals}}>Arrived</option>
               </select>
@@ -28,9 +28,9 @@
           <tr>
             <th scope="row">Payment Status</th>
             <td>
-              <select class="form-control">
-                <option>Not paid</option>
-                <option>Paid</option>
+              <select class="form-control" name="payment_status">
+                <option value="-1" {{#ifEquals order.payment_status '-1'}}selected{{/ifEquals}}>Not paid</option>
+                <option value="1" {{#ifEquals order.payment_status '1'}}selected{{/ifEquals}}>Paid</option>
               </select>
             </td>
           </tr>
@@ -73,21 +73,21 @@
           <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
+              <th scope="col" class="table-custom">Quantity</th>
+              <th scope="col" class="table-custom">Price</th>
             </tr>
           </thead>
           {{#each items}}
           <tr>
             <td scope="row">{{this.name}}</td>
-            <td>{{this.quantity}}</td>
-            <td>${{this.price}}</td>
+            <td class="table-custom">{{this.quantity}}</td>
+            <td class="table-custom">${{this.price}}</td>
           </tr>
           {{/each}}
           <tr>
             <td scope="row">Total</td>
-            <td>{{totalQty}}</td>
-            <td>${{totalPrice}}</td>
+            <td class="table-custom">{{totalQty}}</td>
+            <td class="table-custom">${{totalPrice}}</td>
           </tr>
         </table>
       </li>

@@ -21,7 +21,6 @@ const file = document.getElementById('file')
 // })
 
 file.addEventListener('change', function(e){
-  console.log(this.files)
   const file = this.files[0];
   const fr = new FileReader();
   fr.onload = function (e) {

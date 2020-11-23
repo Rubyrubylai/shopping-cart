@@ -105,9 +105,7 @@
 }
 
 .custom-table-width {
-  overflow-x: auto;
-  padding-right: 0;
-  padding-left: 0;
+  width: 800px;
 }
 
 .add-btn {
@@ -122,4 +120,16 @@
 .card-custom {
   width: 300px;
   margin-right: 10px;
+}
+
+.table-custom {
+  text-align: center;
+}
+
+#reset-btn {
+  display: block;
+}
+
+.account {
+  margin-top: 20px;
 }

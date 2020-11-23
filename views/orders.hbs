@@ -2,27 +2,32 @@
 
 <table class="table">
   <thead>
-    <tr>
+    <tr class="text-center">
       <th scope="col">Order Number</th>
       <th scope="col">Order Date</th>
       <th scope="col">Shipping Status</th>
       <th scope="col">Payment Method</th>
+      <th scope="col">Payment Status</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
     {{#each orders}}
-      <tr>
-        <th scope="row">
-          <a href="/order/{{this.dataValues.id}}" style="text-decoration: none;" class="a-custom">#{{this.dataValues.id}}</a>
-        </th>
+      <tr class="text-center">
+        <td scope="row">
+          <a type="button" class="btn btn-secondary" href="/order/{{this.dataValues.id}}">#{{this.dataValues.id}}</a>
+        </td>
         <td>{{Date this.dataValues.createdAt}}</td>
         <td>
-          {{#ifEquals this.dataValues.shipping_status '-1'}}Not Shipped{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status '-1'}}Preparing{{/ifEquals}}
           {{#ifEquals this.dataValues.shipping_status '0'}}Shipping{{/ifEquals}}
           {{#ifEquals this.dataValues.shipping_status '1'}}Arrived{{/ifEquals}}
         </td>
         <td>{{this.dataValues.Payments.payment_method}}</td>
+        <td>
+          {{#ifEquals this.dataValues.payment_status '-1'}}Not Paid{{/ifEquals}}
+          {{#ifEquals this.dataValues.payment_status '1'}}Paid{{/ifEquals}}
+        </td>
         <td>
           <form action="/order/{{this.dataValues.id}}/cancel" method="POST">
             <button type="submit" class="btn btn-secondary">Cancel</button>

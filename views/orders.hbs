@@ -17,7 +17,11 @@
           <a href="/order/{{this.dataValues.id}}" style="text-decoration: none;" class="a-custom">#{{this.dataValues.id}}</a>
         </th>
         <td>{{Date this.dataValues.createdAt}}</td>
-        <td>{{this.dataValues.shipping_status}}</td>
+        <td>
+          {{#ifEquals this.dataValues.shipping_status '-1'}}Not Shipped{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status '0'}}Shipping{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status '1'}}Arrived{{/ifEquals}}
+        </td>
         <td>{{this.dataValues.Payments.payment_method}}</td>
         <td>
           <form action="/order/{{this.dataValues.id}}/cancel" method="POST">

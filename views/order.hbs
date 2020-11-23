@@ -12,7 +12,11 @@
           </tr>
           <tr>
             <th scope="row">Shipping Status</th>
-            <td>{{order.shipping_status}}</td>
+            <td>
+              {{#ifEquals order.shipping_status '-1'}}Not Shipped{{/ifEquals}}
+              {{#ifEquals order.shipping_status '0'}}Shipping{{/ifEquals}}
+              {{#ifEquals order.shipping_status '1'}}Arrived{{/ifEquals}}
+            </td>
           </tr>
           <tr>
             <th scope="row">Shipping Date</th>

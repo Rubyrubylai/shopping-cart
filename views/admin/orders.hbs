@@ -22,7 +22,11 @@
       <td>${{this.amount}}</td>
       <td></td>
       <td>{{this.payment_status}}</td>
-      <td>{{this.shipping_status}}</td>
+      <td>
+        {{#ifEquals this.shipping_status '-1'}}Not Shipped{{/ifEquals}}
+        {{#ifEquals this.shipping_status '0'}}Shipping{{/ifEquals}}
+        {{#ifEquals this.shipping_status '1'}}Arrived{{/ifEquals}}
+      </td>
       <td>
         <a href="/admin/orders/{{this.id}}">Edit Detail</a>
       </td>

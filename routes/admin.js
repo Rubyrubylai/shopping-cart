@@ -15,5 +15,6 @@ router.delete('/products/:id', adminController.removeProduct)
 
 router.get('/orders', adminController.getOrders)
 router.get('/orders/:id', adminController.editOrder)
+router.put('/orders/:id', adminController.putOrder)
 
 module.exports = router

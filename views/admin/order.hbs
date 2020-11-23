@@ -14,10 +14,10 @@
           <tr>
             <th scope="row">Shipping Status</th>
             <td>
-              <select class="form-control">
-                <option {{#ifEquals order.shipping_status '-1'}}selected{{/ifEquals}}>Not Shipped</option>
-                <option {{#ifEquals order.shipping_status '0'}}selected{{/ifEquals}}>Shipping</option>
-                <option {{#ifEquals order.shipping_status '1'}}selected{{/ifEquals}}>Arrived</option>
+              <select class="form-control" name="shipping_status">
+                <option value="-1" {{#ifEquals order.shipping_status '-1'}}selected{{/ifEquals}}>Not Shipped</option>
+                <option value="0" {{#ifEquals order.shipping_status '0'}}selected{{/ifEquals}}>Shipping</option>
+                <option value="1" {{#ifEquals order.shipping_status '1'}}selected{{/ifEquals}}>Arrived</option>
               </select>
             </td>
           </tr>

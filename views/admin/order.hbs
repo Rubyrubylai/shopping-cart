@@ -1,0 +1,101 @@
+<form action="/admin/orders/{{order.id}}?_method=PUT" method="POST">
+<div class="row">
+  <div class="col-6">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Order Number: #{{order.id}}</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <tr>
+            <th scope="row">Order Date</th>
+            <td>{{Date order.createdAt}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Shipping Status</th>
+            <td>
+              <select class="form-control" name="shipping_status">
+                <option value="-1" {{#ifEquals order.shipping_status '-1'}}selected{{/ifEquals}}>Preparing</option>
+                <option value="0" {{#ifEquals order.shipping_status '0'}}selected{{/ifEquals}}>Shipping</option>
+                <option value="1" {{#ifEquals order.shipping_status '1'}}selected{{/ifEquals}}>Arrived</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Shipping Date</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Status</th>
+            <td>
+              <select class="form-control" name="payment_status">
+                <option value="-1" {{#ifEquals order.payment_status '-1'}}selected{{/ifEquals}}>Not paid</option>
+                <option value="1" {{#ifEquals order.payment_status '1'}}selected{{/ifEquals}}>Paid</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Method</th>
+            <td></td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Shipping Information</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{order.name}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Phone</th>
+            <td>{{order.phone}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Address</th>
+            <td>{{order.address}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+  <div class="col-6">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Order Details</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col" class="table-custom">Quantity</th>
+              <th scope="col" class="table-custom">Price</th>
+            </tr>
+          </thead>
+          {{#each items}}
+          <tr>
+            <td scope="row">{{this.name}}</td>
+            <td class="table-custom">{{this.quantity}}</td>
+            <td class="table-custom">${{this.price}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <td scope="row">Total</td>
+            <td class="table-custom">{{totalQty}}</td>
+            <td class="table-custom">${{totalPrice}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<center>
+    <button type="submit" class="btn btn-secondary checkOut-btn">Update</button>
+</center>
+</form>

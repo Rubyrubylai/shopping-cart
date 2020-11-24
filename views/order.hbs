@@ -12,7 +12,11 @@
           </tr>
           <tr>
             <th scope="row">Shipping Status</th>
-            <td>{{order.shipping_status}}</td>
+            <td>
+              {{#ifEquals order.shipping_status '-1'}}Preparing{{/ifEquals}}
+              {{#ifEquals order.shipping_status '0'}}Shipping{{/ifEquals}}
+              {{#ifEquals order.shipping_status '1'}}Arrived{{/ifEquals}}
+            </td>
           </tr>
           <tr>
             <th scope="row">Shipping Date</th>
@@ -20,7 +24,10 @@
           </tr>
           <tr>
             <th scope="row">Payment Status</th>
-            <td>{{order.payment_status}}</td>
+            <td>
+              {{#ifEquals order.payment_status '-1'}}Not Paid{{/ifEquals}}
+              {{#ifEquals order.payment_status '1'}}Paid{{/ifEquals}}
+            </td>
           </tr>
           <tr>
             <th scope="row">Payment Method</th>
@@ -61,21 +68,21 @@
           <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
+              <th scope="col" class="table-custom">Quantity</th>
+              <th scope="col" class="table-custom">Price</th>
             </tr>
           </thead>
           {{#each items}}
           <tr>
             <td scope="row">{{this.name}}</td>
-            <td>{{this.quantity}}</td>
-            <td>${{this.price}}</td>
+            <td class="table-custom">{{this.quantity}}</td>
+            <td class="table-custom">${{this.price}}</td>
           </tr>
           {{/each}}
           <tr>
             <td scope="row">Total</td>
-            <td>{{totalQty}}</td>
-            <td>${{totalPrice}}</td>
+            <td class="table-custom">{{totalQty}}</td>
+            <td class="table-custom">${{totalPrice}}</td>
           </tr>
         </table>
       </li>

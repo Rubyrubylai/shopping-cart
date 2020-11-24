@@ -5,7 +5,7 @@ const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const auth = require('../config/auth')
 
-router.get('/', auth.authenticated, (req, res) => { return res.redirect('/product')})
+router.get('/', (req, res) => { return res.redirect('/product')})
 
 router.get('/product', productController.getProducts)
 router.get('/product/:id', productController.getProduct)

@@ -1,11 +1,9 @@
 module.exports = {
   authenticated: (req, res, next) => {
     if (req.isAuthenticated()) {
-      
-      return next()
+        return next()   
     }
-    req.flash('failure_msg', 'The email or password is incorrect.')
-    return res.redirect('/user/login')
+    return res.redirect('/user/login') 
   },
 
   adminAuthenticated: (req, res, next) => {
@@ -14,11 +12,10 @@ module.exports = {
         return next()
       }
       else {
-        req.flash('failure_msg', 'It is not the admin account.')
+        req.flash('warning_msg', 'Please log in with admin account.')
         return res.redirect('/user/login')
       }
     }
-    req.flash('failure_msg', 'The email or password is incorrect.')
     return res.redirect('/user/login')
   }
 }

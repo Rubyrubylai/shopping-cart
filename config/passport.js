@@ -10,15 +10,12 @@ passport.use(new LocalStrategy({
 },(req, email, password, done) => {
   User.findOne({ where: { email: email }})
   .then(user => {
-    
     if (!user) { 
       return done(null, false, req.flash('failure_msg', 'The email or password is incorrect')) 
     }
     if (!bcrypt.compareSync(password, user.password)) {
-    
       return done(null, false, req.flash('failure_msg', 'The email or password is incorrect'))
     }
-    
     return done(null, user)
   })
 }))

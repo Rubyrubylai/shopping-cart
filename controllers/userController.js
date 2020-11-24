@@ -52,6 +52,12 @@ const userController = {
         }
       })
     } 
+  },
+
+  logout: (req, res) => {
+    req.logout()
+    req.flash('success_msg', 'Log out successfully. Please log in again.')
+    return res.redirect('/user/login')
   }
 }
 

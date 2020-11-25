@@ -1,6 +1,8 @@
 module.exports = {
   Date: (a) => {
-    return a.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' })
+    if (a) {
+      return a.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' })
+    }
   },
 
   ifEquals: (a, b, options) => {

@@ -152,10 +152,11 @@ adminController = {
   putOrder: (req, res) => {
     Order.findByPk(req.params.id)
     .then(order => {
-      const { shipping_status, payment_status } = req.body
+      const { shipping_status, payment_status, shipping_date } = req.body
       order.update({
         shipping_status,
-        payment_status
+        payment_status,
+        shipping_date
       })
       .then(order => {
         req.flash('success_msg', 'The order has been successfully updated!')

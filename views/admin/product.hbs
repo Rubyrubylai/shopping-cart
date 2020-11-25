@@ -1,0 +1,37 @@
+{{> alert}}
+
+{{#if newProduct}}
+<h2 id="title">Add New Product</h2>
+<form action="/admin/products/new" method="POST" enctype="multipart/form-data">
+{{else}}
+<h2 id="title">Edit Product</h2>
+<form action="/admin/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+{{/if}}
+  <div class="form-group">
+    <input type="text" class="form-control" name="name" value="{{product.name}}" placeholder="Product name">
+  </div>
+  <div class="form-group">
+    {{#if newProduct}}
+    <img id="image" src="{{product.image}}">
+    {{else}}
+    <img id="image" src="{{product.image}}" class="card-custom">
+    {{/if}}
+    <div class="inline-block">
+      <label for="file">Upload file</label>
+      <input id="file" type="file" accept="image/*" class="form-control-file" name="image" value="{{product.image}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <textarea class="form-control" rows="6" name="description" placeholder="Add product description">{{product.description}}</textarea>
+  </div>
+  <div class="form-group">
+    <input type="number" class="form-control" name="price" value="{{product.price}}" placeholder="Price">
+  </div>
+  <center>
+    <a href="/admin/products" type="button" class="btn btn-secondary custom-btn beside-btn">Cancel</a>
+    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Submit</button>
+  </center>
+</form>
+
+
+<script src="/image.js"></script>

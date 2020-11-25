@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 require('dotenv').config()
+const passport = require('passport')
 
 const app = express()
 const port = 3000
@@ -32,17 +33,25 @@ app.use(session({
     saveUninitialized: true,
 }))
 
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(flash())
 
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
   res.locals.failure_msg = req.flash('failure_msg')
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
   next()
 })
+
+app.use('/upload', express.static(__dirname + '/upload'))
+
+require('./routes')(app)
 
 app.listen(port, () => {
   console.log(`app is running on http://localhost:${port}`)
 })
 
-require('./routes')(app)

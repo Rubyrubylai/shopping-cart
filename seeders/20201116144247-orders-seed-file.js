@@ -16,6 +16,7 @@ module.exports = {
         UserId: Math.floor(Math.random()*3+1),
         createdAt: new Date(),
         updatedAt: new Date(),
+        shipping_Date: new Date()
       }))
     )
   },

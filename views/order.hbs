@@ -1,8 +1,10 @@
+<a href="/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+
 <div class="row">
   <div class="col-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
-        <strong>Order Number: #{{order.id}}</strong>
+        <strong>Order Number: #{{order.sn}}</strong>
       </li>
       <li class="list-group-item">
         <table class="table">
@@ -12,19 +14,37 @@
           </tr>
           <tr>
             <th scope="row">Shipping Status</th>
-            <td>{{order.shipping_status}}</td>
+            <td>
+              {{#ifEquals order.shipping_status -2}}Order Cancelled{{/ifEquals}}
+              {{#ifEquals order.shipping_status -1}}Preparing{{/ifEquals}}
+              {{#ifEquals order.shipping_status 0}}Shipping{{/ifEquals}}
+              {{#ifEquals order.shipping_status 1}}Arrived{{/ifEquals}}
+            </td>
           </tr>
           <tr>
             <th scope="row">Shipping Date</th>
-            <td></td>
+            <td>
+              {{Date order.shipping_date}}
+            </td>
           </tr>
           <tr>
             <th scope="row">Payment Status</th>
-            <td>{{order.payment_status}}</td>
+            <td>
+              {{#ifEquals order.payment_status -2}}Refund Completed{{/ifEquals}}
+              {{#ifEquals order.payment_status -1}}Request Refund{{/ifEquals}}
+              {{#ifEquals order.payment_status 0}}Not Paid{{/ifEquals}}
+              {{#ifEquals order.payment_status 1}}Paid{{/ifEquals}}
+            </td>
           </tr>
           <tr>
             <th scope="row">Payment Method</th>
-            <td>{{order.createAt}}</td>
+            <td>
+              {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'VACC'}}ATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+            </td>
           </tr>
         </table>
       </li>
@@ -61,21 +81,21 @@
           <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
+              <th scope="col" class="table-custom">Quantity</th>
+              <th scope="col" class="table-custom">Price</th>
             </tr>
           </thead>
           {{#each items}}
           <tr>
             <td scope="row">{{this.name}}</td>
-            <td>{{this.quantity}}</td>
-            <td>${{this.price}}</td>
+            <td class="table-custom">{{this.quantity}}</td>
+            <td class="table-custom">${{this.price}}</td>
           </tr>
           {{/each}}
           <tr>
             <td scope="row">Total</td>
-            <td>{{totalQty}}</td>
-            <td>${{totalPrice}}</td>
+            <td class="table-custom">{{totalQty}}</td>
+            <td class="table-custom">${{totalPrice}}</td>
           </tr>
         </table>
       </li>
@@ -84,7 +104,17 @@
 </div>
 
 <center>
-  <form action="/order/{{order.id}}/cancel" method="POST">
-    <button type="submit" class="btn btn-secondary checkOut-btn">Cancel Order</button>
+  {{#ifEquals order.payment_status 0}}
+  <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" style="display: inline-block;">
+    <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
+    <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
+    <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
+    <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
+    <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
+    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
+  </form>
+  {{/ifEquals}}
+  <form action="/order/{{order.id}}/cancel" method="POST" style="display: inline-block;">
+    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
   </form>
 </center>

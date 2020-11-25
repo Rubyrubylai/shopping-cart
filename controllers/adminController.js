@@ -153,15 +153,28 @@ adminController = {
     Order.findByPk(req.params.id)
     .then(order => {
       const { shipping_status, payment_status, shipping_date } = req.body
-      order.update({
-        shipping_status,
-        payment_status,
-        shipping_date
-      })
-      .then(order => {
-        req.flash('success_msg', 'The order has been successfully updated!')
-        return res.redirect('/admin/orders')
-      })
+      if (shipping_date) {
+        order.update({
+          shipping_status,
+          payment_status,
+          shipping_date
+        })
+        .then(order => {
+          req.flash('success_msg', 'The order has been successfully updated!')
+          return res.redirect(`/admin/orders/${order.id}`)
+        })
+      }
+      else {
+        order.update({
+          shipping_status,
+          payment_status
+        })
+        .then(order => {
+          req.flash('success_msg', 'The order has been successfully updated!')
+          return res.redirect(`/admin/orders/${order.id}`)
+        })
+      }
+      
     })
   }
 }

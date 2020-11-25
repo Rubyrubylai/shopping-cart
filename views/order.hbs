@@ -1,3 +1,5 @@
+<a href="/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+
 <div class="row">
   <div class="col-6">
     <ul class="list-group">
@@ -109,10 +111,10 @@
     <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
     <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
     <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
-    <button type="submit" class="btn btn-secondary checkOut-btn">Confirm Payment</button>
+    <button type="submit" class="btn btn-secondary custom-btn">Confirm Payment</button>
   </form>
   {{/ifEquals}}
   <form action="/order/{{order.id}}/cancel" method="POST" style="display: inline-block;">
-    <button type="submit" class="btn btn-secondary checkOut-btn">Cancel Order</button>
+    <button type="submit" class="btn btn-secondary custom-btn">Cancel Order</button>
   </form>
 </center>

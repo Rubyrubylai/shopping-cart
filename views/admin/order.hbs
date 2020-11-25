@@ -1,3 +1,7 @@
+{{>alert}}
+
+<a href="/admin/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+
 <form action="/admin/orders/{{order.id}}?_method=PUT" method="POST">
 <div class="row">
   <div class="col-6">
@@ -113,6 +117,6 @@
 </div>
 
 <center>
-    <button type="submit" class="btn btn-secondary checkOut-btn">Update</button>
+    <button type="submit" class="btn btn-secondary custom-btn">Update</button>
 </center>
 </form>

@@ -12,15 +12,18 @@ router.get('/product/:id', productController.getProduct)
 
 router.get('/cart', cartController.getCart)
 router.post('/cart/:id', cartController.postCart)
-router.get('/cart/check', auth.authenticated, cartController.checkCart)
+router.get('/cart/check', cartController.checkCart)
 
 router.post('/cartItem/:id/add', cartController.addCartItem)
 router.post('/cartItem/:id/min', cartController.minCartItem)
 router.delete('/cartItem', cartController.removeCartItem)
 
-router.get('/orders', auth.authenticated, orderController.getOrders)
-router.get('/order/:id', auth.authenticated, orderController.getOrder)
-router.post('/newebpay/callback', auth.authenticated, orderController.postOrderAndPayment)
-router.post('/order/:id/cancel', auth.authenticated, orderController.cancelOrder)
+
+
+router.get('/orders', orderController.getOrders)
+router.get('/order/:id', orderController.getOrder)
+router.post('/order', orderController.postOrder, orderController.newebpayCallback)
+router.post('/order/:id/cancel', orderController.cancelOrder)
+router.post('/newebpay/callback', orderController.newebpayCallback)
 
 module.exports = router

@@ -13,9 +13,10 @@
           <tr>
             <th scope="row">Shipping Status</th>
             <td>
-              {{#ifEquals order.shipping_status '-1'}}Preparing{{/ifEquals}}
-              {{#ifEquals order.shipping_status '0'}}Shipping{{/ifEquals}}
-              {{#ifEquals order.shipping_status '1'}}Arrived{{/ifEquals}}
+              {{#ifEquals order.shipping_status -2}}Order Cancelled{{/ifEquals}}
+              {{#ifEquals order.shipping_status -1}}Preparing{{/ifEquals}}
+              {{#ifEquals order.shipping_status 0}}Shipping{{/ifEquals}}
+              {{#ifEquals order.shipping_status 1}}Arrived{{/ifEquals}}
             </td>
           </tr>
           <tr>
@@ -25,8 +26,10 @@
           <tr>
             <th scope="row">Payment Status</th>
             <td>
-              {{#ifEquals order.payment_status '-1'}}Not Paid{{/ifEquals}}
-              {{#ifEquals order.payment_status '1'}}Paid{{/ifEquals}}
+              {{#ifEquals order.payment_status -2}}Refund Completed{{/ifEquals}}
+              {{#ifEquals order.payment_status -1}}Request Refund{{/ifEquals}}
+              {{#ifEquals order.payment_status 0}}Not Paid{{/ifEquals}}
+              {{#ifEquals order.payment_status 1}}Paid{{/ifEquals}}
             </td>
           </tr>
           <tr>
@@ -91,7 +94,17 @@
 </div>
 
 <center>
-  <form action="/order/{{order.id}}/cancel" method="POST">
+  {{#ifEquals order.payment_status 0}}
+  <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" style="display: inline-block;">
+    <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
+    <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
+    <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
+    <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
+    <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
+    <button type="submit" class="btn btn-secondary checkOut-btn">Confirm Payment</button>
+  </form>
+  {{/ifEquals}}
+  <form action="/order/{{order.id}}/cancel" method="POST" style="display: inline-block;">
     <button type="submit" class="btn btn-secondary checkOut-btn">Cancel Order</button>
   </form>
 </center>

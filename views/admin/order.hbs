@@ -15,9 +15,10 @@
             <th scope="row">Shipping Status</th>
             <td>
               <select class="form-control" name="shipping_status">
-                <option value="-1" {{#ifEquals order.shipping_status '-1'}}selected{{/ifEquals}}>Preparing</option>
-                <option value="0" {{#ifEquals order.shipping_status '0'}}selected{{/ifEquals}}>Shipping</option>
-                <option value="1" {{#ifEquals order.shipping_status '1'}}selected{{/ifEquals}}>Arrived</option>
+                <option value="-1" {{#ifEquals order.shipping_status -2}}selected{{/ifEquals}}>Order cancelled</option>
+                <option value="-1" {{#ifEquals order.shipping_status -1}}selected{{/ifEquals}}>Preparing</option>
+                <option value="0" {{#ifEquals order.shipping_status 0}}selected{{/ifEquals}}>Shipping</option>
+                <option value="1" {{#ifEquals order.shipping_status 1}}selected{{/ifEquals}}>Arrived</option>
               </select>
             </td>
           </tr>
@@ -29,8 +30,10 @@
             <th scope="row">Payment Status</th>
             <td>
               <select class="form-control" name="payment_status">
-                <option value="-1" {{#ifEquals order.payment_status '-1'}}selected{{/ifEquals}}>Not paid</option>
-                <option value="1" {{#ifEquals order.payment_status '1'}}selected{{/ifEquals}}>Paid</option>
+                <option value="-2" {{#ifEquals order.payment_status -2}}selected{{/ifEquals}}>Refund Completed</option>
+                <option value="-1" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Request Refund</option>
+                <option value="0" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Not Paid</option>
+                <option value="1" {{#ifEquals order.payment_status 1}}selected{{/ifEquals}}>Paid</option>
               </select>
             </td>
           </tr>

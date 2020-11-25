@@ -12,7 +12,7 @@ const productController = {
     if (currentPage) {
       offset = (currentPage - 1) * pageLimit
     }
-   
+
     Product.findAndCountAll({
       raw: true, 
       nest: true,

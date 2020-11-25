@@ -8,7 +8,6 @@
       <th scope="col">Shipping Status</th>
       <th scope="col">Payment Method</th>
       <th scope="col">Payment Status</th>
-      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -19,22 +18,19 @@
         </td>
         <td>{{Date this.dataValues.createdAt}}</td>
         <td>
-          {{#ifEquals this.dataValues.shipping_status '-1'}}Preparing{{/ifEquals}}
-          {{#ifEquals this.dataValues.shipping_status '0'}}Shipping{{/ifEquals}}
-          {{#ifEquals this.dataValues.shipping_status '1'}}Arrived{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status -2}}Order Cancelled{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status -1}}Preparing{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status 0}}Shipping{{/ifEquals}}
+          {{#ifEquals this.dataValues.shipping_status 1}}Arrived{{/ifEquals}}
         </td>
         <td>{{this.dataValues.Payments.payment_method}}</td>
         <td>
-          {{#ifEquals this.dataValues.payment_status '-1'}}Not Paid{{/ifEquals}}
-          {{#ifEquals this.dataValues.payment_status '1'}}Paid{{/ifEquals}}
+          {{#ifEquals this.dataValues.payment_status -2}}Refund Completed{{/ifEquals}}
+          {{#ifEquals this.dataValues.payment_status -1}}Request Refund{{/ifEquals}}
+          {{#ifEquals this.dataValues.payment_status -0}}Not Paid{{/ifEquals}}
+          {{#ifEquals this.dataValues.payment_status 1}}Paid{{/ifEquals}}
         </td>
-        <td>
-          <form action="/order/{{this.dataValues.id}}/cancel" method="POST">
-            <button type="submit" class="btn btn-secondary">Cancel</button>
-          </form>
-        </td>
-      </tr>
-    
+      </tr>    
     {{/each}}
   </tbody>
 </table>

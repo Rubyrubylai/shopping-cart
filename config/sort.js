@@ -7,7 +7,7 @@ module.exports = {
   },
 
   payment: function(order) {
-    var payment = order.Payments.map(payment => ({
+    payment = order.Payments.map(payment => ({
       ...payment.dataValues
     }))
     return payment.filter(payment => { return payment.params === 'success'})

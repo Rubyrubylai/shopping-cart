@@ -143,8 +143,8 @@ adminController = {
       }
 
       //取得payment
-      payment = sort.payment(order)
-
+      sort.payment(order)
+  
       return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0] })
     })
   },

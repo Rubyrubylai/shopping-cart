@@ -24,7 +24,9 @@
           </tr>
           <tr>
             <th scope="row">Shipping Date</th>
-            <td></td>
+            <td>
+              <input type="date" name="date" class="form-control">
+            </td>
           </tr>
           <tr>
             <th scope="row">Payment Status</th>
@@ -32,7 +34,7 @@
               <select class="form-control" name="payment_status">
                 <option value="-2" {{#ifEquals order.payment_status -2}}selected{{/ifEquals}}>Refund Completed</option>
                 <option value="-1" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Request Refund</option>
-                <option value="0" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Not Paid</option>
+                <option value="0" {{#ifEquals order.payment_status 0}}selected{{/ifEquals}}>Not Paid</option>
                 <option value="1" {{#ifEquals order.payment_status 1}}selected{{/ifEquals}}>Paid</option>
               </select>
             </td>
@@ -45,6 +47,12 @@
               {{#ifEquals payment.payment_method 'VACC'}}ATM{{/ifEquals}}
               {{#ifEquals payment.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
               {{#ifEquals payment.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Date</th>
+            <td>
+              {{DateTime payment.paid_at}}
             </td>
           </tr>
         </table>

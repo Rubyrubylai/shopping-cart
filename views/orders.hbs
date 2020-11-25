@@ -14,21 +14,27 @@
     {{#each orders}}
       <tr class="text-center">
         <td scope="row">
-          <a type="button" class="btn btn-secondary" href="/order/{{this.dataValues.id}}">#{{this.dataValues.id}}</a>
+          <a type="button" class="btn btn-secondary" href="/order/{{this.id}}">#{{this.sn}}</a>
         </td>
-        <td>{{Date this.dataValues.createdAt}}</td>
+        <td>{{Date this.createdAt}}</td>
         <td>
-          {{#ifEquals this.dataValues.shipping_status -2}}Order Cancelled{{/ifEquals}}
-          {{#ifEquals this.dataValues.shipping_status -1}}Preparing{{/ifEquals}}
-          {{#ifEquals this.dataValues.shipping_status 0}}Shipping{{/ifEquals}}
-          {{#ifEquals this.dataValues.shipping_status 1}}Arrived{{/ifEquals}}
+          {{#ifEquals this.shipping_status -2}}Order Cancelled{{/ifEquals}}
+          {{#ifEquals this.shipping_status -1}}Preparing{{/ifEquals}}
+          {{#ifEquals this.shipping_status 0}}Shipping{{/ifEquals}}
+          {{#ifEquals this.shipping_status 1}}Arrived{{/ifEquals}}
         </td>
-        <td>{{this.dataValues.Payments.payment_method}}</td>
         <td>
-          {{#ifEquals this.dataValues.payment_status -2}}Refund Completed{{/ifEquals}}
-          {{#ifEquals this.dataValues.payment_status -1}}Request Refund{{/ifEquals}}
-          {{#ifEquals this.dataValues.payment_status -0}}Not Paid{{/ifEquals}}
-          {{#ifEquals this.dataValues.payment_status 1}}Paid{{/ifEquals}}
+          {{#ifEquals this.payment.dataValues.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+          {{#ifEquals this.payment.dataValues.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+          {{#ifEquals this.payment.dataValues.payment_method 'VACC'}}ATM{{/ifEquals}}
+          {{#ifEquals this.payment.dataValues.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
+          {{#ifEquals this.payment.dataValues.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+        </td>
+        <td>
+          {{#ifEquals this.payment_status -2}}Refund Completed{{/ifEquals}}
+          {{#ifEquals this.payment_status -1}}Request Refund{{/ifEquals}}
+          {{#ifEquals this.payment_status -0}}Not Paid{{/ifEquals}}
+          {{#ifEquals this.payment_status 1}}Paid{{/ifEquals}}
         </td>
       </tr>    
     {{/each}}

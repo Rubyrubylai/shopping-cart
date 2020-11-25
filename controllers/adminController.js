@@ -1,8 +1,10 @@
 const db = require('../models')
 const Product = db.Product
 const Order = db.Order
+const Payment = db.Payment
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const sort = require('../config/sort')
 
 adminController = {
   getProducts: (req, res) => {
@@ -16,11 +18,11 @@ adminController = {
   },
 
   getOrders: (req, res) => {
-    Order.findAll({
-      raw: true,
-      nest: true
-    })
-    .then(orders => {     
+    Order.findAll({ include: [ Payment ]})
+    .then(orders => {  
+      //取得payment
+      orders = sort.payments(orders)
+
       return res.render('admin/orders', { orders })
     })
   },
@@ -122,7 +124,7 @@ adminController = {
 
   editOrder: (req, res) => {
     Order.findByPk(req.params.id, {
-      include: [{ model: Product, as: 'items' }]
+      include: [{ model: Product, as: 'items' } , Payment]
     })
     .then(order => {
       items = order.items.map(item => ({
@@ -139,8 +141,11 @@ adminController = {
           totalQty += item.quantity
         })
       }
-      
-      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty })
+
+      //取得payment
+      payment = sort.payment(order)
+
+      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0] })
     })
   },
 

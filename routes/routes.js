@@ -20,10 +20,10 @@ router.delete('/cartItem', cartController.removeCartItem)
 
 
 
-router.get('/orders', orderController.getOrders)
-router.get('/order/:id', orderController.getOrder)
-router.post('/order', orderController.postOrder, orderController.newebpayCallback)
-router.post('/order/:id/cancel', orderController.cancelOrder)
-router.post('/newebpay/callback', orderController.newebpayCallback)
+router.get('/orders', auth.authenticated, orderController.getOrders)
+router.get('/order/:id', auth.authenticated, orderController.getOrder)
+router.post('/order', auth.authenticated, orderController.postOrder, orderController.newebpayCallback)
+router.post('/order/:id/cancel', auth.authenticated, orderController.cancelOrder)
+router.post('/newebpay/callback', auth.authenticated, orderController.newebpayCallback)
 
 module.exports = router

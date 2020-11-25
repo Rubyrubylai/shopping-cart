@@ -2,7 +2,7 @@
   <div class="col-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
-        <strong>Order Number: #{{order.id}}</strong>
+        <strong>Order Number: #{{order.sn}}</strong>
       </li>
       <li class="list-group-item">
         <table class="table">
@@ -34,7 +34,13 @@
           </tr>
           <tr>
             <th scope="row">Payment Method</th>
-            <td>{{order.createAt}}</td>
+            <td>
+              {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'VACC'}}ATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+            </td>
           </tr>
         </table>
       </li>

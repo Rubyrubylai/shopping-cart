@@ -5,6 +5,7 @@ const Product = db.Product
 const Cart = db.Cart
 const OrderItem = db.OrderItem
 const crypto = require('crypto')
+const sort = require('../config/sort')
 
 const URL = process.env.URL
 const MerchantID = process.env.MerchantID
@@ -81,7 +82,9 @@ const orderController = {
   getOrders: (req, res) => {
     Order.findAll({ include: [ Payment ]})
     .then(orders => {
-      //console.log(orders[0].dataValues.Payments[0].dataValues.payment_method)
+      //取得payment
+      orders = sort.payments(orders)
+
       return res.render('orders', { orders })
     })
   },
@@ -92,7 +95,6 @@ const orderController = {
       { include: [{ model: Product, as: 'items' }, Payment]}
     )
     .then(order => {
-      
       items = order.dataValues.items.map(item => ({
         ...item.dataValues,
         quantity: item.dataValues.OrderItem.dataValues.quantity
@@ -107,6 +109,10 @@ const orderController = {
           totalQty += item.quantity
         })
       }
+
+      //取得payment
+      payment = sort.payment(order)
+
       //金流，產生交易參數
       const tradeInfo = getTradeInfo(totalPrice, '產品名稱', 'r844312@gmail.com')
       
@@ -114,7 +120,7 @@ const orderController = {
         sn: tradeInfo.MerchantOrderNo
       })
       .then(order => {
-        return res.render('order', { order: order.toJSON(), items, totalPrice, totalQty, tradeInfo })
+        return res.render('order', { order: order.toJSON(), items, totalPrice, totalQty, tradeInfo, payment: payment[0] })
       })
     })
   },
@@ -171,31 +177,47 @@ const orderController = {
 
   newebpayCallback: (req, res) => {
     const data = JSON.parse(create_mpg_aes_decrypt(req.body.TradeInfo))
+    console.log(data)
+
     return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } })
     .then(orders => {
-      orders[0].update({
-        payment_status: 1,
-      }).then(order => {
-        const time = data['Result']['PayTime']
-        const payTime = new Date(time.slice(0,10) + ' ' + time.slice(10))
-        Payment.create({
-          OrderId: order.id,
-          sn: order.sn,
-          amount: order.amount,
-          payment_method: data['Result']['PaymentMethod'],
-          paid_at: payTime,
-          params: 'success'
+      
+      console.log(orders)
+      console.log('====================================')
+      const time = data['Result']['PayTime']
+      const payTime = new Date(time.slice(0,10) + ' ' + time.slice(10))
+      console.log(data)
+      if (data['Result']['PaymentType'] === 'CREDIT' || 'WEBATM') {
+        orders[0].update({
+          payment_status: 1,
+        }).then(order => {
+          Payment.create({
+            OrderId: order.id,
+            sn: order.sn,
+            amount: order.amount,
+            payment_method: data['Result']['PaymentType'],
+            paid_at: payTime,
+            params: 'success'
+          })
+          .then(payment => {
+            return res.redirect(`/order/${order.id}`)
+          })
         })
-        .then(payment => {
-          return res.redirect(`/order/${order.id}`)
-        })
-      })
+      }
+      else {
+          Payment.create({
+            OrderId: order.id,
+            sn: order.sn,
+            amount: order.amount,
+            payment_method: data['Result']['PaymentMethod'],
+            params: 'success'
+          })
+          .then(payment => {
+            return res.redirect(`/order/${order.id}`)
+          })
+      }
     })
   }
-
 }
-
-
-
 
 module.exports = orderController

@@ -16,14 +16,20 @@
   <tbody>
     {{#each orders}}
     <tr class="text-center">
-      <td>#{{this.id}}</td>
+      <td>#{{this.sn}}</td>
       <td>{{Date this.createdAt}}</td>
       <td>
         {{#ifEquals this.shipping_status -2}}Order Cancelled{{/ifEquals}}
         {{#ifEquals this.shipping_status -1}}Preparing{{/ifEquals}}
         {{#ifEquals this.shipping_status 0}}Shipping{{/ifEquals}}
         {{#ifEquals this.shipping_status 1}}Arrived{{/ifEquals}}
-      <td></td>
+      <td>
+        {{#ifEquals this.payment.dataValues.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+        {{#ifEquals this.payment.dataValues.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+        {{#ifEquals this.payment.dataValues.payment_method 'VACC'}}ATM{{/ifEquals}}
+        {{#ifEquals this.payment.dataValues.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
+        {{#ifEquals this.payment.dataValues.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+      </td>
       <td>
         {{#ifEquals this.payment_status -2}}Refund Completed{{/ifEquals}}
         {{#ifEquals this.payment_status -1}}Request Refund{{/ifEquals}}

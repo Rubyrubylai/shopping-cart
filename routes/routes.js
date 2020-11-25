@@ -12,7 +12,7 @@ router.get('/product/:id', productController.getProduct)
 
 router.get('/cart', cartController.getCart)
 router.post('/cart/:id', cartController.postCart)
-router.get('/cart/check', cartController.checkCart)
+router.get('/cart/check', auth.authenticated, cartController.checkCart)
 
 router.post('/cartItem/:id/add', cartController.addCartItem)
 router.post('/cartItem/:id/min', cartController.minCartItem)

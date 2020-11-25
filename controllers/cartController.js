@@ -2,6 +2,7 @@ const db = require('../models')
 const CartItem = db.CartItem
 const Cart = db.Cart
 const Product = db.Product
+const User = db.User
 
 const cartController = {
   getCart: (req, res) => {
@@ -101,7 +102,7 @@ const cartController = {
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }
       )
-    .then(cart => { 
+    .then(cart => {
       let items
       let totalPrice = 0
       let totalQty = 0
@@ -113,7 +114,10 @@ const cartController = {
         })
       }
 
-      return res.render('check', { cart, items, totalPrice, totalQty })
+      User.findByPk(req.user.id)
+      .then(user => {
+        return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON() })
+      }) 
     })
   }
 }

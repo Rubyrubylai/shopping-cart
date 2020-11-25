@@ -80,8 +80,12 @@ function getTradeInfo(Amt, Desc, email){
 
 const orderController = {
   getOrders: (req, res) => {
-    Order.findAll({ include: [ Payment ]})
-    .then(orders => {
+    Order.findAll({ 
+      where: {
+        UserId: req.user.id
+      },
+    include: [ Payment ]
+    }).then(orders => {
       //取得payment
       orders = sort.payments(orders)
 
@@ -91,7 +95,7 @@ const orderController = {
 
   getOrder: (req, res) => {
     Order.findByPk(
-      req.params.id, 
+      req.params.id,
       { include: [{ model: Product, as: 'items' }, Payment]}
     )
     .then(order => {
@@ -142,7 +146,8 @@ const orderController = {
           address,
           amount,
           payment_status: 0,
-          shipping_status: -1
+          shipping_status: -1,
+          UserId: req.user.id
         })
         .then(order => {
           cart.dataValues.items.forEach(items => {

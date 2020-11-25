@@ -4,7 +4,60 @@ const bcrypt = require('bcrypt')
 
 const userController = {
   getAccount: (req, res) => {
-    res.render('user/account')
+    User.findByPk(req.user.id)
+    .then(user => {
+      res.render('user/account', { user: user.toJSON() })
+    })
+  },
+
+  putAccount: (req, res) => {
+    User.findByPk(req.user.id)
+    .then(user => {
+      const { name, email, account, address, phone, oldPassword, newPassword, confirmPassword } = req.body
+      let errors = []
+      console.log(oldPassword)
+      if (oldPassword) {
+        if (!bcrypt.compareSync(oldPassword, user.password)) {
+          errors.push({ error_msg: 'The old password is incorrect. Please enter again.' })
+        }
+        if(!newPassword || !confirmPassword) {
+          errors.push({ error_msg: 'Please fill in password.' })
+        }
+        if (newPassword !== confirmPassword) {
+          errors.push({ error_msg: 'The new password does not match with the confirmed one. Please enter again.' })
+        }
+        if (errors.length > 0) {
+          return res.render('user/account', { user: { name, email, account, address, phone }, errors })
+        }
+        else{
+          user.update({
+            name,
+            email,
+            account,
+            address,
+            phone,
+            password: bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10))
+          })
+          .then(user => {
+            req.flash('success_msg', 'The account is updated successfully.')
+            return res.redirect('/user/account')
+          })
+        }
+      }
+      else {
+        user.update({
+          name,
+          email,
+          account,
+          address,
+          phone
+        })
+        .then(user => {
+          req.flash('success_msg', 'The account is updated successfully.')
+          return res.redirect('/user/account')
+        })
+      }
+    })
   },
 
   loginPage: (req, res) => {

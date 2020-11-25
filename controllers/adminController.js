@@ -10,7 +10,8 @@ adminController = {
   getProducts: (req, res) => {
     Product.findAll({
       raw: true,
-      nest: true
+      nest: true,
+      order: [ ['createdAt', 'DESC'] ]
     })
     .then(products => {
       return res.render('admin/products', { products })
@@ -18,7 +19,10 @@ adminController = {
   },
 
   getOrders: (req, res) => {
-    Order.findAll({ include: [ Payment ]})
+    Order.findAll({ 
+      include: [ Payment ],
+      order: [ ['createdAt', 'DESC'] ]
+    })
     .then(orders => {  
       //取得payment
       orders = sort.payments(orders)

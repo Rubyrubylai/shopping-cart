@@ -84,7 +84,8 @@ const orderController = {
       where: {
         UserId: req.user.id
       },
-    include: [ Payment ]
+      order: [ ['createdAt', 'DESC'] ],
+      include: [ Payment ]
     }).then(orders => {
       //取得payment
       orders = sort.payments(orders)
@@ -158,7 +159,10 @@ const orderController = {
               OrderId: order.id
             })
             .then(orderItem => {
-              return res.redirect(`/order/${order.id}`)
+              cart.destroy().then(cart => {
+                return res.redirect(`/order/${order.id}`)
+              })
+              
             })
           })
         })

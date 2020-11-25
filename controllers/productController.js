@@ -17,7 +17,8 @@ const productController = {
       raw: true, 
       nest: true,
       limit: pageLimit,
-      offset: offset
+      offset: offset,
+      order: [ ['createdAt', 'DESC'] ]
     })
     .then(products => {
       //頁數

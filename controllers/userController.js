@@ -1,12 +1,20 @@
 const db = require('../models')
 const User = db.User
+const Category = db.Category
 const bcrypt = require('bcrypt')
 
 const userController = {
   getAccount: (req, res) => {
     User.findByPk(req.user.id)
     .then(user => {
-      res.render('user/account', { user: user.toJSON() })
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('user/account', { user: user.toJSON(), categories })
+      })
     })
   },
 
@@ -27,7 +35,14 @@ const userController = {
           errors.push({ error_msg: 'The new password does not match with the confirmed one. Please enter again.' })
         }
         if (errors.length > 0) {
-          return res.render('user/account', { user: { name, email, account, address, phone }, errors })
+          //上方導覽列的分類
+          Category.findAll({
+            raw: true,
+            nest: true
+          })
+          .then(categories => {
+            return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories })
+          })
         }
         else{
           user.update({
@@ -61,11 +76,25 @@ const userController = {
   },
 
   loginPage: (req, res) => {
-    res.render('user/login')
+    //上方導覽列的分類
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+    .then(categories => {
+      return res.render('user/login', { categories })
+    })
   },
 
   registerPage: (req, res) => {
-    res.render('user/register')
+    //上方導覽列的分類
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+    .then(categories => {
+      return res.render('user/register', { categories })
+    })
   },
 
   login: (req, res) => {
@@ -82,7 +111,14 @@ const userController = {
       errors.push({ error_msg: 'Passwords are not matched!' })
     }
     if (errors.length > 0) {
-      return res.render('user/register', { errors, account, email, password, confirmPassword })
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('user/register', { errors, account, email, password, confirmPassword, categories })
+      })
     }
     else {
       User.findOne({ where: { email: email} })

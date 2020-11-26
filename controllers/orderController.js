@@ -4,6 +4,7 @@ const Payment = db.Payment
 const Product = db.Product
 const Cart = db.Cart
 const OrderItem = db.OrderItem
+const Category = db.Category
 
 const sort = require('../config/sort')
 const aes = require('../config/aes')
@@ -84,7 +85,14 @@ const orderController = {
       //取得payment
       orders = sort.payments(orders)
 
-      return res.render('orders', { orders })
+       //上方導覽列的分類
+       Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('orders', { orders, categories })
+      })
     })
   },
 
@@ -119,7 +127,14 @@ const orderController = {
         sn: tradeInfo.MerchantOrderNo
       })
       .then(order => {
-        return res.render('order', { order: order.toJSON(), items, totalPrice, totalQty, tradeInfo, payment: payment[0] })
+         //上方導覽列的分類
+         Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('order', { order: order.toJSON(), items, totalPrice, totalQty, tradeInfo, payment: payment[0], categories })
+        })
       })
     })
   },

@@ -9,6 +9,15 @@ const productController = {
     //每頁幾個商品及偏移多少
     let pageLimit = 16
     let offset = 0
+    let whereQuery = {}
+    let CategoryId
+    //分類篩選
+    if (req.query.CategoryId) {
+      CategoryId = Number(req.query.CategoryId)
+      whereQuery['CategoryId'] = CategoryId
+    }
+
+    //若點選分頁
     let currentPage = req.query.page
     if (currentPage) {
       offset = (currentPage - 1) * pageLimit
@@ -17,12 +26,13 @@ const productController = {
     Product.findAndCountAll({
       raw: true, 
       nest: true,
+      where: whereQuery,
       limit: pageLimit,
       offset: offset,
       order: [ ['createdAt', 'DESC'] ]
     })
     .then(products => {
-      //頁數
+      //分頁功能
       let pages = Math.ceil(products.count/pageLimit)
       let page = Array.from({ length: pages }).map((item, index) => index + 1)
       let prev = (currentPage = 1) ? currentPage : currentPage - 1
@@ -45,16 +55,16 @@ const productController = {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
 
-        //導覽列的分類
+        //上方導覽列的分類
         Category.findAll({
           raw: true,
           nest: true
         })
         .then(categories => {
-          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories })
-        })        
+          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId })
+        })
+
       })
-      
     })
   },
 
@@ -81,7 +91,16 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        return res.render('product', { product: product.toJSON(), items, totalPrice, noItems })
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories })
+        })
+        
       })
     })
   }

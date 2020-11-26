@@ -3,6 +3,7 @@ const CartItem = db.CartItem
 const Cart = db.Cart
 const Product = db.Product
 const User = db.User
+const Category = db.Category
 const sort = require('../config/sort')
 
 const cartController = {
@@ -27,8 +28,15 @@ const cartController = {
           totalQty += item.quantity
         })
       }
-    
-      return res.render('cart', { cart, items, totalPrice, totalQty, noItems })
+
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('cart', { cart, items, totalPrice, totalQty, noItems, categories })
+      })
     })
   },
 
@@ -123,7 +131,15 @@ const cartController = {
 
       User.findByPk(req.user.id)
       .then(user => {
-        return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON() })
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories })
+        })
       }) 
     })
   }

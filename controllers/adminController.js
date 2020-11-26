@@ -18,6 +18,7 @@ adminController = {
       //取得payment
       orders = sort.payments(orders)
 
+      //上方導覽列的分類
       Category.findAll({
         raw: true,
         nest: true
@@ -51,6 +52,7 @@ adminController = {
       //取得payment
       sort.payment(order)
 
+      //上方導覽列的分類
       Category.findAll({
         raw: true,
         nest: true
@@ -96,10 +98,11 @@ adminController = {
     Product.findAll({
       raw: true,
       nest: true,
-      order: [ ['createdAt', 'DESC'] ],
+      order: [ ['id', 'DESC'] ],
       include: [ Category ]
     })
     .then(products => {
+      //上方導覽列的分類
       Category.findAll({
         raw: true,
         nest: true
@@ -113,6 +116,7 @@ adminController = {
 
   getNewProduct: (req, res) => {
     let newProduct = true
+    //上方導覽列的分類
     Category.findAll({
       raw: true,
       nest: true
@@ -128,7 +132,14 @@ adminController = {
     const { name, price, description, image } = req.body
     if (!name || !price || !description || !file) {
       req.flash('warning_msg', 'All fields are required!')
-      return res.render('admin/product', { product : { name, image, description, price }, newProduct })
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('admin/product', { product : { name, image, description, price }, newProduct, categories })
+      })
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
@@ -139,6 +150,7 @@ adminController = {
           description,
           image: file ? img.data.link : null
         }).then(product => {
+          req.flash('success_msg', 'The item has been successfully added!')
           return res.redirect('/admin/products')
         })
       })
@@ -148,6 +160,7 @@ adminController = {
   editProduct: (req, res) => {
     Product.findByPk(req.params.id)
     .then(product => {
+      //上方導覽列的分類
       Category.findAll({
         raw: true,
         nest: true
@@ -172,7 +185,15 @@ adminController = {
         console.log(description)
         console.log(price)
         //return res.redirect('back')
-        return res.render('admin/product', { product : { id, name, image, description, price, CategoryId } })
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('admin/product', { product : { id, name, image, description, price, CategoryId }, categories })
+        })
+        
       }
       else {
         imgur.setClientID(IMGUR_CLIENT_ID)
@@ -187,7 +208,8 @@ adminController = {
               CategoryId
             })
             .then(product => {
-              return res.redirect('/admin/products')
+              req.flash('success_msg', 'The product has been successfully updated!')
+              return res.redirect('back')
             })
           })
         }
@@ -201,7 +223,8 @@ adminController = {
               CategoryId
             })
             .then(product => {
-              return res.redirect('/admin/products')
+              req.flash('success_msg', 'The product has been successfully updated!')
+              return res.redirect('back')
             })
           
         }

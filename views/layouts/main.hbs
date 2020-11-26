@@ -18,7 +18,9 @@
         </button>
         <div class="dropdown-menu">
           {{#each categories}}
-          <a class="dropdown-item" href="/orders">{{this.name}}</a>
+          <form action="/product" method="GET">
+            <button type="submit" class="dropdown-item" name="CategoryId" value="{{this.id}}">{{this.name}}</button>
+          </form>
           {{/each}}
         </div>
       </div>

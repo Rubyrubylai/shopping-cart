@@ -1,6 +1,7 @@
 const db = require('../models')
 const Product = db.Product
 const Cart = db.Cart
+const Category = db.Category
 const sort = require('../config/sort')
 
 const productController = {
@@ -27,7 +28,7 @@ const productController = {
       let prev = (currentPage = 1) ? currentPage : currentPage - 1
       let post = (currentPage = pages) ? currentPage : currentPage + 1
 
-      //購物車
+      //右側購物車
       Cart.findByPk(
         req.session.cartId,
         { include: [{ model: Product, as: 'items' }] }
@@ -36,7 +37,6 @@ const productController = {
         let noItems
         let items
         let totalPrice = 0
-        //右側購物車
         items = sort.rightCartItem(cart)
         if (!items || (items.length === 0)) {
           noItems = true
@@ -45,7 +45,14 @@ const productController = {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
 
-        return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems })
+        //導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories })
+        })        
       })
       
     })

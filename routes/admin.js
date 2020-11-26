@@ -19,4 +19,10 @@ router.get('/orders', auth.adminAuthenticated, adminController.getOrders)
 router.get('/orders/:id', auth.adminAuthenticated, adminController.editOrder)
 router.put('/orders/:id', auth.adminAuthenticated, adminController.putOrder)
 
+router.get('/categories', auth.adminAuthenticated, adminController.getCategories)
+router.post('/categories/new', auth.adminAuthenticated, adminController.postCategory)
+router.get('/categories/:id', auth.adminAuthenticated, adminController.getCategories)
+router.put('/categories/:id', auth.adminAuthenticated, adminController.putCategory)
+router.delete('/categories/:id', auth.adminAuthenticated, adminController.removeCategory)
+
 module.exports = router

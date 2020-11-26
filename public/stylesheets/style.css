@@ -150,3 +150,19 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.add-category-btn {
+  width: 250px;
+  display: inline-block;
+}
+
+.custom-category-table {
+  width: 400px;
+}
+
+.category-btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 4px;
+  display: inline-block;
+}

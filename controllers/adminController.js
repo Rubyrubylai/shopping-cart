@@ -2,22 +2,13 @@ const db = require('../models')
 const Product = db.Product
 const Order = db.Order
 const Payment = db.Payment
+const Category = db.Category
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const sort = require('../config/sort')
 
 adminController = {
-  getProducts: (req, res) => {
-    Product.findAll({
-      raw: true,
-      nest: true,
-      order: [ ['createdAt', 'DESC'] ]
-    })
-    .then(products => {
-      return res.render('admin/products', { products })
-    })
-  },
-
+  //order相關路由
   getOrders: (req, res) => {
     Order.findAll({ 
       include: [ Payment ],
@@ -28,6 +19,75 @@ adminController = {
       orders = sort.payments(orders)
 
       return res.render('admin/orders', { orders })
+    })
+  },
+
+  editOrder: (req, res) => {
+    Order.findByPk(req.params.id, {
+      include: [{ model: Product, as: 'items' } , Payment]
+    })
+    .then(order => {
+      items = order.items.map(item => ({
+        ...item.dataValues,
+        quantity: item.dataValues.OrderItem.dataValues.quantity
+      }))
+      let totalPrice = 0
+      let totalQty = 0
+      if (items) {
+        items.forEach(item => {
+          totalPrice += item.price * item.quantity
+        })
+        items.forEach(item => {
+          totalQty += item.quantity
+        })
+      }
+
+      //取得payment
+      sort.payment(order)
+  
+      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0] })
+    })
+  },
+
+  putOrder: (req, res) => {
+    Order.findByPk(req.params.id)
+    .then(order => {
+      const { shipping_status, payment_status, shipping_date } = req.body
+      //有些商品尚未出貨，因此不會有shipping date
+      if (shipping_date) {
+        order.update({
+          shipping_status,
+          payment_status,
+          shipping_date
+        })
+        .then(order => {
+          req.flash('success_msg', 'The order has been successfully updated!')
+          return res.redirect(`/admin/orders/${order.id}`)
+        })
+      }
+      else {
+        order.update({
+          shipping_status,
+          payment_status
+        })
+        .then(order => {
+          req.flash('success_msg', 'The order has been successfully updated!')
+          return res.redirect(`/admin/orders/${order.id}`)
+        })
+      }
+      
+    })
+  },
+
+  //product相關路由
+  getProducts: (req, res) => {
+    Product.findAll({
+      raw: true,
+      nest: true,
+      order: [ ['createdAt', 'DESC'] ]
+    })
+    .then(products => {
+      return res.render('admin/products', { products })
     })
   },
 
@@ -126,60 +186,68 @@ adminController = {
     })
   },
 
-  editOrder: (req, res) => {
-    Order.findByPk(req.params.id, {
-      include: [{ model: Product, as: 'items' } , Payment]
+  //category相關路由
+  getCategories: (req, res) => {
+    Category.findAll({
+      raw: true,
+      nest: true
     })
-    .then(order => {
-      items = order.items.map(item => ({
-        ...item.dataValues,
-        quantity: item.dataValues.OrderItem.dataValues.quantity
-      }))
-      let totalPrice = 0
-      let totalQty = 0
-      if (items) {
-        items.forEach(item => {
-          totalPrice += item.price * item.quantity
-        })
-        items.forEach(item => {
-          totalQty += item.quantity
-        })
+    .then(categories => {
+      if (req.params.id) {
+        let edit = true
+        category = categories.filter(c => { return c.id === Number(req.params.id) })
+        return res.render('admin/categories', { categories, category: category[0], edit })
       }
-
-      //取得payment
-      sort.payment(order)
-  
-      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0] })
+      else {
+        return res.render('admin/categories', { categories })
+      }
     })
   },
 
-  putOrder: (req, res) => {
-    Order.findByPk(req.params.id)
-    .then(order => {
-      const { shipping_status, payment_status, shipping_date } = req.body
-      //有些商品尚未出貨，因此不會有shipping date
-      if (shipping_date) {
-        order.update({
-          shipping_status,
-          payment_status,
-          shipping_date
-        })
-        .then(order => {
-          req.flash('success_msg', 'The order has been successfully updated!')
-          return res.redirect(`/admin/orders/${order.id}`)
-        })
+  postCategory: (req, res) => {
+    const { name } = req.body
+    if (!name) {
+      req.flash('warning_msg', 'Please input the category name.')
+      return res.redirect('/admin/categories')
+    }
+    else {
+      Category.create({
+        name
+      })
+      .then(category => {
+        req.flash('success_msg', 'The category has been successfully added.')
+        return res.redirect('/admin/categories')
+      })
+    }
+  },
+
+  putCategory: (req, res) => {
+    Category.findByPk(req.params.id)
+    .then(category => {
+      const { name } = req.body
+      if (!name) {
+        req.flash('warning_msg', 'Please input the category name.')
+        return res.redirect('back')
       }
       else {
-        order.update({
-          shipping_status,
-          payment_status
+        category.update({
+          name
         })
-        .then(order => {
-          req.flash('success_msg', 'The order has been successfully updated!')
-          return res.redirect(`/admin/orders/${order.id}`)
-        })
+        .then(category => {
+          req.flash('success_msg', 'The category has been successfully updated.')
+          return res.redirect('/admin/categories')
+        }) 
       }
-      
+    })  
+  },
+
+  removeCategory: (req, res) => {
+    Category.findByPk(req.params.id)
+    .then(category => {
+      category.destroy().then(category => {
+        req.flash('success_msg', 'The category has been successfully removed.')
+        return res.redirect('/admin/categories')
+      })
     })
   }
 }

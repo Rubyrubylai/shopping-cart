@@ -1,6 +1,7 @@
 <h2 id="title">後台</h2>
 <a href="/admin/products" style="text-decoration: none;">Product</a> |
-<a href="/admin/orders" style="text-decoration: none;">Order</a>
+<a href="/admin/orders" style="text-decoration: none;">Order</a> |
+<a href="/admin/categories" style="text-decoration: none;">Category</a>
 
 <table class="table table-bordered table-custom">
   <thead class="thead-light">
@@ -37,7 +38,7 @@
         {{#ifEquals this.payment_status 1}}Paid{{/ifEquals}}
       </td>
       <td>
-        <a href="/admin/orders/{{this.id}}">Edit Detail</a>
+        <a href="/admin/orders/{{this.id}}">Edit</a>
       </td>
     </tr>
     {{/each}}

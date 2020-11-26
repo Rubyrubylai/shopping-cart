@@ -167,6 +167,10 @@
   display: inline-block;
 }
 
-.favorite-btn {
+.favorite-btn, .unfavorite-btn {
   margin-top: 10px;
+}
+
+.favorite-card {
+  height: 120px;
 }

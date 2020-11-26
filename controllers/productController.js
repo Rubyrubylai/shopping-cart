@@ -6,22 +6,22 @@ const Favorite = db.Favorite
 const User = db.User
 const sort = require('../config/sort')
 
+let pageLimit = 8
 
 const productController = {
   getProducts: (req, res) => {
-    //每頁幾個商品及偏移多少
-    let pageLimit = 16
-    let offset = 0
+    //篩選分類
     let whereQuery = {}
     let CategoryId
-    //分類篩選
     if (req.query.CategoryId) {
       CategoryId = Number(req.query.CategoryId)
       whereQuery['CategoryId'] = CategoryId
     }
 
+    //現在是第幾頁及要偏移多少資料，以及預設為第1頁
+    let currentPage = Number(req.query.page) || 1
+    let offset = 0
     //若點選分頁
-    let currentPage = req.query.page
     if (currentPage) {
       offset = (currentPage - 1) * pageLimit
     }
@@ -35,11 +35,12 @@ const productController = {
       order: [ ['createdAt', 'DESC'] ]
     })
     .then(products => {
+      
       //分頁功能
       let pages = Math.ceil(products.count/pageLimit)
       let page = Array.from({ length: pages }).map((item, index) => index + 1)
-      let prev = (currentPage = 1) ? currentPage : currentPage - 1
-      let post = (currentPage = pages) ? currentPage : currentPage + 1
+      let prev = (currentPage === 1) ? currentPage : currentPage - 1
+      let post = (currentPage === pages) ? currentPage : currentPage + 1
 
       //右側購物車
       Cart.findByPk(
@@ -72,10 +73,11 @@ const productController = {
   },
 
   getProduct: (req, res) => {
-    Product.findOne({ where: 
-      { 
+    Product.findOne({ 
+      where: { 
         id: req.params.id
-      } 
+      },
+      include: [{ model: User, as: 'FavoritedUsers' }]
     })
     .then(product => {
       //右側購物車
@@ -109,9 +111,29 @@ const productController = {
   },
 
   getFavorite: (req, res) => {
+    //現在是第幾頁及要偏移多少資料，以及預設為第1頁
+    let currentPage = Number(req.query.page) || 1
+    let offset = 0
+
+    //若點選分頁
+    if (currentPage) {
+      offset = (currentPage-1) * pageLimit
+    }
+
     User.findByPk(req.user.id, {
-      include: [{ model: Product, as: 'FavoritedProducts' }]  
+      include: [{ model: Product, as: 'FavoritedProducts' }]
     }).then(user => {
+      var FavoritedProducts = user ? user.toJSON().FavoritedProducts : null
+
+      //分頁
+      let pages = Math.ceil(FavoritedProducts.length/pageLimit)
+      let page = Array.from({ length: pages }).map((item, index) => index + 1)
+      let prev = (currentPage === 1) ? currentPage : currentPage - 1
+      let post = (currentPage === pages) ? currentPage : currentPage + 1
+
+      //一頁出現的喜愛商品
+      FavoritedProducts = FavoritedProducts.slice(offset, offset + pageLimit)      
+
       //右側購物車
       Cart.findByPk(
         req.session.cartId,
@@ -135,7 +157,7 @@ const productController = {
           nest: true
         })
         .then(categories => {
-          return res.render('favorite', { user: user.toJSON(), items, totalPrice, noItems, categories })
+          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories })
         })
       })
     })

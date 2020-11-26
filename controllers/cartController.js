@@ -3,6 +3,7 @@ const CartItem = db.CartItem
 const Cart = db.Cart
 const Product = db.Product
 const User = db.User
+const sort = require('../config/sort')
 
 const cartController = {
   getCart: (req, res) => {
@@ -15,12 +16,13 @@ const cartController = {
       let items
       let totalPrice = 0
       let totalQty = 0
-      items = rightCartItem(cart)
+      //右側購物車
+      items = sort.rightCartItem(cart)
       if (!items || (items.length === 0)) {
         noItems = true
       }
       else {
-        totalPrice = rightCartPrice(items, totalPrice)
+        totalPrice = sort.rightCartPrice(items, totalPrice)
         items.forEach(item => {
           totalQty += item.quantity
         })
@@ -30,6 +32,7 @@ const cartController = {
     })
   },
 
+  //將商品加入購物車
   postCart: (req, res) => {
     Cart.findOrCreate({
       where: { id: req.session.cartId || 0 }
@@ -61,6 +64,7 @@ const cartController = {
     })
   },
 
+  //移除購物車內的商品
   removeCartItem: (req, res) => {
     CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
@@ -72,6 +76,7 @@ const cartController = {
     })
   },
 
+  //購物車內的商品+1
   addCartItem: (req, res) => {
     CartItem.findByPk(req.params.id)
     .then(cartItem => {
@@ -84,6 +89,7 @@ const cartController = {
     })
   },
 
+  //購物車內的商品-1
   minCartItem: (req, res) => {
     CartItem.findByPk(req.params.id)
     .then(cartItem => {
@@ -96,8 +102,8 @@ const cartController = {
     })
   },
 
+  //確認訂單
   checkCart: (req, res) => {
-    //購物車
     Cart.findByPk(
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }
@@ -106,9 +112,10 @@ const cartController = {
       let items
       let totalPrice = 0
       let totalQty = 0
-      items = rightCartItem(cart)
+      //右側購物車
+      items = sort.rightCartItem(cart)
       if (items) {
-        totalPrice = rightCartPrice(items, totalPrice)
+        totalPrice = sort.rightCartPrice(items, totalPrice)
         items.forEach(item => {
           totalQty += item.quantity
         })
@@ -120,24 +127,6 @@ const cartController = {
       }) 
     })
   }
-}
-
-//顯示在購物上的商品
-function rightCartItem(cart) {
-  return items = cart ? cart.dataValues.items.map(item => ({
-    ...item.dataValues,
-    cartItemId: item.CartItem.dataValues.id,
-    quantity: item.CartItem.dataValues.quantity,
-    subtotalPrice: item.CartItem.dataValues.quantity * item.dataValues.price, 
-  })) : null
-}
-
-//總計
-function rightCartPrice(items, totalPrice) {
-  items.forEach(item => {
-    totalPrice += item.price * item.quantity
-  })
-  return totalPrice
 }
 
 module.exports = cartController

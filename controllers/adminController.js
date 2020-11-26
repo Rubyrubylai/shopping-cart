@@ -157,6 +157,7 @@ adminController = {
     Order.findByPk(req.params.id)
     .then(order => {
       const { shipping_status, payment_status, shipping_date } = req.body
+      //有些商品尚未出貨，因此不會有shipping date
       if (shipping_date) {
         order.update({
           shipping_status,

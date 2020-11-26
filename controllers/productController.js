@@ -1,12 +1,12 @@
 const db = require('../models')
 const Product = db.Product
 const Cart = db.Cart
-const CartItem = db.CartItem
+const sort = require('../config/sort')
 
 const productController = {
   getProducts: (req, res) => {
     //每頁幾個商品及偏移多少
-    let pageLimit = 8
+    let pageLimit = 16
     let offset = 0
     let currentPage = req.query.page
     if (currentPage) {
@@ -36,12 +36,13 @@ const productController = {
         let noItems
         let items
         let totalPrice = 0
-        items = rightCartItem(cart)
+        //右側購物車
+        items = sort.rightCartItem(cart)
         if (!items || (items.length === 0)) {
           noItems = true
         }
         else {
-          totalPrice = rightCartPrice(items, totalPrice)
+          totalPrice = sort.rightCartPrice(items, totalPrice)
         }
 
         return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems })
@@ -65,35 +66,18 @@ const productController = {
         let noItems
         let items
         let totalPrice = 0
-        items = rightCartItem(cart)
+        //右側購物車
+        items = sort.rightCartItem(cart)
         if (!items || (items.length === 0)) {
           noItems = true
         }
         else {
-          totalPrice = rightCartPrice(items, totalPrice)
+          totalPrice = sort.rightCartPrice(items, totalPrice)
         }
         return res.render('product', { product: product.toJSON(), items, totalPrice, noItems })
       })
     })
   }
-}
-
-//顯示在購物上的商品
-function rightCartItem(cart) {
-  return items = cart ? cart.dataValues.items.map(item => ({
-    ...item.dataValues,
-    cartItemId: item.CartItem.dataValues.id,
-    quantity: item.CartItem.dataValues.quantity
-  })) : null
-}
-
-//總計
-function rightCartPrice(items, totalPrice) {
-  items.forEach(item => {
-    totalPrice += item.price * item.quantity
-  })
-  return totalPrice
-
 }
 
 module.exports = productController

@@ -14,7 +14,12 @@
         <input id="add" type="button" value="+">
       </div>
       <input type="hidden" name="productId" value="{{product.id}}">
-      <button type="submit" class="btn btn-primary">Add To Cart</button>
+      <button type="submit" class="btn btn-secondary">Add To Cart</button>
+    </form>
+    <form action="/favorite/{{product.id}}" method="POST" class="favorite-btn">
+      <button type="submit" class="btn btn-secondary">
+        <i class="far fa-heart fa-lg"></i> Add To Wishlist  
+      </button>
     </form>
   </div>
 </div>

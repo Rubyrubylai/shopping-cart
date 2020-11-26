@@ -2,7 +2,10 @@ const db = require('../models')
 const Product = db.Product
 const Cart = db.Cart
 const Category = db.Category
+const Favorite = db.Favorite
+const User = db.User
 const sort = require('../config/sort')
+
 
 const productController = {
   getProducts: (req, res) => {
@@ -75,6 +78,7 @@ const productController = {
       } 
     })
     .then(product => {
+      //右側購物車
       Cart.findByPk(
         req.session.cartId,
         { include: [{ model: Product, as: 'items' }] }
@@ -83,7 +87,6 @@ const productController = {
         let noItems
         let items
         let totalPrice = 0
-        //右側購物車
         items = sort.rightCartItem(cart)
         if (!items || (items.length === 0)) {
           noItems = true
@@ -101,6 +104,63 @@ const productController = {
           return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories })
         })
         
+      })
+    })
+  },
+
+  getFavorite: (req, res) => {
+    User.findByPk(req.user.id, {
+      include: [{ model: Product, as: 'FavoritedProducts' }]  
+    }).then(user => {
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => { 
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('favorite', { user: user.toJSON(), items, totalPrice, noItems, categories })
+        })
+      })
+    })
+  },
+
+  postFavorite: (req, res) => {
+    Favorite.create({
+      UserId: req.user.id,
+      ProductId: req.params.id
+    })
+    .then(favorite => {
+      req.flash('success_msg', 'The product has been added into the wishlist!')
+      return res.redirect('back')
+    })
+  },
+
+  removeFavorite: (req, res) => {
+    Favorite.findOne({ where: {
+      UserId: req.user.id,
+      ProductId: req.params.id
+    }})
+    .then(favorite => {
+      favorite.destroy().then(favorite => {
+        req.flash('success_msg', 'The product has been removed from the wishlist!')
+        return res.redirect('back')
       })
     })
   }

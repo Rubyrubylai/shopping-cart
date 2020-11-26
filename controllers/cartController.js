@@ -63,7 +63,7 @@ const cartController = {
         .then(cartItem => {
           req.session.cartId = cart.id
           return req.session.save(() => {
-            req.flash('success_msg', 'The item has been successfully added!')
+            req.flash('success_msg', 'The item has been added into the cart!')
             return res.redirect('back')
           })
         })
@@ -77,7 +77,7 @@ const cartController = {
     CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
       cartItem.destroy().then(cartItem => {
-        req.flash('success_msg', 'The item has been successfully removed!')
+        req.flash('success_msg', 'The item has been removed from the cart!')
         return res.redirect('back')
       })
       

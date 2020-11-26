@@ -18,7 +18,13 @@ adminController = {
       //取得payment
       orders = sort.payments(orders)
 
-      return res.render('admin/orders', { orders })
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('admin/orders', { orders, categories })
+      })
     })
   },
 
@@ -44,8 +50,14 @@ adminController = {
 
       //取得payment
       sort.payment(order)
-  
-      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0] })
+
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0], categories })
+      })
     })
   },
 
@@ -84,16 +96,30 @@ adminController = {
     Product.findAll({
       raw: true,
       nest: true,
-      order: [ ['createdAt', 'DESC'] ]
+      order: [ ['createdAt', 'DESC'] ],
+      include: [ Category ]
     })
     .then(products => {
-      return res.render('admin/products', { products })
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        console.log(products)
+        return res.render('admin/products', { products, categories })
+      })
     })
   },
 
   getNewProduct: (req, res) => {
     let newProduct = true
-    return res.render('admin/product', { newProduct })
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+    .then(categories => {
+      return res.render('admin/product', { newProduct, categories })
+    })
   },
 
   postProduct: (req, res) => {
@@ -122,7 +148,13 @@ adminController = {
   editProduct: (req, res) => {
     Product.findByPk(req.params.id)
     .then(product => {
-      return res.render('admin/product', { product: product.toJSON() })
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('admin/product', { product: product.toJSON(), categories })
+      })
     })
   },
 
@@ -131,16 +163,16 @@ adminController = {
     .then(product => {
       const { file } = req
       const { id } = req.params
-      const { name, image, description, price } = req.body
+      const { name, image, description, price, CategoryId } = req.body
       console.log(file)
-      if(!name ||　!description || !price) {
+      if(!name ||　!description || !price || !CategoryId) {
         console.log('no info')
         req.flash('warning_msg', 'All fields are required!')
         
         console.log(description)
         console.log(price)
         //return res.redirect('back')
-        return res.render('admin/product', { product : { id, name, image, description, price } })
+        return res.render('admin/product', { product : { id, name, image, description, price, CategoryId } })
       }
       else {
         imgur.setClientID(IMGUR_CLIENT_ID)
@@ -151,7 +183,8 @@ adminController = {
               name,
               image: file ? img.data.link : null,
               description,
-              price
+              price,
+              CategoryId
             })
             .then(product => {
               return res.redirect('/admin/products')
@@ -164,7 +197,8 @@ adminController = {
               name,
               image,
               description,
-              price
+              price,
+              CategoryId
             })
             .then(product => {
               return res.redirect('/admin/products')

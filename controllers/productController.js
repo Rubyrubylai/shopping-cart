@@ -6,7 +6,7 @@ const Favorite = db.Favorite
 const User = db.User
 const sort = require('../config/sort')
 
-let pageLimit = 8
+let pageLimit = 16
 
 const productController = {
   getProducts: (req, res) => {

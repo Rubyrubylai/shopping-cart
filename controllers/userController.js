@@ -23,16 +23,22 @@ const userController = {
     .then(user => {
       const { name, email, account, address, phone, oldPassword, newPassword, confirmPassword } = req.body
       let errors = []
-      console.log(oldPassword)
-      if (oldPassword) {
+      //如果有輸入到密碼欄位
+      if (oldPassword || newPassword || confirmPassword) {
         if (!bcrypt.compareSync(oldPassword, user.password)) {
           errors.push({ error_msg: 'The old password is incorrect. Please enter again.' })
         }
-        if(!newPassword || !confirmPassword) {
-          errors.push({ error_msg: 'Please fill in password.' })
+        if(!newPassword || !confirmPassword || !oldPassword) {
+          errors.push({ error_msg: 'Please fill in all password fields.' })
         }
         if (newPassword !== confirmPassword) {
           errors.push({ error_msg: 'The new password does not match with the confirmed one. Please enter again.' })
+        }
+        if (oldPassword === newPassword) {
+          errors.push({ error_msg: 'The new password cannot be the same as the old one. Please enter again.' })
+        }
+        if (!email) {
+          errors.push({ error_msg: 'The email field is required.' })
         }
         if (errors.length > 0) {
           //上方導覽列的分類
@@ -44,7 +50,7 @@ const userController = {
             return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories })
           })
         }
-        else{
+        else{  
           user.update({
             name,
             email,
@@ -58,6 +64,10 @@ const userController = {
             return res.redirect('/user/account')
           })
         }
+      }
+      else if (!email) {
+        req.flash('warning_msg', 'The email field is required.')
+        return res.redirect('back')
       }
       else {
         user.update({

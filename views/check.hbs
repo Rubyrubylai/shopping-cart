@@ -71,24 +71,6 @@
     </li>
   </ul>
 
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-dark">Payment Method</li>
-    <li class="list-group-item">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="ATM" value="ATM" checked>
-        <label class="form-check-label" for="ATM">
-          ATM
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="credit_card" value="credit_card">
-        <label class="form-check-label" for="credit_card">
-          Credit Card
-        </label>
-      </div>
-    </li>
-  </ul>
-
   <center>
    
     <a type="button" href="javascript:history.back()" class="btn btn-secondary custom-btn beside-btn">Previous</a>
@@ -96,3 +78,6 @@
     <button type="submit" class="btn btn-secondary custom-btn beside-btn">Check Out</button>
   </center>
 </form>
+
+<!-- cart modal at right side -->
+{{> rightCart}}

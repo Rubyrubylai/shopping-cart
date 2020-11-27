@@ -4,7 +4,7 @@
   <div class="col-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
-        <strong>Order Number: #{{order.sn}}</strong>
+        <strong>Order Number: #{{order.id}}</strong>
       </li>
       <li class="list-group-item">
         <table class="table">
@@ -85,7 +85,7 @@
               <th scope="col" class="table-custom">Price</th>
             </tr>
           </thead>
-          {{#each items}}
+          {{#each orderItems}}
           <tr>
             <td scope="row">{{this.name}}</td>
             <td class="table-custom">{{this.quantity}}</td>
@@ -94,8 +94,8 @@
           {{/each}}
           <tr>
             <td scope="row">Total</td>
-            <td class="table-custom">{{totalQty}}</td>
-            <td class="table-custom">${{totalPrice}}</td>
+            <td class="table-custom">{{orderTotalQty}}</td>
+            <td class="table-custom">${{orderTotalPrice}}</td>
           </tr>
         </table>
       </li>
@@ -118,3 +118,6 @@
     <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
   </form>
 </center>
+
+<!-- cart modal at right side -->
+{{> rightCart}}

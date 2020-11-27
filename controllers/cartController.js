@@ -4,6 +4,7 @@ const Cart = db.Cart
 const Product = db.Product
 const User = db.User
 const Category = db.Category
+
 const sort = require('../config/sort')
 
 const cartController = {
@@ -112,6 +113,7 @@ const cartController = {
 
   //確認訂單
   checkCart: (req, res) => {
+    //右側購物車
     Cart.findByPk(
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }
@@ -120,7 +122,6 @@ const cartController = {
       let items
       let totalPrice = 0
       let totalQty = 0
-      //右側購物車
       items = sort.rightCartItem(cart)
       if (items) {
         totalPrice = sort.rightCartPrice(items, totalPrice)

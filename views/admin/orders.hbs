@@ -17,7 +17,7 @@
   <tbody>
     {{#each orders}}
     <tr class="text-center">
-      <td>#{{this.sn}}</td>
+      <td>#{{this.id}}</td>
       <td>{{Date this.createdAt}}</td>
       <td>
         {{#ifEquals this.shipping_status -2}}Order Cancelled{{/ifEquals}}

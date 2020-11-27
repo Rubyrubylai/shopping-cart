@@ -30,14 +30,31 @@ const orderController = {
     }).then(orders => {
       //取得payment
       orders = sort.payments(orders)
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+      )
+      .then(cart => {     
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
 
-       //上方導覽列的分類
-       Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('orders', { orders, categories })
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('orders', { orders, categories, noItems, items, totalPrice })
+        })
       })
     })
   },
@@ -48,40 +65,57 @@ const orderController = {
       { include: [{ model: Product, as: 'items' }, Payment]}
     )
     .then(order => {
-      items = order.dataValues.items.map(item => ({
+      orderItems = order.dataValues.items.map(item => ({
         ...item.dataValues,
         quantity: item.dataValues.OrderItem.dataValues.quantity
       }))
-      let totalPrice = 0
-      let totalQty = 0
-      if (items) {
-        items.forEach(item => {
-          totalPrice += item.price * item.quantity
+      let orderTotalPrice = 0
+      let orderTotalQty = 0
+      if (orderItems) {
+        orderItems.forEach(item => {
+          orderTotalPrice += item.price * item.quantity
         })
-        items.forEach(item => {
-          totalQty += item.quantity
+        orderItems.forEach(item => {
+          orderTotalQty += item.quantity
         })
       }
 
       //取得payment
       payment = sort.payment(order)
-      console.log(payment.length)
-      console.log([]='')
 
       //金流，產生交易參數
-      const tradeInfo = getTradeInfo.getTradeInfo(totalPrice, '產品名稱', 'r844312@gmail.com')
+      const tradeInfo = getTradeInfo.getTradeInfo(orderTotalPrice, '產品名稱', 'r844312@gmail.com')
       
       order.update({
         sn: tradeInfo.MerchantOrderNo
       })
       .then(order => {
-         //上方導覽列的分類
-         Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('order', { order: order.toJSON(), items, totalPrice, totalQty, tradeInfo, payment: payment[0], categories })
+        //右側購物車
+        Cart.findByPk(
+          req.session.cartId,
+          { include: [{ model: Product, as: 'items' }] }
+        )
+        .then(cart => {     
+          let noItems
+          let items
+          let totalPrice = 0
+          items = sort.rightCartItem(cart)
+          if (!items || (items.length === 0)) {
+            noItems = true
+          }
+          else {
+            totalPrice = sort.rightCartPrice(items, totalPrice)
+          }
+
+
+          //上方導覽列的分類
+          Category.findAll({
+            raw: true,
+            nest: true
+          })
+          .then(categories => {
+            return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], categories, noItems, items, totalPrice })
+          })
         })
       })
     })
@@ -180,7 +214,7 @@ const orderController = {
     return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } })
     .then(orders => {
       
-      console.log(orders)
+      console.log(data)
       console.log('====================================')
       const time = data['Result']['PayTime']
       const payTime = new Date(time.slice(0,10) + ' ' + time.slice(10))

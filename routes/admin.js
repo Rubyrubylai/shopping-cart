@@ -16,7 +16,7 @@ router.put('/products/:id', auth.adminAuthenticated, upload.single('image'), adm
 router.delete('/products/:id', auth.adminAuthenticated, adminController.removeProduct)
 
 router.get('/orders', auth.adminAuthenticated, adminController.getOrders)
-router.get('/orders/:id', auth.adminAuthenticated, adminController.editOrder)
+router.get('/orders/:id', auth.adminAuthenticated, adminController.getOrder)
 router.put('/orders/:id', auth.adminAuthenticated, adminController.putOrder)
 
 router.get('/categories', auth.adminAuthenticated, adminController.getCategories)

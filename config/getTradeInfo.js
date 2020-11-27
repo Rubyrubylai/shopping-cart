@@ -4,7 +4,7 @@ const PayGateWay = "https://ccore.newebpay.com/MPG/mpg_gateway"
 const ReturnURL = URL+"/newebpay/callback?from=ReturnURL"
 const NotifyURL = URL+"/newebpay/callback?from=NotifyURL"
 const ClientBackURL = URL+"/orders"
-const aes = require('./aes')
+const encrypt = require('./encrypt')
 
 module.exports = {
   getTradeInfo: (Amt, Desc, email) => {
@@ -23,10 +23,9 @@ module.exports = {
       'NotifyURL': NotifyURL, // 支付通知網址/每期授權結果通知
       'ClientBackURL': ClientBackURL, // 支付取消返回商店網址
     }
-    console.log(aes.create_mpg_aes_encrypt())
   
-    mpg_aes_encrypt = aes.create_mpg_aes_encrypt(data)
-    mpg_sha_encrypt = aes.create_mpg_sha_encrypt(mpg_aes_encrypt)
+    mpg_aes_encrypt = encrypt.create_mpg_aes_encrypt(data)
+    mpg_sha_encrypt = encrypt.create_mpg_sha_encrypt(mpg_aes_encrypt)
   
     tradeInfo = {
       'MerchantID': MerchantID, // 商店代號

@@ -7,7 +7,7 @@ const OrderItem = db.OrderItem
 const Category = db.Category
 
 const sort = require('../config/sort')
-const aes = require('../config/aes')
+const encrypt = require('../config/encrypt')
 const getTradeInfo = require('../config/getTradeInfo')
 
 
@@ -119,6 +119,8 @@ const orderController = {
 
       //取得payment
       payment = sort.payment(order)
+      console.log(payment.length)
+      console.log([]='')
 
       //金流，產生交易參數
       const tradeInfo = getTradeInfo.getTradeInfo(totalPrice, '產品名稱', 'r844312@gmail.com')
@@ -194,7 +196,7 @@ const orderController = {
   },
 
   newebpayCallback: (req, res) => {
-    const data = JSON.parse(aes.create_mpg_aes_decrypt(req.body.TradeInfo))
+    const data = JSON.parse(encrypt.create_mpg_aes_decrypt(req.body.TradeInfo))
     console.log(data)
 
     return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } })
@@ -204,7 +206,7 @@ const orderController = {
       console.log('====================================')
       const time = data['Result']['PayTime']
       const payTime = new Date(time.slice(0,10) + ' ' + time.slice(10))
-      console.log(data)
+      
       if (data['Result']['PaymentType'] === 'CREDIT' || 'WEBATM') {
         orders[0].update({
           payment_status: 1,
@@ -227,7 +229,7 @@ const orderController = {
             OrderId: order.id,
             sn: order.sn,
             amount: order.amount,
-            payment_method: data['Result']['PaymentMethod'],
+            payment_method: 'Others',
             params: 'success'
           })
           .then(payment => {

@@ -46,17 +46,29 @@
           <tr>
             <th scope="row">Payment Method</th>
             <td>
-              {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'VACC'}}ATM{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+              {{#if payment}}
+                {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+                {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+                {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
+                {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
+                {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
+              {{else}}
+                <select class="form-control" name="payment_method">
+                  <option value="ATM">ATM</option>
+                  <option value="VACC">Super business code payment</option>
+                  <option value="Barcode">Super business barcode payment</option>
+                </select>
+              {{/if}}
             </td>
           </tr>
           <tr>
             <th scope="row">Payment Date</th>
             <td>
-              {{DateTime payment.paid_at}}
+              {{#if payment}}
+                {{DateTime payment.paid_at}}
+              {{else}}
+                <input type="datetime-local" name="payment_date" value="{{Date payment_date}}" class="form-control">
+              {{/if}}
             </td>
           </tr>
         </table>

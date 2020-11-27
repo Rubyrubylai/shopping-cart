@@ -41,9 +41,9 @@
             <td>
               {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
               {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'VACC'}}ATM{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
             </td>
           </tr>
         </table>

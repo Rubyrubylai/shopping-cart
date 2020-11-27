@@ -29,7 +29,7 @@ adminController = {
     })
   },
 
-  editOrder: (req, res) => {
+  getOrder: (req, res) => {
     Order.findByPk(req.params.id, {
       include: [{ model: Product, as: 'items' } , Payment]
     })
@@ -50,7 +50,8 @@ adminController = {
       }
 
       //取得payment
-      sort.payment(order)
+      var payment = sort.payment(order)
+      console.log(payment)
 
       //上方導覽列的分類
       Category.findAll({
@@ -66,7 +67,8 @@ adminController = {
   putOrder: (req, res) => {
     Order.findByPk(req.params.id)
     .then(order => {
-      const { shipping_status, payment_status, shipping_date } = req.body
+      const { shipping_status, payment_status, shipping_date, payment_date, payment_method } = req.body
+
       //有些商品尚未出貨，因此不會有shipping date
       if (shipping_date) {
         order.update({
@@ -75,8 +77,20 @@ adminController = {
           shipping_date
         })
         .then(order => {
-          req.flash('success_msg', 'The order has been successfully updated!')
-          return res.redirect(`/admin/orders/${order.id}`)
+          console.log(payment_method)
+          Payment.create({
+            paid_at: payment_date,
+            OrderId: order.id,
+            sn: order.sn,
+            amount: order.amount,
+            params: 'success',
+            payment_method
+          })
+          .then(payment => {
+            req.flash('success_msg', 'The order has been successfully updated!')
+            return res.redirect(`/admin/orders/${order.id}`)
+          })
+          
         })
       }
       else {
@@ -85,8 +99,19 @@ adminController = {
           payment_status
         })
         .then(order => {
-          req.flash('success_msg', 'The order has been successfully updated!')
-          return res.redirect(`/admin/orders/${order.id}`)
+          console.log(payment_method)
+          Payment.create({
+            paid_at: payment_date,
+            OrderId: order.id,
+            sn: order.sn,
+            amount: order.amount,
+            params: 'success',
+            payment_method
+          })
+          .then(payment => {
+            req.flash('success_msg', 'The order has been successfully updated!')
+            return res.redirect(`/admin/orders/${order.id}`)
+          })
         })
       }
       

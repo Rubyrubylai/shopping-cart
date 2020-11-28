@@ -214,13 +214,13 @@
 }
 
 .products-page {
-  padding-left: 13%;
+  padding-left: 12%;
   margin-top: 40px;
 }
 
 @media screen and (min-width: 480px) {
   .card {
-    width: 60%;
+    width: 40%;
   }
 
   .modal.right .modal-dialog {
@@ -235,17 +235,9 @@
     width: 400px;
     margin: auto;
   }
-
-  .products-page {
-    padding-left: 27%;
-  }
 }
 
 @media screen and (min-width: 790px) {
-  .card {
-    width: 40%;
-  }
-
   .list-information {
     width: 45%;
     float: left;
@@ -275,11 +267,6 @@
     display: flex;
     flex-flow: row nowrap;
   }
-
-  .products-page {
-    padding-left: 13%;
-  }
-  
 }
 
 @media screen and (min-width: 1024px) {
@@ -295,8 +282,8 @@
     width: 80%;
     margin: auto;
   }
-
+  
   .products-page {
-    padding-left: 12%;
+    padding-left: 13%;
   }
 }

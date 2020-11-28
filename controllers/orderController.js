@@ -14,8 +14,8 @@ const nodemailer = require('nodemailer')
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'r844312@gmail.com',
-    pass: '',
+    user: process.env.Email,
+    pass: process.env.Password,
   },
 })
 
@@ -126,7 +126,7 @@ const orderController = {
       include: [{ model: Product, as: 'items' }]
     })
     .then(cart => {
-       const { name, phone, email, address, amount } = req.body
+      const { name, phone, email, address, amount } = req.body
       if (!name || !phone || !email || !address) {
         req.flash('warning_msg', 'All fields are required!')
         return res.redirect('back')
@@ -139,32 +139,38 @@ const orderController = {
           amount,
           payment_status: 0,
           shipping_status: -1,
-          UserId: req.user.id
+          UserId: req.user.id,
+          email
         })
         .then(order => {
-          console.log('--------------------Order')
-          // const items = []
-          // items.push(orderItems.dataValues)
+          //訂單通知信
           const items = cart.toJSON().items
-          let text = ''
+          let text = '<p>Please check below for your orders.</p>'
           items.forEach(i => {
             text += `
-            ${i.name}
-            <img src="${i.image}">
-            $${i.price}
+            <div style="margin-bottom: 2px;">
+              <p><strong>${i.name}</strong></p>
+              <img src="${i.image}" style="width:200px;">
+              <p>$${i.price}</p>
+            </div>
             `
           })
-          console.log(text)
+          text += `
+            <p style="margin-bottom: 10px;">Thank you for ordering.</p>
+            <h2>Best regards</h2>
+            <p>SHOP</p>
+          `
+
           var mailOptions = {
             from: 'r844312@gmail.com',
-            to: 'r844312@gmail.com',
+            to: order.email,
             subject: `Order Confirmation: SHOP #${order.id}`,
-            text: 'Thank you for ordering.'
+            html: text
           }
-
-          transporter.sendMail(mailOptions, function(error, info) {
-            if (error) {
-              console.log(error)
+          
+          transporter.sendMail(mailOptions, function(err, info) {
+            if (err) {
+              console.log(err)
             } else {
               console.log('Email sent: ' + info.response)
             }

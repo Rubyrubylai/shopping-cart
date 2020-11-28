@@ -52,7 +52,6 @@ adminController = {
 
       //取得payment
       var payment = sort.payment(order)
-      console.log(payment)
 
       //上方導覽列的分類
       Category.findAll({
@@ -78,7 +77,6 @@ adminController = {
           shipping_date
         })
         .then(order => {
-          console.log(payment_method)
           Payment.create({
             paid_at: payment_date,
             OrderId: order.id,
@@ -100,7 +98,6 @@ adminController = {
           payment_status
         })
         .then(order => {
-          console.log(payment_method)
           Payment.create({
             paid_at: payment_date,
             OrderId: order.id,

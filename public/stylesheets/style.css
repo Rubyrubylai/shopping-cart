@@ -140,7 +140,6 @@
 }
 
 .orders-btn {
-  width: 200px;
   margin-bottom: 20px;
 }
 
@@ -154,9 +153,10 @@
   margin-right: 10px;
 }
 
-.add-category-btn {
-  width: 250px;
+.add-category-input {
   display: inline-block;
+  width: 250px;
+  margin-top: 15px;
 }
 
 .category-btn {

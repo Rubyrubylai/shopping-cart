@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 
 const sort = require('../config/sort')
 
+
 const userController = {
   getAccount: (req, res) => {
     User.findByPk(req.user.id)

@@ -1,10 +1,8 @@
-<div class="col-11">
-  {{> alert}}
-</div>
+{{> alert}}
 
 <div class="row">
 {{#each FavoritedProducts}}
-  <div class="card">
+  <div class="card products-page">
     <a href="/product/{{this.id}}" class="a-custom" style="text-decoration:none;">
       <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
       <div class="card-body favorite-card">

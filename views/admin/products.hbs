@@ -1,41 +1,43 @@
-{{> alert}}
+<div class="container">
+  {{> alert}}
 
-<h2 id="title">Backstage</h2>
-<a href="/admin/products" style="text-decoration: none;" class="subtitle">Product</a> |
-<a href="/admin/orders" style="text-decoration: none;" class="subtitle">Order</a> |
-<a href="/admin/categories" style="text-decoration: none;" class="subtitle">Category</a>
-<br>
-<a href="/admin/products/new" type="button" class="btn btn-secondary add-btn">Add new product</a>
+  <h2 id="title">Backstage</h2>
+  <a href="/admin/products" style="text-decoration: none;" class="subtitle">Product</a> |
+  <a href="/admin/orders" style="text-decoration: none;" class="subtitle">Order</a> |
+  <a href="/admin/categories" style="text-decoration: none;" class="subtitle">Category</a>
+  <br>
+  <a href="/admin/products/new" type="button" class="btn btn-secondary add-btn">Add new product</a>
 
-<table class="table table-bordered custom-product-table table-responsive-sm">
-  <thead class="thead thead-custom">
-    <tr class="text-center">
-      <th scope="col">Product Name</th>
-      <th scope="col">Category</th>
-      <th scope="col">Image</th>
-      <th scope="col">Price</th>
-      <th scope="col">Detail</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each products}}
-    <tr class="text-center">
-      <td>{{this.name}}</td>
-      <td>{{this.Category.name}}</td>
-      <td>
-        <img src="{{this.image}}" alt="product_photo" class="admin-photo">
-      </td>
-      <td>${{this.price}}</td>
-      <td>
-        <a href="/admin/products/{{this.id}}" class="edit-btn">Edit</a>
-      </td>
-      <td>
-        <form action="/admin/products/{{this.id}}?_method=DELETE" method="POST">
-          <button type="submit" class="btn trash"><i class="fas fa-trash-alt"></i></button>
-        </form>
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+  <table class="table table-bordered custom-product-table table-responsive-sm">
+    <thead class="thead thead-custom">
+      <tr class="text-center">
+        <th scope="col">Product Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Image</th>
+        <th scope="col">Price</th>
+        <th scope="col">Detail</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr class="text-center">
+        <td>{{this.name}}</td>
+        <td>{{this.Category.name}}</td>
+        <td>
+          <img src="{{this.image}}" alt="product_photo" class="admin-photo">
+        </td>
+        <td>${{this.price}}</td>
+        <td>
+          <a href="/admin/products/{{this.id}}" class="edit-btn">Edit</a>
+        </td>
+        <td>
+          <form action="/admin/products/{{this.id}}?_method=DELETE" method="POST">
+            <button type="submit" class="btn trash"><i class="fas fa-trash-alt"></i></button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

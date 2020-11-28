@@ -1,135 +1,137 @@
-{{>alert}}
+<div class="container">
+  {{>alert}}
 
-<form action="/admin/orders/{{order.id}}?_method=PUT" method="POST">
-  <div class="list-information">
-    <a href="/admin/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+  <form action="/admin/orders/{{order.id}}?_method=PUT" method="POST">
+    <div class="list-information">
+      <a href="/admin/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
 
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-secondary">
-        <strong>Order Number: #{{order.id}}</strong>
-      </li>
-      <li class="list-group-item">
-        <table class="table">
-          <tr>
-            <th scope="row">Order Date</th>
-            <td>{{Date order.createdAt}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Shipping Status</th>
-            <td>
-              <select class="form-control" name="shipping_status">
-                <option value="-2" {{#ifEquals order.shipping_status -2}}selected{{/ifEquals}}>Order cancelled</option>
-                <option value="-1" {{#ifEquals order.shipping_status -1}}selected{{/ifEquals}}>Preparing</option>
-                <option value="0" {{#ifEquals order.shipping_status 0}}selected{{/ifEquals}}>Shipping</option>
-                <option value="1" {{#ifEquals order.shipping_status 1}}selected{{/ifEquals}}>Arrived</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Shipping Date</th>
-            <td>
-              <input type="date" name="shipping_date" value="{{Date order.shipping_date}}" class="form-control">
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Payment Status</th>
-            <td>
-              <select class="form-control" name="payment_status">
-                <option value="-2" {{#ifEquals order.payment_status -2}}selected{{/ifEquals}}>Refund Completed</option>
-                <option value="-1" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Request Refund</option>
-                <option value="0" {{#ifEquals order.payment_status 0}}selected{{/ifEquals}}>Not Paid</option>
-                <option value="1" {{#ifEquals order.payment_status 1}}selected{{/ifEquals}}>Paid</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Payment Method</th>
-            <td>
-              {{#if payment}}
-                {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
-                {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
-                {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
-                {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
-                {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
-              {{else}}
-                <select class="form-control" name="payment_method">
-                  <option value="ATM">ATM</option>
-                  <option value="VACC">Super business code payment</option>
-                  <option value="Barcode">Super business barcode payment</option>
-                </select>
-              {{/if}}
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Payment Date</th>
-            <td>
-              {{#if payment}}
-                {{DateTime payment.paid_at}}
-              {{else}}
-                <input type="datetime-local" name="payment_date" value="{{Date payment_date}}" class="form-control">
-              {{/if}}
-            </td>
-          </tr>
-        </table>
-      </li>
-    </ul>
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-secondary">
-        <strong>Shipping Information</strong>
-      </li>
-      <li class="list-group-item">
-        <table class="table">
-          <tr>
-            <th scope="row">Name</th>
-            <td>{{order.name}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Phone</th>
-            <td>{{order.phone}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Address</th>
-            <td>{{order.address}}</td>
-          </tr>
-        </table>
-      </li>
-    </ul>
-  </div>
-
-  <div class="list-detail">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-secondary">
-        <strong>Order Details</strong>
-      </li>
-      <li class="list-group-item">
-        <table class="table">
-          <thead>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-secondary">
+          <strong>Order Number: #{{order.id}}</strong>
+        </li>
+        <li class="list-group-item">
+          <table class="table">
             <tr>
-              <th scope="col"></th>
-              <th scope="col" class="table-custom">Quantity</th>
-              <th scope="col" class="table-custom">Price</th>
+              <th scope="row">Order Date</th>
+              <td>{{Date order.createdAt}}</td>
             </tr>
-          </thead>
-          {{#each items}}
-          <tr>
-            <td scope="row">{{this.name}}</td>
-            <td class="table-custom">{{this.quantity}}</td>
-            <td class="table-custom">${{this.price}}</td>
-          </tr>
-          {{/each}}
-          <tr>
-            <td scope="row">Total</td>
-            <td class="table-custom">{{totalQty}}</td>
-            <td class="table-custom">${{totalPrice}}</td>
-          </tr>
-        </table>
-      </li>
-    </ul>
-  </div>
+            <tr>
+              <th scope="row">Shipping Status</th>
+              <td>
+                <select class="form-control" name="shipping_status">
+                  <option value="-2" {{#ifEquals order.shipping_status -2}}selected{{/ifEquals}}>Order cancelled</option>
+                  <option value="-1" {{#ifEquals order.shipping_status -1}}selected{{/ifEquals}}>Preparing</option>
+                  <option value="0" {{#ifEquals order.shipping_status 0}}selected{{/ifEquals}}>Shipping</option>
+                  <option value="1" {{#ifEquals order.shipping_status 1}}selected{{/ifEquals}}>Arrived</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Shipping Date</th>
+              <td>
+                <input type="date" name="shipping_date" value="{{Date order.shipping_date}}" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Payment Status</th>
+              <td>
+                <select class="form-control" name="payment_status">
+                  <option value="-2" {{#ifEquals order.payment_status -2}}selected{{/ifEquals}}>Refund Completed</option>
+                  <option value="-1" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Request Refund</option>
+                  <option value="0" {{#ifEquals order.payment_status 0}}selected{{/ifEquals}}>Not Paid</option>
+                  <option value="1" {{#ifEquals order.payment_status 1}}selected{{/ifEquals}}>Paid</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Payment Method</th>
+              <td>
+                {{#if payment}}
+                  {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+                  {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+                  {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
+                  {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
+                  {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
+                {{else}}
+                  <select class="form-control" name="payment_method">
+                    <option value="ATM">ATM</option>
+                    <option value="VACC">Super business code payment</option>
+                    <option value="Barcode">Super business barcode payment</option>
+                  </select>
+                {{/if}}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Payment Date</th>
+              <td>
+                {{#if payment}}
+                  {{DateTime payment.paid_at}}
+                {{else}}
+                  <input type="datetime-local" name="payment_date" value="{{Date payment_date}}" class="form-control">
+                {{/if}}
+              </td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-secondary">
+          <strong>Shipping Information</strong>
+        </li>
+        <li class="list-group-item">
+          <table class="table">
+            <tr>
+              <th scope="row">Name</th>
+              <td>{{order.name}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Phone</th>
+              <td>{{order.phone}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Address</th>
+              <td>{{order.address}}</td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+    </div>
 
-  <div class="clearfix"></div>
+    <div class="list-detail">
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-secondary">
+          <strong>Order Details</strong>
+        </li>
+        <li class="list-group-item">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" class="table-custom">Quantity</th>
+                <th scope="col" class="table-custom">Price</th>
+              </tr>
+            </thead>
+            {{#each items}}
+            <tr>
+              <td scope="row">{{this.name}}</td>
+              <td class="table-custom">{{this.quantity}}</td>
+              <td class="table-custom">${{this.price}}</td>
+            </tr>
+            {{/each}}
+            <tr>
+              <td scope="row">Total</td>
+              <td class="table-custom">{{totalQty}}</td>
+              <td class="table-custom">${{totalPrice}}</td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+    </div>
 
-  <center>
-      <button type="submit" class="btn btn-secondary custom-btn">Update</button>
-  </center>
-</form>
+    <div class="clearfix"></div>
+
+    <center>
+        <button type="submit" class="btn btn-secondary custom-btn">Update</button>
+    </center>
+  </form>
+</div>

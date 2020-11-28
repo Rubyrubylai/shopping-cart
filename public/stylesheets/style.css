@@ -49,7 +49,7 @@
 
 .modal-header {
   border-bottom-color: #EEEEEE;
-  background-color: #78c2ad;
+  background-color: #FAFAFA;
 }
 
 .modal-body {
@@ -213,6 +213,11 @@
   margin-bottom: 20px;
 }
 
+.products-page {
+  padding-left: 13%;
+  margin-top: 40px;
+}
+
 @media screen and (min-width: 480px) {
   .card {
     width: 60%;
@@ -229,6 +234,10 @@
   .log-in, .register {
     width: 400px;
     margin: auto;
+  }
+
+  .products-page {
+    padding-left: 27%;
   }
 }
 
@@ -266,6 +275,10 @@
     display: flex;
     flex-flow: row nowrap;
   }
+
+  .products-page {
+    padding-left: 13%;
+  }
   
 }
 
@@ -281,5 +294,9 @@
   .new-product {
     width: 80%;
     margin: auto;
+  }
+
+  .products-page {
+    padding-left: 12%;
   }
 }

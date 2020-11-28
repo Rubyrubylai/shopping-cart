@@ -1,68 +1,70 @@
-<ul class="list-group">
-  <li class="list-group-item list-group-item-secondary">Check Order</li>
-  <li class="list-group-item">
-    <table class="table table-responsive-sm">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col">Price</th>
-          <th scope="col">Quantity</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each items}}
-        <tr>
-          <td scope="row">
-            <a href="/product/{{this.id}}"><img class="cart-photo" src="{{this.image}}" alt="cartItem_photo"></a>
-          </td>
-          <td>
-            <a href="/product/{{this.id}}" style="text-decoration: none;" class="a-custom">{{this.name}}</a>
-          </td>
-          <td>${{this.price}}</td>
-          <td>
-             <form action="/cartItem/{{this.cartItemId}}/min" method="POST" class="cart">
-                <input type="submit" id="min" type="button" value="-" >
-              </form>
-              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
-              <form action="/cartItem/{{this.cartItemId}}/add" method="POST" class="cart">
-                <input type="submit" id="add" type="button" value="+">
-              </form>
-          </td>
-          <td>${{this.subtotalPrice}}</td>
-          <td>
-            <div class="trash">
-              <form action="/cartItem?_method=DELETE" method="POST">
-                <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
-                <button type="submit" class="btn trash-cart"><i class="fas fa-trash-alt fa-lg"></i></button>
-              </form>
-            </div>
-          </td>
-        </tr>
-        
-        {{/each}}
-        <tr>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col">Subtotal</th>
-          <th scope="col">{{totalQty}}</th>
-          <th scope="col">${{totalPrice}}</th>
-          <th scope="col"></th>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-</ul>
+<div class="container">
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-secondary">Check Order</li>
+    <li class="list-group-item">
+      <table class="table table-responsive-sm">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td scope="row">
+              <a href="/product/{{this.id}}"><img class="cart-photo" src="{{this.image}}" alt="cartItem_photo"></a>
+            </td>
+            <td>
+              <a href="/product/{{this.id}}" style="text-decoration: none;" class="a-custom">{{this.name}}</a>
+            </td>
+            <td>${{this.price}}</td>
+            <td>
+              <form action="/cartItem/{{this.cartItemId}}/min" method="POST" class="cart">
+                  <input type="submit" id="min" type="button" value="-" >
+                </form>
+                <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
+                <form action="/cartItem/{{this.cartItemId}}/add" method="POST" class="cart">
+                  <input type="submit" id="add" type="button" value="+">
+                </form>
+            </td>
+            <td>${{this.subtotalPrice}}</td>
+            <td>
+              <div class="trash">
+                <form action="/cartItem?_method=DELETE" method="POST">
+                  <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
+                  <button type="submit" class="btn trash-cart"><i class="fas fa-trash-alt fa-lg"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          
+          {{/each}}
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">{{totalQty}}</th>
+            <th scope="col">${{totalPrice}}</th>
+            <th scope="col"></th>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+  </ul>
 
-<center>
-  {{#if noItems}}
-  <a type="button" class="btn btn-secondary custom-btn beside-btn" href="/product">Keep Shopping</a>
-  {{else}}
-   <a type="button" class="btn btn-secondary custom-btn beside-btn" href="/cart/check">Next</a>
-  {{/if}}
-</center>
+  <center>
+    {{#if noItems}}
+    <a type="button" class="btn btn-secondary custom-btn beside-btn" href="/product">Keep Shopping</a>
+    {{else}}
+    <a type="button" class="btn btn-secondary custom-btn beside-btn" href="/cart/check">Next</a>
+    {{/if}}
+  </center>
 
-<!-- cart modal at right side -->
-{{> rightCart}}
+  <!-- cart modal at right side -->
+  {{> rightCart}}
+</div>

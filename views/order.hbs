@@ -1,124 +1,126 @@
-<div class="list-information">
-  <a href="/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+<div class="container">
+  <div class="list-information">
+    <a href="/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
 
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-secondary">
-      <strong>Order Number: #{{order.id}}</strong>
-    </li>
-    <li class="list-group-item">
-      <table class="table">
-        <tr>
-          <th scope="row">Order Date</th>
-          <td>{{Date order.createdAt}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Shipping Status</th>
-          <td>
-            {{#ifEquals order.shipping_status -2}}Order Cancelled{{/ifEquals}}
-            {{#ifEquals order.shipping_status -1}}Preparing{{/ifEquals}}
-            {{#ifEquals order.shipping_status 0}}Shipping{{/ifEquals}}
-            {{#ifEquals order.shipping_status 1}}Arrived{{/ifEquals}}
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Shipping Date</th>
-          <td>
-            {{Date order.shipping_date}}
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Payment Status</th>
-          <td>
-            {{#ifEquals order.payment_status -2}}Refund Completed{{/ifEquals}}
-            {{#ifEquals order.payment_status -1}}Request Refund{{/ifEquals}}
-            {{#ifEquals order.payment_status 0}}Not Paid{{/ifEquals}}
-            {{#ifEquals order.payment_status 1}}Paid{{/ifEquals}}
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Payment Method</th>
-          <td>
-            {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
-            {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
-            {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
-            {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
-            {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
-          </td>
-        </tr>
-      </table>
-    </li>
-  </ul>
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-secondary">
-      <strong>Shipping Information</strong>
-    </li>
-    <li class="list-group-item">
-      <table class="table">
-        <tr>
-          <th scope="row">Name</th>
-          <td>{{order.name}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Phone</th>
-          <td>{{order.phone}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Address</th>
-          <td>{{order.address}}</td>
-        </tr>
-      </table>
-    </li>
-  </ul>
-</div>
-
-<div class="list-detail">
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-secondary">
-      <strong>Order Details</strong>
-    </li>
-    <li class="list-group-item">
-      <table class="table">
-        <thead>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Order Number: #{{order.id}}</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
           <tr>
-            <th scope="col"></th>
-            <th scope="col" class="table-custom">Quantity</th>
-            <th scope="col" class="table-custom">Price</th>
+            <th scope="row">Order Date</th>
+            <td>{{Date order.createdAt}}</td>
           </tr>
-        </thead>
-        {{#each orderItems}}
-        <tr>
-          <td scope="row">{{this.name}}</td>
-          <td class="table-custom">{{this.quantity}}</td>
-          <td class="table-custom">${{this.price}}</td>
-        </tr>
-        {{/each}}
-        <tr>
-          <td scope="row">Total</td>
-          <td class="table-custom">{{orderTotalQty}}</td>
-          <td class="table-custom">${{orderTotalPrice}}</td>
-        </tr>
-      </table>
-    </li>
-  </ul>
+          <tr>
+            <th scope="row">Shipping Status</th>
+            <td>
+              {{#ifEquals order.shipping_status -2}}Order Cancelled{{/ifEquals}}
+              {{#ifEquals order.shipping_status -1}}Preparing{{/ifEquals}}
+              {{#ifEquals order.shipping_status 0}}Shipping{{/ifEquals}}
+              {{#ifEquals order.shipping_status 1}}Arrived{{/ifEquals}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Shipping Date</th>
+            <td>
+              {{Date order.shipping_date}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Status</th>
+            <td>
+              {{#ifEquals order.payment_status -2}}Refund Completed{{/ifEquals}}
+              {{#ifEquals order.payment_status -1}}Request Refund{{/ifEquals}}
+              {{#ifEquals order.payment_status 0}}Not Paid{{/ifEquals}}
+              {{#ifEquals order.payment_status 1}}Paid{{/ifEquals}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Payment Method</th>
+            <td>
+              {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
+            </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Shipping Information</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{order.name}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Phone</th>
+            <td>{{order.phone}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Address</th>
+            <td>{{order.address}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+
+  <div class="list-detail">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">
+        <strong>Order Details</strong>
+      </li>
+      <li class="list-group-item">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col" class="table-custom">Quantity</th>
+              <th scope="col" class="table-custom">Price</th>
+            </tr>
+          </thead>
+          {{#each orderItems}}
+          <tr>
+            <td scope="row">{{this.name}}</td>
+            <td class="table-custom">{{this.quantity}}</td>
+            <td class="table-custom">${{this.price}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <td scope="row">Total</td>
+            <td class="table-custom">{{orderTotalQty}}</td>
+            <td class="table-custom">${{orderTotalPrice}}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <center>
+    {{#ifEquals order.payment_status 0}}
+    <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" class="payment">
+      <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
+      <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
+      <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
+      <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
+      <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
+      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
+    </form>
+    {{/ifEquals}}
+    <form action="/order/{{order.id}}/cancel" method="POST" class="payment">
+      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
+    </form>
+  </center>
+
+  <!-- cart modal at right side -->
+  {{> rightCart}}
 </div>
-
-<div class="clearfix"></div>
-
-<center>
-  {{#ifEquals order.payment_status 0}}
-  <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" class="payment">
-    <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
-    <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
-    <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
-    <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
-    <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
-    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
-  </form>
-  {{/ifEquals}}
-  <form action="/order/{{order.id}}/cancel" method="POST" class="payment">
-    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
-  </form>
-</center>
-
-<!-- cart modal at right side -->
-{{> rightCart}}

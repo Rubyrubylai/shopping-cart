@@ -4,7 +4,7 @@
 
 <div class="row">
 {{#each FavoritedProducts}}
-  <div class="card co-3">
+  <div class="card">
     <a href="/product/{{this.id}}" class="a-custom" style="text-decoration:none;">
       <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
       <div class="card-body favorite-card">
@@ -12,12 +12,12 @@
         <p class="card-text">${{this.price}}</p>
       </div>
       <div class="card-footer">
-        <form action="/cart/{{this.id}}" method="POST" style="display: inline-block;">
+        <form action="/cart/{{this.id}}" method="POST" class="cart">
         <input type="hidden" name="num" value="1">
           <input type="hidden" name="productId" value="{{this.id}}">
           <button type="submit" class="btn btn-secondary">Add To Cart</button>
         </form>
-        <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: inline-block;">
+        <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" class="cart">
           <button type="submit" class="btn btn-secondary">
             <i class="fas fa-times"></i> 
           </button>
@@ -28,7 +28,7 @@
 {{/each}}
 </div>
 
-<nav aria-label="Page navigation" class="nav-bottom">
+<nav aria-label="Page navigation" class="nav-page">
   <ul class="pagination">
     <li class="page-item">
       <a class="page-link" href="?page={{prev}}" aria-label="Previous">

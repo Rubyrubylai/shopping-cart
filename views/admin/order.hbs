@@ -1,10 +1,9 @@
 {{>alert}}
 
-<a href="/admin/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
-
 <form action="/admin/orders/{{order.id}}?_method=PUT" method="POST">
-<div class="row">
-  <div class="col-6">
+  <div class="list-information">
+    <a href="/admin/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
         <strong>Order Number: #{{order.id}}</strong>
@@ -19,7 +18,7 @@
             <th scope="row">Shipping Status</th>
             <td>
               <select class="form-control" name="shipping_status">
-                <option value="-1" {{#ifEquals order.shipping_status -2}}selected{{/ifEquals}}>Order cancelled</option>
+                <option value="-2" {{#ifEquals order.shipping_status -2}}selected{{/ifEquals}}>Order cancelled</option>
                 <option value="-1" {{#ifEquals order.shipping_status -1}}selected{{/ifEquals}}>Preparing</option>
                 <option value="0" {{#ifEquals order.shipping_status 0}}selected{{/ifEquals}}>Shipping</option>
                 <option value="1" {{#ifEquals order.shipping_status 1}}selected{{/ifEquals}}>Arrived</option>
@@ -96,7 +95,8 @@
       </li>
     </ul>
   </div>
-  <div class="col-6">
+
+  <div class="list-detail">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
         <strong>Order Details</strong>
@@ -126,9 +126,10 @@
       </li>
     </ul>
   </div>
-</div>
 
-<center>
-    <button type="submit" class="btn btn-secondary custom-btn">Update</button>
-</center>
+  <div class="clearfix"></div>
+
+  <center>
+      <button type="submit" class="btn btn-secondary custom-btn">Update</button>
+  </center>
 </form>

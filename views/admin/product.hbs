@@ -1,10 +1,11 @@
 {{> alert}}
 
+<div class="new-product">
 {{#if newProduct}}
-<h2 id="title">Add New Product</h2>
+<h2 class="title">Add New Product</h2>
 <form action="/admin/products/new" method="POST" enctype="multipart/form-data">
 {{else}}
-<h2 id="title">Edit Product</h2>
+<h2 class="title">Edit Product</h2>
 <form action="/admin/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
 {{/if}}
   <div class="form-group">
@@ -12,7 +13,7 @@
     <input type="text" class="form-control" id="name" name="name" value="{{product.name}}" placeholder="Product name">
   </div>
   <div class="form-group">
-    <label for="category">Category Name</label>
+    <label for="category">Category</label>
     <select class="form-control" id="category" name="CategoryId">
       {{#each categories}}
       <option value="{{this.id}}" {{#ifEquals this.id ../product.CategoryId }}selected{{/ifEquals}}>{{this.name}}</option>
@@ -23,9 +24,9 @@
     {{#if newProduct}}
     <img id="image" src="{{product.image}}">
     {{else}}
-    <img id="image" src="{{product.image}}" class="card-custom">
+    <img id="image" src="{{product.image}}" class="admin-product-card">
     {{/if}}
-    <div class="inline-block">
+    <div class="picture">
       <label for="file">Upload Picture</label>
       <input id="file" type="file" accept="image/*" class="form-control-file" name="image" value="{{product.image}}">
     </div>
@@ -43,6 +44,6 @@
     <button type="submit" class="btn btn-secondary custom-btn beside-btn">Submit</button>
   </center>
 </form>
-
+</div>
 
 <script src="/image.js"></script>

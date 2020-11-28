@@ -7,12 +7,7 @@
   color: black;
 }
 
-.card {
-  margin: 10px;
-  width: 15rem;
-}
-
-.nav-bottom {
+.nav-page {
   margin-top: 30px;
   display: flex;
   justify-content: center;
@@ -24,7 +19,7 @@
 .modal.right .modal-dialog {
   position: fixed;
   margin: auto;
-  width: 400px;
+  width: 300px;
   height: 100%;
   -webkit-transform: translate3d(0%, 0, 0);
       -ms-transform: translate3d(0%, 0, 0);
@@ -54,9 +49,12 @@
 
 .modal-header {
   border-bottom-color: #EEEEEE;
-  background-color: #FAFAFA;
+  background-color: #78c2ad;
 }
 
+.modal-body {
+  margin-top: 10px;
+}
 
 #num {
   width: 30px;
@@ -67,11 +65,15 @@
   margin-bottom: 20px;
 }
 
-.inline {
+.right-add-min-button {
+  float: left;
+}
+
+.total {
   display: inline;
 }
 
-.inline-block {
+.picture, .cart, .payment {
   display: inline-block;
 }
 
@@ -79,12 +81,31 @@
   padding-right: 120px;
 }
 
-.horizontal-left {
-  float: left;
+.thead-custom {
+  background-color: #fce2e3; 
+  color:#7e4e50;
+}
+
+.subtitle, .edit-btn {
+  color:#7e4e50;
 }
 
 .trash {
-  margin-top: -4px;
+  margin-top: -6px;
+  color: #7e4e50;
+}
+
+.trash-cart, .trash-right {
+  margin-top: 4px;
+  color: #7e4e50;
+}
+
+.edit-btn:hover, .trash:hover, .subtitle:hover, .trash-cart:hover, .trash-right:hover {
+  color: #56cc9d;
+}
+
+.right-item {
+  margin-bottom: 15px;
 }
 
 .list-group {
@@ -99,20 +120,12 @@
   display: inline-block;
 }
 
-.custom-product-table {
-  width: 1000px;
-}
-
 .add-btn {
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-#title {
-  margin-bottom: 20px;
-}
-
-.card-custom {
+.admin-product-card {
   width: 300px;
   margin-right: 10px;
 }
@@ -124,16 +137,6 @@
 
 #reset-btn {
   display: block;
-}
-
-.account, .form-logIn {
-  margin-top: 30px;
-}
-
-.log-in {
-  margin-top: 20px;
-  width: 400px;
-  margin: auto;
 }
 
 .orders-btn {
@@ -156,10 +159,6 @@
   display: inline-block;
 }
 
-.custom-category-table {
-  width: 400px;
-}
-
 .category-btn {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -171,6 +170,116 @@
   margin-top: 10px;
 }
 
+.unfavorite-btn {
+  display: inline-block;
+}
+
 .favorite-card {
   height: 120px;
+}
+
+.card {
+  margin: 10px;
+  width: 80%;
+}
+
+.nav-btn {
+  color: white;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column; 
+}
+
+.product-description {
+  margin-top: 20px;
+}
+
+.photo {
+  width: 100%;
+}
+
+.admin-photo {
+  width: 100%;
+  max-width: 200px;
+}
+
+.cart-photo {
+  width: 150px;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+@media screen and (min-width: 480px) {
+  .card {
+    width: 60%;
+  }
+
+  .modal.right .modal-dialog {
+    width: 400px;
+  }
+
+  .custom-category-table {
+    width: 400px;
+  }
+
+  .log-in, .register {
+    width: 400px;
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 790px) {
+  .card {
+    width: 40%;
+  }
+
+  .list-information {
+    width: 45%;
+    float: left;
+  }
+
+  .list-detail {
+    width: 45%;
+    float: right;
+    margin-top: 55px;
+  }
+
+  .clearfix {
+    clear: both;
+  }
+
+  .product-photo {
+    flex-basis: 90%;
+   }
+  
+   .product-description {
+    flex-grow: 1;
+    margin-left: 20px;
+    margin-top: 0px;
+   }
+   
+   section {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  
+}
+
+@media screen and (min-width: 1024px) {
+  .card {
+    width: 20%;
+  }
+
+  .custom-product-table {
+    width: 1000px;
+  }
+
+  .new-product {
+    width: 80%;
+    margin: auto;
+  }
 }

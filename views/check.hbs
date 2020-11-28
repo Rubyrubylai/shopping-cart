@@ -1,9 +1,9 @@
 {{> alert}}
 
 <ul class="list-group">
-  <li class="list-group-item list-group-item-dark">Fill in the information</li>
+  <li class="list-group-item list-group-item-secondary">Fill in the information</li>
   <li class="list-group-item">
-    <table class="table">
+    <table class="table table-responsive-sm">
       <thead>
         <tr>
           <th scope="col"></th>
@@ -17,7 +17,7 @@
         {{#each items}}
         <tr>
           <td scope="row">
-            <a href="/product/{{this.id}}"><img style="width: 150px;" src="{{this.image}}" alt="cartItem_photo"></a>
+            <a href="/product/{{this.id}}"><img class="cart-photo" src="{{this.image}}" alt="cartItem_photo"></a>
           </td>
           <td>
             <a href="/product/{{this.id}}" style="text-decoration: none;" class="a-custom">{{this.name}}</a>
@@ -42,7 +42,7 @@
 
 <form action="/order" method="POST">
   <ul class="list-group">
-    <li class="list-group-item list-group-item-dark">Shipping Information</li>
+    <li class="list-group-item list-group-item-secondary">Shipping Information</li>
     <li class="list-group-item">
       <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Name</label>

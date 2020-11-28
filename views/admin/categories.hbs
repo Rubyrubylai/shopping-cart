@@ -1,25 +1,25 @@
 {{>alert}}
 <h2 id="title">後台</h2>
-<a href="/admin/products" style="text-decoration: none;">Product</a> |
-<a href="/admin/orders" style="text-decoration: none;">Order</a> |
-<a href="/admin/categories" style="text-decoration: none;">Category</a>
+<a href="/admin/products" style="text-decoration: none;" class="subtitle">Product</a> |
+<a href="/admin/orders" style="text-decoration: none;" class="subtitle">Order</a> |
+<a href="/admin/categories" style="text-decoration: none;" class="subtitle">Category</a>
 <br>
 
 {{#if edit}}
 <form action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
   <input type="text" name="name" value="{{category.name}}" placeholder="Category name" class="form-control add-category-btn"> 
-  <button type="submit" class="btn btn-primary category-btn">Update</button>
-  <a type="button" href="javascript:history.back()" class="btn btn-primary category-btn">cancel</a>
+  <button type="submit" class="btn btn-secondary category-btn">Update</button>
+  <a type="button" href="javascript:history.back()" class="btn btn-secondary category-btn">cancel</a>
 </form>
 {{else}}
 <form action="/admin/categories/new" method="POST">
   <input type="text" name="name" placeholder="Category name" class="form-control add-category-btn"> 
-  <button type="submit" class="btn btn-primary category-btn">Add new category</button>
+  <button type="submit" class="btn btn-secondary category-btn">Add new category</button>
 </form>
 {{/if}}
 
 <table class="table table-bordered custom-category-table">
-  <thead class="thead-light">
+  <thead class="thead thead-custom">
     <tr class="text-center">
       <th scope="col">Category Name</th>
       <th scope="col">Detail</th>
@@ -31,11 +31,11 @@
     <tr class="text-center">
       <td>{{this.name}}</td>
       <td>
-        <a href="/admin/categories/{{this.id}}">Edit</a>
+        <a href="/admin/categories/{{this.id}}" class="edit-btn">Edit</a>
       </td>
       <td>
         <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST">
-          <button type="submit" class="btn" style="margin-top: -6px;"><i class="fas fa-trash-alt"></i></button>
+          <button type="submit" class="btn trash"><i class="fas fa-trash-alt"></i></button>
         </form>
       </td>
     </tr>

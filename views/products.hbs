@@ -4,7 +4,7 @@
 
 <div class="row">
 {{#each products}}
-  <div class="card co-3">
+  <div class="card">
     <a href="/product/{{this.id}}" class="a-custom" style="text-decoration:none;">
       <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
       <div class="card-body">
@@ -16,7 +16,7 @@
 {{/each}}
 </div>
 
-<nav aria-label="Page navigation" class="nav-bottom">
+<nav aria-label="Page navigation" class="nav-page">
   <ul class="pagination">
     <li class="page-item">
       <a class="page-link" href="?page={{prev}}&CategoryId={{CategoryId}}" aria-label="Previous">

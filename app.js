@@ -69,6 +69,9 @@ app.post('/favorite', auth.authenticated, (req, res) => {
 })
 
 app.post('/cart', (req, res) => {
+  console.log('------------')
+  console.log(req.body.cartId)
+  console.log(req.body.productId)
   CartItem.findOne({ where: {
       ProductId: Number(req.body.productId),
       CartId: Number(req.body.cartId)

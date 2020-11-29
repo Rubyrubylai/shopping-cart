@@ -22,17 +22,19 @@
             <td>
               <a href="/product/{{this.id}}" style="text-decoration: none;" class="a-custom">{{this.name}}</a>
             </td>
-            <td>${{this.price}}</td>
             <td>
-              <form action="/cartItem/{{this.cartItemId}}/min" method="POST" class="cart">
-                  <input type="submit" id="min" type="button" value="-" >
-                </form>
-                <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
-                <form action="/cartItem/{{this.cartItemId}}/add" method="POST" class="cart">
-                  <input type="submit" id="add" type="button" value="+">
-                </form>
+              $<span>{{this.price}}</span>
             </td>
-            <td>${{this.subtotalPrice}}</td>
+            <td>
+               
+              <input type="hidden" name="productId" value="{{this.id}}">
+              <button onclick="cart(this)" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
+              <input id="right-num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
+              <button onclick="cart(this)" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
+            
+            </td>
+            <td>
+              $<span>{{this.subtotalPrice}}</span></td>
             <td>
               <div class="trash">
                 <form action="/cartItem?_method=DELETE" method="POST">
@@ -42,14 +44,14 @@
               </div>
             </td>
           </tr>
-          
           {{/each}}
+          <input type="hidden" id="cartId" value="{{cartId}}">
           <tr>
             <th scope="col"></th>
             <th scope="col"></th>
-            <th scope="col">Subtotal</th>
-            <th scope="col">{{totalQty}}</th>
-            <th scope="col">${{totalPrice}}</th>
+            <th scope="col">Total</th>
+            <th scope="col" id="totalQty">{{totalQty}}</th>
+            <th scope="col" id="totalPrice">$<span>{{totalPrice}}</span></th>
             <th scope="col"></th>
           </tr>
         </tbody>
@@ -68,3 +70,5 @@
   <!-- cart modal at right side -->
   {{> rightCart}}
 </div>
+
+<script src="/ajax.js"></script>

@@ -14,7 +14,7 @@
           <div class="add-min-button">
             <input id="min" type="button" value="-" >
             <input id="num" name="num" value="1" readonly="true">
-            <input id="add" type="button" value="+">
+            <input id="plus" type="button" value="+">
           </div>
           <input type="hidden" id="productId" name="productId" value="{{product.id}}">
           <input type="hidden" id="cartId" value="{{cartId}}">
@@ -39,9 +39,9 @@
       </div>
     </section>
   </div>
-
-  <!-- cart modal at right side -->
-  {{> rightCart}}
 </div>
 
-<script src="/ajax.js"></script>
+<!-- cart modal at right side -->
+{{> rightCart}}
+
+<script src="/index.js"></script>

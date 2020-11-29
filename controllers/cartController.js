@@ -18,6 +18,7 @@ const cartController = {
       let items
       let totalPrice = 0
       let totalQty = 0
+      
       //右側購物車
       items = sort.rightCartItem(cart)
       if (!items || (items.length === 0)) {
@@ -36,7 +37,9 @@ const cartController = {
         nest: true
       })
       .then(categories => {
-        return res.render('cart', { cart, items, totalPrice, totalQty, noItems, categories })
+        let order = true
+        let cartId = req.session.cartId
+        return res.render('cart', { cart, items, totalPrice, totalQty, noItems, categories, order, cartId })
       })
     })
   },
@@ -44,11 +47,9 @@ const cartController = {
   //將商品加入購物車
   postCart: (req, res) => {
     Cart.findOrCreate({
-      where: { id: req.session.cartId || 0 },
-      // include: [{ model: Product, as: 'items' }]
+      where: { id: req.session.cartId || 0 }
     })
     .spread((cart, created) => {
-      console.log(cart)
       CartItem.findOrCreate({
         where: {
           CartId: cart.id,
@@ -64,28 +65,10 @@ const cartController = {
           quantity: Number(cartItem.quantity || 0)  + Number(req.body.num)
         })
         .then(cartItem => {
-          // let items
-          // let totalPrice = 0
-          
-          // items = sort.rightCartItem(cart)
-          // if (!items || (items.length === 0)) {
-          //   noItems = true
-          // }
-          // else {
-          //   totalPrice = sort.rightCartPrice(items, totalPrice)
-          // }
-          // console.log(cartItem.toJSON())
           req.session.cartId = cart.id
-          // var cartId = cart.id
           return req.session.save(() => {
             req.flash('success_msg', 'The item has been added into the cart!')
-            return res.redirect('back')
-            // console.log(req.session.cartId)
-            // Product.findByPk(req.params.id)
-            // .then(product => {
-            //   return res.render('product', { product: product.toJSON(), items, totalPrice, cartId })
-            // })
-            
+            return res.redirect('back')            
           })
         })
         .catch(err => console.error(err))
@@ -142,6 +125,7 @@ const cartController = {
       let items
       let totalPrice = 0
       let totalQty = 0
+      let order = true
       items = sort.rightCartItem(cart)
       if (items) {
         totalPrice = sort.rightCartPrice(items, totalPrice)
@@ -152,14 +136,14 @@ const cartController = {
 
       User.findByPk(req.user.id)
       .then(user => {
-
         //上方導覽列的分類
         Category.findAll({
           raw: true,
           nest: true
         })
         .then(categories => {
-          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories })
+          let cartId = req.session.cartId  
+          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories, order, cartId })
         })
       }) 
     })

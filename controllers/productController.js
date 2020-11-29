@@ -59,6 +59,10 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
+        let cartId
+        if (req.session.cartId) {
+          cartId = req.session.cartId
+        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -66,7 +70,7 @@ const productController = {
           nest: true
         })
         .then(categories => {
-          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId })
+          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId, cartId })
         })
 
       })
@@ -87,7 +91,6 @@ const productController = {
         { include: [{ model: Product, as: 'items' }] }
         )
       .then(cart => {
-        
         let noItems
         let items
         let totalPrice = 0
@@ -98,10 +101,9 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-
         let cartId
-        if(req.session.cartId) {
-          cartId = req.session.cartId  
+        if (req.session.cartId) {
+          cartId = req.session.cartId
         }
 
         //上方導覽列的分類
@@ -157,6 +159,10 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
+        let cartId
+        if (req.session.cartId) {
+          cartId = req.session.cartId
+        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -164,7 +170,7 @@ const productController = {
           nest: true
         })
         .then(categories => {
-          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories })
+          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories, cartId })
         })
       })
     })

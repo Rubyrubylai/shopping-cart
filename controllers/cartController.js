@@ -30,6 +30,11 @@ const cartController = {
           totalQty += item.quantity
         })
       }
+      let cartId
+      if (req.session.cartId) {
+        cartId = req.session.cartId
+      }
+      let order = true
 
       //上方導覽列的分類
       Category.findAll({
@@ -37,8 +42,6 @@ const cartController = {
         nest: true
       })
       .then(categories => {
-        let order = true
-        let cartId = req.session.cartId
         return res.render('cart', { cart, items, totalPrice, totalQty, noItems, categories, order, cartId })
       })
     })
@@ -125,7 +128,6 @@ const cartController = {
       let items
       let totalPrice = 0
       let totalQty = 0
-      let order = true
       items = sort.rightCartItem(cart)
       if (items) {
         totalPrice = sort.rightCartPrice(items, totalPrice)
@@ -133,6 +135,11 @@ const cartController = {
           totalQty += item.quantity
         })
       }
+      let cartId
+      if (req.session.cartId) {
+        cartId = req.session.cartId
+      }
+      let order = true
 
       User.findByPk(req.user.id)
       .then(user => {
@@ -142,7 +149,6 @@ const cartController = {
           nest: true
         })
         .then(categories => {
-          let cartId = req.session.cartId  
           return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories, order, cartId })
         })
       }) 

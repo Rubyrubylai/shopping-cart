@@ -46,6 +46,10 @@ const orderController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
+        let cartId
+        if (req.session.cartId) {
+          cartId = req.session.cartId
+        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -53,7 +57,7 @@ const orderController = {
           nest: true
         })
         .then(categories => {
-          return res.render('orders', { orders, categories, noItems, items, totalPrice })
+          return res.render('orders', { orders, categories, noItems, items, totalPrice, cartId })
         })
       })
     })
@@ -106,7 +110,10 @@ const orderController = {
           else {
             totalPrice = sort.rightCartPrice(items, totalPrice)
           }
-
+          let cartId
+          if (req.session.cartId) {
+            cartId = req.session.cartId
+          }
 
           //上方導覽列的分類
           Category.findAll({
@@ -114,7 +121,7 @@ const orderController = {
             nest: true
           })
           .then(categories => {
-            return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], categories, noItems, items, totalPrice })
+            return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], categories, noItems, items, totalPrice, cartId })
           })
         })
       })

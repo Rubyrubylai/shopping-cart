@@ -44,9 +44,11 @@ const cartController = {
   //將商品加入購物車
   postCart: (req, res) => {
     Cart.findOrCreate({
-      where: { id: req.session.cartId || 0 }
+      where: { id: req.session.cartId || 0 },
+      // include: [{ model: Product, as: 'items' }]
     })
     .spread((cart, created) => {
+      console.log(cart)
       CartItem.findOrCreate({
         where: {
           CartId: cart.id,
@@ -62,10 +64,28 @@ const cartController = {
           quantity: Number(cartItem.quantity || 0)  + Number(req.body.num)
         })
         .then(cartItem => {
+          // let items
+          // let totalPrice = 0
+          
+          // items = sort.rightCartItem(cart)
+          // if (!items || (items.length === 0)) {
+          //   noItems = true
+          // }
+          // else {
+          //   totalPrice = sort.rightCartPrice(items, totalPrice)
+          // }
+          // console.log(cartItem.toJSON())
           req.session.cartId = cart.id
+          // var cartId = cart.id
           return req.session.save(() => {
             req.flash('success_msg', 'The item has been added into the cart!')
             return res.redirect('back')
+            // console.log(req.session.cartId)
+            // Product.findByPk(req.params.id)
+            // .then(product => {
+            //   return res.render('product', { product: product.toJSON(), items, totalPrice, cartId })
+            // })
+            
           })
         })
         .catch(err => console.error(err))

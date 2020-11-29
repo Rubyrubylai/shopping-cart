@@ -86,7 +86,8 @@ const productController = {
         req.session.cartId,
         { include: [{ model: Product, as: 'items' }] }
         )
-      .then(cart => {     
+      .then(cart => {
+        
         let noItems
         let items
         let totalPrice = 0
@@ -98,13 +99,18 @@ const productController = {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
 
+        let cartId
+        if(req.session.cartId) {
+          cartId = req.session.cartId  
+        }
+
         //上方導覽列的分類
         Category.findAll({
           raw: true,
           nest: true
         })
         .then(categories => {
-          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories })
+          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories, cartId })
         })
         
       })
@@ -165,13 +171,16 @@ const productController = {
   },
 
   postFavorite: (req, res) => {
+    console.log('---------------------------')
+    console.log(req.body.productId)
     Favorite.create({
       UserId: req.user.id,
       ProductId: req.params.id
     })
     .then(favorite => {
+      //console.log(favorite)
       req.flash('success_msg', 'The product has been added into the wishlist!')
-      return res.redirect('back')
+      
     })
   },
 

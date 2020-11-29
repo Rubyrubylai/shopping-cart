@@ -16,18 +16,22 @@
             <input id="num" name="num" value="1" readonly="true">
             <input id="add" type="button" value="+">
           </div>
-          <input type="hidden" name="productId" value="{{product.id}}">
-          <button type="submit" class="btn btn-secondary">Add To Cart</button>
+          <input type="hidden" id="productId" name="productId" value="{{product.id}}">
+          <input type="hidden" id="cartId" value="{{cartId}}">
+          <button id="cart" type="submit" class="btn btn-secondary">Add To Cart</button>
         </form>
         {{#if product.FavoritedUsers}}
-        <form action="/favorite/{{product.id}}?_method=DELETE" method="POST" class="unfavorite-btn">
-          <button type="submit" class="btn btn-secondary">
+        <form action="/favorite/{{product.id}}?_method=DELETE" method="POST" class="unfavorite-btn" id="wishlist">
+          <button class="btn btn-secondary">
+            <input type="hidden" class="product-id" value="{{product.id}}">
             <i class="fas fa-heart fa-lg"></i> Already At Wishlist
           </button>
         </form>
         {{else}}
-        <form action="/favorite/{{product.id}}" method="POST" class="favorite-btn">
-          <button type="submit" class="btn btn-secondary">
+        <form action="/favorite" method="POST" class="favorite-btn" id="wishlist">
+          <button class="btn btn-secondary">
+            <input type="hidden" class="product-id" value="{{product.id}}">
+            <input type="hidden" class="user-id" value="{{user.id}}">
             <i class="far fa-heart fa-lg"></i> Add To Wishlist  
           </button>
         </form>
@@ -39,3 +43,5 @@
   <!-- cart modal at right side -->
   {{> rightCart}}
 </div>
+
+<script src="/ajax.js"></script>

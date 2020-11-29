@@ -19,15 +19,18 @@
           </div>
           <div class="col-5">
             <h6>{{this.name}}</h6>
-            <p>${{this.price}}</p>
+            <p style="display: inline;">$</p>
+            <p style="display: inline;">{{this.price}}</p>
             <div class="right-add-min-button">
-              <form action="/cartItem/{{this.cartItemId}}/min" method="POST" class="cart">
-                <input type="submit" id="min" type="button" value="-" >
-              </form>
-              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
-              <form action="/cartItem/{{this.cartItemId}}/add" method="POST" class="cart">
-                <input type="submit" id="add" type="button" value="+">
-              </form>
+              
+                
+              <input type="hidden" name="productId" value="{{this.id}}">
+              <button onclick="min(this)" id="right-min" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
+              <input id="right-num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
+              <button onclick="min(this)" id="right-min" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
+              {{!-- <form action="/cartItem/{{this.cartItemId}}/add" method="POST" class="cart">
+                <input type="submit" id="add" type="button" value="plus">
+              </form> --}}
             </div>
             <div class="trash">
               <form action="/cartItem?_method=DELETE" method="POST">
@@ -45,7 +48,8 @@
         {{else}}
         <div class="div-subtotal">
           <h6 class="total">Subtotal: </h6>
-          <p class="total">${{totalPrice}}</p>
+          <p style="display: inline;">$</p>
+          <p class="total" id="totalPrice" style="display: inline;">{{totalPrice}}</p>
         </div>
         <form action="/cart" method="GET">
           <button type="submit" class="btn btn-secondary">check out</button>
@@ -56,5 +60,7 @@
   </div>
 </div>
 
+
 <script src="/index.js"></script>
+<script src="/ajax.js"></script>
 	

@@ -65,16 +65,39 @@
   margin-bottom: 20px;
 }
 
-.right-add-min-button {
-  float: left;
-}
-
 .total {
   display: inline;
 }
 
-.picture, .cart, .payment {
+.picture, .payment {
   display: inline-block;
+}
+
+/* right cart */
+.cart {
+  background-color: white;
+  border: none;
+  width: 14px;
+}
+
+.right-add-min-button {
+  margin-top: 10px;
+}
+
+.cart-btn {
+  background-color: white;
+  border: none;
+}
+
+.trash-right {
+  color: #7e4e50;
+  position: relative;
+  left: 80px;
+  top: -23px;
+}
+
+.icon {
+  color: #7e4e50;
 }
 
 .div-subtotal {
@@ -95,7 +118,7 @@
   color: #7e4e50;
 }
 
-.trash-cart, .trash-right {
+.trash-cart {
   margin-top: 4px;
   color: #7e4e50;
 }

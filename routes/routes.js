@@ -25,7 +25,7 @@ router.post('/order/:id/cancel', auth.authenticated, orderController.cancelOrder
 router.post('/newebpay/callback', auth.authenticated, orderController.newebpayCallback)
 
 router.get('/favorite', auth.authenticated, productController.getFavorite)
-router.post('/favorite/:id', auth.authenticated, productController.postFavorite)
+//router.post('/favorite', auth.authenticated, productController.postFavorite)
 router.delete('/favorite/:id', auth.authenticated, productController.removeFavorite)
 
 module.exports = router

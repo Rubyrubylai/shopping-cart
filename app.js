@@ -6,14 +6,13 @@ var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
-var MemoryStore = require('memorystore')(session)
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
 const app = express()
-const port = '3000' || process.env.PORT
+const port = process.env.PORT
 
 app.engine('hbs', exphbs({
   extname: '.hbs', 
@@ -33,9 +32,6 @@ app.use(session({
   secret: 'ac',
     name: 'ac',
     cookie: { maxAge: null },
-    store: new MemoryStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
-    }),
     resave: false,
     saveUninitialized: true,
 }))
@@ -61,6 +57,6 @@ require('./routes/cart')(app)
 require('./routes')(app)
 
 app.listen(port, () => {
-  console.log(`app is running on http://localhost:${port}`)
+  console.log(`app is running on http://localhost:3000`)
 })
 

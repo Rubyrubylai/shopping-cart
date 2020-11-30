@@ -224,9 +224,6 @@ const orderController = {
     const data = JSON.parse(encrypt.create_mpg_aes_decrypt(req.body.TradeInfo))
     return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } })
     .then(orders => {
-      
-      console.log(data)
-      console.log('====================================')
       const time = data['Result']['PayTime']
       const payTime = new Date(time.slice(0,10) + ' ' + time.slice(10))
 
@@ -242,7 +239,7 @@ const orderController = {
           params: 'success'
         })
         .then(payment => {
-          console.log(order.id)
+          req.flash('success_msg', 'Thank you for your ordering. We will prepare the shipment ASAP!')
           return res.redirect(`/order/${order.id}`)
         })
       })

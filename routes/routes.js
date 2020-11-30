@@ -18,7 +18,7 @@ router.get('/orders', auth.authenticated, orderController.getOrders)
 router.get('/order/:id', auth.authenticated, orderController.getOrder)
 router.post('/order', auth.authenticated, orderController.postOrder)
 router.post('/order/:id/cancel', auth.authenticated, orderController.cancelOrder)
-router.post('/newebpay/callback', auth.authenticated, orderController.newebpayCallback)
+router.post('/newebpay/callback', orderController.newebpayCallback)
 
 router.get('/favorite', auth.authenticated, productController.getFavorite)
 router.post('/favorite/:id', auth.authenticated, productController.postFavorite)

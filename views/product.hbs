@@ -12,9 +12,9 @@
         <p>{{product.description}}</p>
         <form action="/cart/{{product.id}}" method="POST">
           <div class="add-min-button">
-            <input id="min" type="button" value="-" >
-            <input id="num" name="num" value="1" readonly="true">
-            <input id="plus" type="button" value="+">
+            <button type="button" id="min" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
+            <input id="num" name="num" value="1" readonly="true" class="cart-btn">
+            <button type="button" id="plus" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
           </div>
           <input type="hidden" id="productId" name="productId" value="{{product.id}}">
           <button id="cart" type="submit" class="btn btn-secondary">Add To Cart</button>

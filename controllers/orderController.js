@@ -148,7 +148,10 @@ const orderController = {
         .then(order => {
           //訂單通知信
           const items = cart.toJSON().items
-          let text = '<p>Please check below for your orders.</p>'
+          let text = `
+            <p>Thank you for ordering.</p>
+            <h3>Details:</h3>
+          `
           items.forEach(i => {
             text += `
             <div style="margin-bottom: 2px;">
@@ -159,13 +162,14 @@ const orderController = {
             `
           })
           text += `
-            <p style="margin-bottom: 10px;">Thank you for ordering.</p>
-            <h2>Best regards</h2>
-            <p>SHOP</p>
+            <p>We hope to see you again soon.</p>
+            <br>
+            <span>Best regards,</span>
+            <span>SHOP</span>
           `
 
           var mailOptions = {
-            from: 'r844312@gmail.com',
+            from: process.env.Email,
             to: order.email,
             subject: `Order Confirmation: SHOP #${order.id}`,
             html: text
@@ -210,8 +214,8 @@ const orderController = {
         shipping_status: -2
       })
       .then(order => {
-        req.flash('success_msg', `Order#${order.id} has been cancelled!`)
-        return res.redirect('/orders')
+        req.flash('success_msg', `The order has been cancelled!`)
+        return res.redirect('back')
       })  
     })
   },
@@ -241,6 +245,7 @@ const orderController = {
             params: 'success'
           })
           .then(payment => {
+            req.flash('Thank you for your payment.')
             return res.redirect(`/order/${order.id}`)
           })
         })
@@ -254,6 +259,7 @@ const orderController = {
             params: 'success'
           })
           .then(payment => {
+            req.flash('Thank you for your payment.')
             return res.redirect(`/order/${order.id}`)
           })
       }

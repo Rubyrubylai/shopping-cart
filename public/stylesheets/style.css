@@ -74,11 +74,6 @@
 }
 
 /* right cart */
-.cart {
-  background-color: white;
-  border: none;
-  width: 14px;
-}
 
 .right-add-min-button {
   margin-top: 10px;
@@ -129,7 +124,7 @@
   color: #7e4e50;
 }
 
-.edit-btn:hover, .trash:hover, .subtitle:hover, .trash-cart:hover, .trash-right:hover {
+.edit-btn:hover, .trash:hover, .admin-trash:hover ,.subtitle:hover, .trash-cart:hover, .trash-right:hover {
   color: #56cc9d;
 }
 

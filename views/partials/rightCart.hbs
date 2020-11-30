@@ -22,20 +22,16 @@
             <p>
               $<span>{{this.price}}</span>
             </p>
-            {{#if ../order}}
-            x {{this.quantity}}
-            {{else}}
             <div class="right-add-min-button">  
               <input type="hidden" name="productId" value="{{this.id}}">
               <button onclick="cart(this)" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
-              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
+              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart-btn">
               <button onclick="cart(this)" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
             </div>
             <input type="hidden" name="cartItemId" id="cart-item-id" value="{{this.cartItemId}}">
             <div>  
               <button onclick="remove(this)" class="btn trash-right"><i class="fas fa-trash-alt fa-lg"></i></button>
             </div>
-            {{/if}}  
           </div>
         </div>
         {{/each}}

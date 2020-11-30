@@ -86,7 +86,7 @@ adminController = {
             payment_method
           })
           .then(payment => {
-            req.flash('success_msg', `Order#${order.id} has been updated!`)
+            req.flash('success_msg', `The order has been updated!`)
             return res.redirect(`/admin/orders/${order.id}`)
           })
           
@@ -107,7 +107,7 @@ adminController = {
             payment_method
           })
           .then(payment => {
-            req.flash('success_msg', `Order#${order.id} has been updated!`)
+            req.flash('success_msg', `The order has been updated!`)
             return res.redirect(`/admin/orders/${order.id}`)
           })
         })
@@ -131,7 +131,6 @@ adminController = {
         nest: true
       })
       .then(categories => {
-        console.log(products)
         return res.render('admin/products', { products, categories })
       })
     })
@@ -154,14 +153,14 @@ adminController = {
     const { file } = req
     const { name, price, description, image } = req.body
     if (!name || !price || !description || !file) {
-      req.flash('warning_msg', 'All fields are required!')
       //上方導覽列的分類
       Category.findAll({
         raw: true,
         nest: true
       })
       .then(categories => {
-        return res.render('admin/product', { product : { name, image, description, price }, newProduct, categories })
+        let errors = [{ error_msg: 'All fields are required!'}]
+        return res.render('admin/product', { product : { name, image, description, price }, newProduct, categories, errors })
       })
     }
     else {
@@ -200,27 +199,19 @@ adminController = {
       const { file } = req
       const { id } = req.params
       const { name, image, description, price, CategoryId } = req.body
-      console.log(file)
       if(!name ||　!description || !price || !CategoryId) {
-        console.log('no info')
-        req.flash('warning_msg', 'All fields are required!')
-        
-        console.log(description)
-        console.log(price)
-        //return res.redirect('back')
-        //上方導覽列的分類
         Category.findAll({
           raw: true,
           nest: true
         })
         .then(categories => {
-          return res.render('admin/product', { product : { id, name, image, description, price, CategoryId }, categories })
+          let errors = [{ error_msg: 'All fields are required!'}]
+          return res.render('admin/product', { product : { id, name, image, description, price, CategoryId }, categories, errors })
         })
         
       }
       else {
         imgur.setClientID(IMGUR_CLIENT_ID)
-        console.log(name)
         if (file) {
           imgur.upload(file.path, (err, img) => {
             return product.update({
@@ -231,13 +222,12 @@ adminController = {
               CategoryId
             })
             .then(product => {
-              req.flash('success_msg', `${product.name} has been updated!`)
+              req.flash('success_msg', `The product has been updated!`)
               return res.redirect('back')
             })
           })
         }
         else {
-          console.log('product')
             product.update({
               name,
               image,
@@ -246,7 +236,7 @@ adminController = {
               CategoryId
             })
             .then(product => {
-              req.flash('success_msg', `${product.name} has been updated!`)
+              req.flash('success_msg', `The product has been updated!`)
               return res.redirect('back')
             })
           
@@ -314,7 +304,7 @@ adminController = {
           name
         })
         .then(category => {
-          req.flash('success_msg', `${category.name} has been updated!`)
+          req.flash('success_msg', `The category has been updated to ${category.name}!`)
           return res.redirect('/admin/categories')
         }) 
       }

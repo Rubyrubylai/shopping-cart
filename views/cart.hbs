@@ -28,7 +28,7 @@
             <td>
               <input type="hidden" name="productId" value="{{this.id}}">
               <button onclick="cart(this)" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
-              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
+              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart-btn">
               <button onclick="cart(this)" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
             </td>
             <td class="subtotalPrice">
@@ -63,8 +63,6 @@
     {{/if}}
   </center>
 
-  <!-- cart modal at right side -->
-  {{> rightCart}}
 </div>
 
 <script src="/ajax.js"></script>

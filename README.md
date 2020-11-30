@@ -1,5 +1,5 @@
 # SHOP
-仿效一般電商平台，使用Nodemailer發送訂單確認信，並串接藍新金流進行付款。
+仿效一般電商平台，使用Nodemailer發送訂單確認信，並串接藍新金流進行付款。  
 區分visitor、customer、admin三種角色，visitor可以瀏覽商店中的商品並加進購物車，但若要購買，則須登入為customer，而admin為店家的帳號，可以進行上架商品等後台動作。
 
 ![image](https://github.com/Rubyrubylai/shopping-cart/blob/feature/order/picture/SHOP.PNG)
@@ -10,7 +10,7 @@
 ## 測試帳號
 
 |role||name|email|password|
-|----||----|----|----|
+|----||----|-----|--------|
 |admin|Admin|admin@example.com|a123456|
 |customer|Tony|tony@example.com|a123456|
 |customer|Emily|emily@example.com|a123456|

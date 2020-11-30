@@ -87,8 +87,8 @@
 .trash-right {
   color: #7e4e50;
   position: relative;
-  left: 90px;
-  top: -28px;
+  left: 40px;
+  top: -70px;
 }
 
 .trash {
@@ -266,6 +266,13 @@
     width: 400px;
     margin: auto;
   }
+
+  .trash-right {
+    color: #7e4e50;
+    position: relative;
+    left: 90px;
+    top: -28px;
+  }  
 }
 
 @media screen and (min-width: 790px) {

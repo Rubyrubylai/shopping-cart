@@ -59,10 +59,6 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -70,7 +66,7 @@ const productController = {
           nest: true
         })
         .then(categories => {
-          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId, cartId })
+          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId })
         })
 
       })
@@ -101,10 +97,6 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -112,7 +104,7 @@ const productController = {
           nest: true
         })
         .then(categories => {
-          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories, cartId })
+          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories })
         })
         
       })
@@ -159,10 +151,6 @@ const productController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -170,23 +158,20 @@ const productController = {
           nest: true
         })
         .then(categories => {
-          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories, cartId })
+          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories })
         })
       })
     })
   },
 
   postFavorite: (req, res) => {
-    console.log('---------------------------')
-    console.log(req.body.productId)
     Favorite.create({
       UserId: req.user.id,
       ProductId: req.params.id
     })
     .then(favorite => {
-      //console.log(favorite)
       req.flash('success_msg', 'The product has been added into the wishlist!')
-      
+      return res.redirect('back')
     })
   },
 

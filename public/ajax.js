@@ -100,67 +100,8 @@ function remove(obj) {
       alert('The item has been removed form the cart!')
     },
     error: function(err) {
-      console.log(err)
+      console.error(err)
     }
   })
   return false
 }
-
-// $('#cart').unbind('click').click(() => {
-//   console.log('---------------------cart')
-//   var cartId = $("#cartId").val()
-//   var productId = $("#productId").val()
-//   var num = $("#num").val()
-//   if (num > 1) {
-//     num = parseInt(num) - 1
-//   }
-
-
-//   $.ajax({
-//     method: 'POST',
-//     url: '/cart',
-//     dataType: 'text',
-//     data: { cartId, productId, num },
-//     success: function(response) {
-//       var showNum = $("#right-num")
-//       //alert('已成功加入')
-//       showNum.val(num) 
-//       console.log(response)
-//     },
-//     error: function(err) {
-//       console.error(err)
-//     }
-//   })
-// })
-
-// $("#wishlist").on('submit', (e) => {
-//   var that = $(this)
-//   url = that.attr('action')
-//   type = that.attr('method')
-//   console.log(that)
-
-//   console.log(url)
-//   var productId = $(".product-id").val()
-  
-//   var userId = $(".user-id").val()
-
-//   $.ajax({
-//     method: 'POST',
-//     url: '/favorite',
-//     dataType: 'text',
-//     data: { productId, userId },
-//     success: function(response) {
-//       console.log(response)
-//       var product = $(".product-id")
-//       window.location.href="{:url('index/index')
-//       product.innerHTML = '<button class="btn btn-secondary"><i class="fas fa-heart fa-lg"></i> Already At Wishlist</button>'
-//       console.log(product)
-//     },
-//     error: function(err) {
-//       console.error(err)
-//     }
-//   })
-//   console.log(product.innerHTML)
-//   console.log(userId)
-//   return false
-// })

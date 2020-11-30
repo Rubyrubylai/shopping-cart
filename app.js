@@ -49,79 +49,7 @@ app.use((req, res, next) => {
 
 app.use('/upload', express.static(__dirname + '/upload'))
 
-// const db = require('./models')
-// const Favorite = db.Favorite
-// const Cart = db.Cart
-// const CartItem = db.CartItem
-// const auth = require('./config/auth')
-
-// app.post('/favorite', auth.authenticated, (req, res) => {
-//   console.log(req.body.productId)
-//   Favorite.create({
-//     UserId: req.user.id,
-//     ProductId: req.body.productId
-//   })
-  // .then(favorite => {
-    //console.log(favorite)
-    // req.flash('success_msg', 'The product has been added into the wishlist!')
-    // return res.redirect('back')
-  // })
-// })
-
 require('./routes/cart')(app)
-
-// app.post('/cart', (req, res) => {
-  
-//   Cart.findOrCreate({
-//     where: { id: req.body.cartId || 0 }
-//   })
-//   .spread((cart, created) => {
-    
-//     CartItem.findOrCreate({
-//       where: {
-//         CartId: cart.id,
-//         ProductId: req.body.productId
-//       },
-//       default: {
-//         CartId: cart.id,
-//         ProductId: req.body.productId
-//       }
-//     })
-//     .spread((cartItem, created) => {
-//       cartItem.update({
-//         quantity: Number(cartItem.quantity || 0)  + Number(req.body.num)
-//       })
-//       .then(cartItem => {
-//         console.log(req.body.cartId)
-//         let items
-//         let totalPrice = 0
-        
-//         items = sort.rightCartItem(cart)
-//         if (!items || (items.length === 0)) {
-//           noItems = true
-//         }
-//         else {
-//           totalPrice = sort.rightCartPrice(items, totalPrice)
-//         }
-//         console.log(cartItem.toJSON())
-//         req.session.cartId = cart.id
-//         var cartId = req.session.cartId
-//         return req.session.save(() => {
-//           console.log('------------------POST')
-//           console.log(cart)
-//           req.flash('success_msg', 'The item has been added into the cart!')
-//           console.log(req.session.cartId)
-//           Product.findByPk(req.params.id)
-//           .then(product => {
-//             return res.render('product', { cartId })
-//           })
-          
-//         })
-//       })
-//       .catch(err => console.error(err))
-//     })  
-//   })
-// })
 
 require('./routes')(app)
 

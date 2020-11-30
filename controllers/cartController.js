@@ -30,10 +30,6 @@ const cartController = {
           totalQty += item.quantity
         })
       }
-      let cartId
-      if (req.session.cartId) {
-        cartId = req.session.cartId
-      }
       let order = true
 
       //上方導覽列的分類
@@ -42,7 +38,7 @@ const cartController = {
         nest: true
       })
       .then(categories => {
-        return res.render('cart', { cart, items, totalPrice, totalQty, noItems, categories, order, cartId })
+        return res.render('cart', { cart, items, totalPrice, totalQty, noItems, categories, order })
       })
     })
   },
@@ -79,44 +75,6 @@ const cartController = {
     })
   },
 
-  //移除購物車內的商品
-  removeCartItem: (req, res) => {
-    CartItem.findByPk(req.body.cartItemId)
-    .then(cartItem => {
-      cartItem.destroy().then(cartItem => {
-        req.flash('success_msg', 'The item has been removed from the cart!')
-        return res.redirect('back')
-      })
-      
-    })
-  },
-
-  //購物車內的商品+1
-  addCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id)
-    .then(cartItem => {
-      cartItem.update({
-        quantity: cartItem.quantity + 1
-      })
-      .then(cartItem => {
-        return res.redirect('back')
-      })
-    })
-  },
-
-  //購物車內的商品-1
-  minCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id)
-    .then(cartItem => {
-      cartItem.update({
-        quantity: (cartItem.quantity === 1) ? 1 : cartItem.quantity - 1
-      })
-      .then(cartItem => {
-        return res.redirect('back')
-      })
-    })
-  },
-
   //確認訂單
   checkCart: (req, res) => {
     //右側購物車
@@ -135,10 +93,6 @@ const cartController = {
           totalQty += item.quantity
         })
       }
-      let cartId
-      if (req.session.cartId) {
-        cartId = req.session.cartId
-      }
       let order = true
 
       User.findByPk(req.user.id)
@@ -149,7 +103,7 @@ const cartController = {
           nest: true
         })
         .then(categories => {
-          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories, order, cartId })
+          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories, order })
         })
       }) 
     })

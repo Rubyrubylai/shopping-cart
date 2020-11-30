@@ -69,7 +69,7 @@
   display: inline;
 }
 
-.picture, .payment {
+.picture, .payment, .favorite {
   display: inline-block;
 }
 
@@ -98,6 +98,11 @@
 
 .trash {
   margin-top: -2px;
+  color: #7e4e50;
+}
+
+.admin-trash {
+  margin-top: -6px;
   color: #7e4e50;
 }
 
@@ -163,13 +168,14 @@
   display: block;
 }
 
-.orders-btn {
-  margin-bottom: 20px;
-}
-
 .custom-btn {
   width: 200px;
   margin-top: 20px;
+}
+
+.order-btn {
+  width: 200px;
+  margin-bottom: 20px;
 }
 
 .beside-btn {
@@ -242,6 +248,12 @@
   margin-top: 40px;
 }
 
+.alert-page {
+  margin-top: 40px;
+  padding-left: 10%;
+  width: 90%;
+}
+
 @media screen and (min-width: 480px) {
   .card {
     width: 40%;
@@ -270,7 +282,7 @@
   .list-detail {
     width: 45%;
     float: right;
-    margin-top: 55px;
+    margin-top: 77px;
   }
 
   .clearfix {

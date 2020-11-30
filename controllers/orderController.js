@@ -46,10 +46,6 @@ const orderController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -57,7 +53,7 @@ const orderController = {
           nest: true
         })
         .then(categories => {
-          return res.render('orders', { orders, categories, noItems, items, totalPrice, cartId })
+          return res.render('orders', { orders, categories, noItems, items, totalPrice })
         })
       })
     })
@@ -214,7 +210,7 @@ const orderController = {
         shipping_status: -2
       })
       .then(order => {
-        req.flash('success_msg', 'The order has been successfully cancelled!')
+        req.flash('success_msg', `Order#${order.id} has been cancelled!`)
         return res.redirect('/orders')
       })  
     })

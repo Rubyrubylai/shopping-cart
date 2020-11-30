@@ -86,7 +86,7 @@ adminController = {
             payment_method
           })
           .then(payment => {
-            req.flash('success_msg', 'The order has been successfully updated!')
+            req.flash('success_msg', `Order#${order.id} has been updated!`)
             return res.redirect(`/admin/orders/${order.id}`)
           })
           
@@ -107,7 +107,7 @@ adminController = {
             payment_method
           })
           .then(payment => {
-            req.flash('success_msg', 'The order has been successfully updated!')
+            req.flash('success_msg', `Order#${order.id} has been updated!`)
             return res.redirect(`/admin/orders/${order.id}`)
           })
         })
@@ -173,7 +173,7 @@ adminController = {
           description,
           image: file ? img.data.link : null
         }).then(product => {
-          req.flash('success_msg', 'The item has been successfully added!')
+          req.flash('success_msg', `${product.name} has been added!`)
           return res.redirect('/admin/products')
         })
       })
@@ -231,7 +231,7 @@ adminController = {
               CategoryId
             })
             .then(product => {
-              req.flash('success_msg', 'The product has been successfully updated!')
+              req.flash('success_msg', `${product.name} has been updated!`)
               return res.redirect('back')
             })
           })
@@ -246,7 +246,7 @@ adminController = {
               CategoryId
             })
             .then(product => {
-              req.flash('success_msg', 'The product has been successfully updated!')
+              req.flash('success_msg', `${product.name} has been updated!`)
               return res.redirect('back')
             })
           
@@ -260,7 +260,7 @@ adminController = {
     Product.findByPk(req.params.id)
     .then(product => {
       product.destroy().then(product => {
-        req.flash('success_msg', 'The item has been successfully removed!')
+        req.flash('success_msg', `${product.name} has been removed!`)
         return res.redirect('back')
       })
     })
@@ -295,7 +295,7 @@ adminController = {
         name
       })
       .then(category => {
-        req.flash('success_msg', 'The category has been successfully added.')
+        req.flash('success_msg', `${category.name} has been added!`)
         return res.redirect('/admin/categories')
       })
     }
@@ -314,7 +314,7 @@ adminController = {
           name
         })
         .then(category => {
-          req.flash('success_msg', 'The category has been successfully updated.')
+          req.flash('success_msg', `${category.name} has been updated!`)
           return res.redirect('/admin/categories')
         }) 
       }
@@ -325,7 +325,7 @@ adminController = {
     Category.findByPk(req.params.id)
     .then(category => {
       category.destroy().then(category => {
-        req.flash('success_msg', 'The category has been successfully removed.')
+        req.flash('success_msg', `${category.name} has been removed!`)
         return res.redirect('/admin/categories')
       })
     })

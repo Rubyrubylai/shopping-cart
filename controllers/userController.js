@@ -27,10 +27,6 @@ const userController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -38,7 +34,7 @@ const userController = {
           nest: true
         })
         .then(categories => {
-          return res.render('user/account', { user: user.toJSON(), categories, noItems, items, totalPrice, cartId })
+          return res.render('user/account', { user: user.toJSON(), categories, noItems, items, totalPrice })
         })
       })
     })
@@ -94,7 +90,7 @@ const userController = {
               nest: true
             })
             .then(categories => {
-              return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories, noItems, items, totalPrice , cartId })
+              return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories, noItems, items, totalPrice })
             })
           })
         }
@@ -108,13 +104,13 @@ const userController = {
             password: bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10))
           })
           .then(user => {
-            req.flash('success_msg', 'The account is updated successfully.')
+            req.flash('success_msg', 'The account has been updated successfully!')
             return res.redirect('/user/account')
           })
         }
       }
       else if (!email) {
-        req.flash('warning_msg', 'The email field is required.')
+        req.flash('warning_msg', 'The email field is required!')
         return res.redirect('back')
       }
       else {
@@ -126,7 +122,7 @@ const userController = {
           phone
         })
         .then(user => {
-          req.flash('success_msg', 'The account is updated successfully.')
+          req.flash('success_msg', 'The account has been updated successfully!')
           return res.redirect('/user/account')
         })
       }
@@ -156,12 +152,8 @@ const userController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
-        return res.render('user/login', { categories, noItems, items, totalPrice, cartId })
+        return res.render('user/login', { categories, noItems, items, totalPrice })
       })
     })
   },
@@ -189,12 +181,8 @@ const userController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
-        return res.render('user/register', { categories, noItems, items, totalPrice, cartId })
+        return res.render('user/register', { categories, noItems, items, totalPrice })
       })
     })
   },
@@ -229,10 +217,6 @@ const userController = {
         else {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        let cartId
-        if (req.session.cartId) {
-          cartId = req.session.cartId
-        }
 
         //上方導覽列的分類
         Category.findAll({
@@ -240,7 +224,7 @@ const userController = {
           nest: true
         })
         .then(categories => {
-          return res.render('user/register', { errors, account, email, password, confirmPassword, categories, noItems, items, totalPrice, cartId })
+          return res.render('user/register', { errors, account, email, password, confirmPassword, categories, noItems, items, totalPrice })
         })
       })
     }

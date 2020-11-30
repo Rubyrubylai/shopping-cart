@@ -12,47 +12,46 @@
         </div>
         {{/if}}
         {{#each items}}
-        <div class="row" style="margin-bottom: 10px;">
+        <div class="row right-item">
           <div class="col-7">
             <img class="card-img-top" src="{{this.image}}" alt="cartItem photo">
             
           </div>
           <div class="col-5">
             <h6>{{this.name}}</h6>
-            <p>${{this.price}}</p>
-            <div class="add-min-button horizontal-left">
-              <form action="/cartItem/{{this.cartItemId}}/min" method="POST" class="inline-block">
-                <input type="submit" id="min" type="button" value="-" >
-              </form>
-              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="inline-block">
-              <form action="/cartItem/{{this.cartItemId}}/add" method="POST" class="inline-block">
-                <input type="submit" id="add" type="button" value="+">
-              </form>
+            <p>
+              $<span>{{this.price}}</span>
+            </p>
+            <div class="right-add-min-button">  
+              <input type="hidden" name="productId" value="{{this.id}}">
+              <button onclick="cart(this)" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
+              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart-btn">
+              <button onclick="cart(this)" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
             </div>
-            <div class="trash">
-              <form action="/cartItem?_method=DELETE" method="POST">
-                <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
-                <button type="submit" class="btn"><i class="fas fa-trash-alt fa-lg"></i></button>
-              </form>
-            </div>  
+            <input type="hidden" name="cartItemId" id="cart-item-id" value="{{this.cartItemId}}">
+            <div>  
+              <button onclick="remove(this)" class="btn trash-right"><i class="fas fa-trash-alt fa-lg"></i></button>
+            </div>
           </div>
         </div>
         {{/each}}
       </div>
+      <input type="hidden" id="cartId" value="{{cartId}}">
       <div class="modal-footer">
         {{#if noItems}}
-        <button class="btn btn-primary"><a href="/product" style="text-decoration: none; color:white">Keep Shopping</a></button>
+        <a type="button" class="btn btn-secondary" href="/product" style="text-decoration: none;">Keep Shopping</a>
         {{else}}
         <div class="div-subtotal">
-          <h6 class="inline">Subtotal: </h6>
-          <p class="inline">${{totalPrice}}</p>
+          <h6 class="total">Total: </h6>
+          <p class="total" id="totalPrice" style="display: inline;">$<span>{{totalPrice}}</span></p>
         </div>
         <form action="/cart" method="GET">
-          <button type="submit" class="btn btn-primary">check out</button>
+          <button type="submit" class="btn btn-secondary">check out</button>
         </form>
         {{/if}}
       </div>
     </div>
   </div>
 </div>
-	
+
+<script src="/ajax.js"></script>

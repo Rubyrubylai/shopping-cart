@@ -28,7 +28,7 @@ app.use(cookieParser())
 app.use(session({
   secret: 'ac',
     name: 'ac',
-    cookie: { maxAge: 80000 },
+    cookie: { maxAge: null },
     resave: false,
     saveUninitialized: true,
 }))
@@ -48,6 +48,8 @@ app.use((req, res, next) => {
 })
 
 app.use('/upload', express.static(__dirname + '/upload'))
+
+require('./routes/cart')(app)
 
 require('./routes')(app)
 

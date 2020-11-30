@@ -1,42 +1,47 @@
-{{>alert}}
+<div class="container">
+  {{>alert}}
 
-<table class="table">
-  <thead>
-    <tr class="text-center">
-      <th scope="col">Order Number</th>
-      <th scope="col">Order Date</th>
-      <th scope="col">Shipping Status</th>
-      <th scope="col">Payment Method</th>
-      <th scope="col">Payment Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each orders}}
+  <table class="table table-responsive-sm">
+    <thead>
       <tr class="text-center">
-        <td scope="row">
-          <a type="button" class="btn btn-secondary" href="/order/{{this.id}}">#{{this.sn}}</a>
-        </td>
-        <td>{{Date this.createdAt}}</td>
-        <td>
-          {{#ifEquals this.shipping_status -2}}Order Cancelled{{/ifEquals}}
-          {{#ifEquals this.shipping_status -1}}Preparing{{/ifEquals}}
-          {{#ifEquals this.shipping_status 0}}Shipping{{/ifEquals}}
-          {{#ifEquals this.shipping_status 1}}Arrived{{/ifEquals}}
-        </td>
-        <td>
-          {{#ifEquals this.payment.dataValues.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
-          {{#ifEquals this.payment.dataValues.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
-          {{#ifEquals this.payment.dataValues.payment_method 'VACC'}}ATM{{/ifEquals}}
-          {{#ifEquals this.payment.dataValues.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
-          {{#ifEquals this.payment.dataValues.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
-        </td>
-        <td>
-          {{#ifEquals this.payment_status -2}}Refund Completed{{/ifEquals}}
-          {{#ifEquals this.payment_status -1}}Request Refund{{/ifEquals}}
-          {{#ifEquals this.payment_status -0}}Not Paid{{/ifEquals}}
-          {{#ifEquals this.payment_status 1}}Paid{{/ifEquals}}
-        </td>
-      </tr>    
-    {{/each}}
-  </tbody>
-</table>
+        <th scope="col">Order Number</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">Shipping Status</th>
+        <th scope="col">Payment Method</th>
+        <th scope="col">Payment Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+        <tr class="text-center">
+          <td scope="row">
+            <a type="button" class="btn btn-secondary" href="/order/{{this.id}}">#{{this.id}}</a>
+          </td>
+          <td>{{Date this.createdAt}}</td>
+          <td>
+            {{#ifEquals this.shipping_status -2}}Order Cancelled{{/ifEquals}}
+            {{#ifEquals this.shipping_status -1}}Preparing{{/ifEquals}}
+            {{#ifEquals this.shipping_status 0}}Shipping{{/ifEquals}}
+            {{#ifEquals this.shipping_status 1}}Arrived{{/ifEquals}}
+          </td>
+          <td>
+            {{#ifEquals this.payment.dataValues.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
+            {{#ifEquals this.payment.dataValues.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
+            {{#ifEquals this.payment.dataValues.payment_method 'ATM'}}ATM{{/ifEquals}}
+            {{#ifEquals this.payment.dataValues.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
+            {{#ifEquals this.payment.dataValues.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
+          </td>
+          <td>
+            {{#ifEquals this.payment_status -2}}Refund Completed{{/ifEquals}}
+            {{#ifEquals this.payment_status -1}}Request Refund{{/ifEquals}}
+            {{#ifEquals this.payment_status -0}}Not Paid{{/ifEquals}}
+            {{#ifEquals this.payment_status 1}}Paid{{/ifEquals}}
+          </td>
+        </tr>    
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- cart modal at right side -->
+  {{> rightCart}}
+</div>

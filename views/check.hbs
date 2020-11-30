@@ -1,98 +1,83 @@
-{{> alert}}
+<div class="container">
+  {{> alert}}
 
-<ul class="list-group">
-  <li class="list-group-item list-group-item-dark">Fill in the information</li>
-  <li class="list-group-item">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col">Price</th>
-          <th scope="col">Quantity</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each items}}
-        <tr>
-          <td scope="row">
-            <a href="/product/{{this.id}}"><img style="width: 150px;" src="{{this.image}}" alt="cartItem_photo"></a>
-          </td>
-          <td>
-            <a href="/product/{{this.id}}" style="text-decoration: none;" class="a-custom">{{this.name}}</a>
-          </td>
-          <td>${{this.price}}</td>
-          <td>{{this.quantity}}</td>
-          <td>${{this.subtotalPrice}}</td>
-        </tr>
-        {{/each}}
-        <tr>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col">Subtotal</th>
-          <th scope="col">{{this.totalQty}}</th>
-          <th scope="col">${{totalPrice}}</th>
-          <th scope="col"></th>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-</ul>
-
-<form action="/order" method="POST">
   <ul class="list-group">
-    <li class="list-group-item list-group-item-dark">Shipping Information</li>
+    <li class="list-group-item list-group-item-secondary">Fill in the information</li>
     <li class="list-group-item">
-      <div class="form-group row">
-        <label for="name" class="col-sm-2 col-form-label">Name</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="name" value="{{user.name}}" id="name" placeholder="Please input the recipient's name">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="email" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-          <input type="email" class="form-control" name="email" value="{{user.email}}" id="email" placeholder="Please input the email">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="phone" class="col-sm-2 col-form-label">Phone</label>
-        <div class="col-sm-10">
-          <input type="tel" class="form-control" name="phone" value="{{user.phone}}" id="phone" placeholder="Please input the phone number">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="address" class="col-sm-2 col-form-label">Address</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="address" value="{{user.address}}" id="address" placeholder="Please input the shipping address">
-        </div>
-      </div>
+      <table class="table table-responsive-sm">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td scope="row">
+              <a href="/product/{{this.id}}"><img class="cart-photo" src="{{this.image}}" alt="cartItem_photo"></a>
+            </td>
+            <td>
+              <a href="/product/{{this.id}}" style="text-decoration: none;" class="a-custom">{{this.name}}</a>
+            </td>
+            <td>${{this.price}}</td>
+            <td>{{this.quantity}}</td>
+            <td>${{this.subtotalPrice}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">{{this.totalQty}}</th>
+            <th scope="col">${{totalPrice}}</th>
+            <th scope="col"></th>
+          </tr>
+        </tbody>
+      </table>
     </li>
   </ul>
 
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-dark">Payment Method</li>
-    <li class="list-group-item">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="ATM" value="ATM" checked>
-        <label class="form-check-label" for="ATM">
-          ATM
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="credit_card" value="credit_card">
-        <label class="form-check-label" for="credit_card">
-          Credit Card
-        </label>
-      </div>
-    </li>
-  </ul>
+  <form action="/order" method="POST">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-secondary">Shipping Information</li>
+      <li class="list-group-item">
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" value="{{user.name}}" id="name" placeholder="Please input the recipient's name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="email" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" name="email" value="{{user.email}}" id="email" placeholder="Please input the email">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+          <div class="col-sm-10">
+            <input type="tel" class="form-control" name="phone" value="{{user.phone}}" id="phone" placeholder="Please input the phone number">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="address" class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="address" value="{{user.address}}" id="address" placeholder="Please input the shipping address">
+          </div>
+        </div>
+      </li>
+    </ul>
 
-  <center>
-   
-    <a type="button" href="javascript:history.back()" class="btn btn-secondary custom-btn beside-btn">Previous</a>
-    <input type="hidden" name="cartId" value="{{cart.dataValues.id}}">
-    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Check Out</button>
-  </center>
-</form>
+    <center>
+    
+      <a type="button" href="javascript:history.back()" class="btn btn-secondary custom-btn beside-btn">Previous</a>
+      <input type="hidden" name="cartId" value="{{cart.dataValues.id}}">
+      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Check Out</button>
+    </center>
+  </form>
+
+</div>

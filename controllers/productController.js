@@ -1,14 +1,28 @@
 const db = require('../models')
 const Product = db.Product
 const Cart = db.Cart
-const CartItem = db.CartItem
+const Category = db.Category
+const Favorite = db.Favorite
+const User = db.User
+
+const sort = require('../config/sort')
+
+let pageLimit = 16
 
 const productController = {
   getProducts: (req, res) => {
-    //每頁幾個商品及偏移多少
-    let pageLimit = 8
+    //篩選分類
+    let whereQuery = {}
+    let CategoryId
+    if (req.query.CategoryId) {
+      CategoryId = Number(req.query.CategoryId)
+      whereQuery['CategoryId'] = CategoryId
+    }
+
+    //現在是第幾頁及要偏移多少資料，以及預設為第1頁
+    let currentPage = Number(req.query.page) || 1
     let offset = 0
-    let currentPage = req.query.page
+    //若點選分頁
     if (currentPage) {
       offset = (currentPage - 1) * pageLimit
     }
@@ -16,18 +30,20 @@ const productController = {
     Product.findAndCountAll({
       raw: true, 
       nest: true,
+      where: whereQuery,
       limit: pageLimit,
       offset: offset,
       order: [ ['createdAt', 'DESC'] ]
     })
     .then(products => {
-      //頁數
+      
+      //分頁功能
       let pages = Math.ceil(products.count/pageLimit)
       let page = Array.from({ length: pages }).map((item, index) => index + 1)
-      let prev = (currentPage = 1) ? currentPage : currentPage - 1
-      let post = (currentPage = pages) ? currentPage : currentPage + 1
+      let prev = (currentPage === 1) ? currentPage : currentPage - 1
+      let post = (currentPage === pages) ? currentPage : currentPage + 1
 
-      //購物車
+      //右側購物車
       Cart.findByPk(
         req.session.cartId,
         { include: [{ model: Product, as: 'items' }] }
@@ -36,64 +52,141 @@ const productController = {
         let noItems
         let items
         let totalPrice = 0
-        items = rightCartItem(cart)
+        items = sort.rightCartItem(cart)
         if (!items || (items.length === 0)) {
           noItems = true
         }
         else {
-          totalPrice = rightCartPrice(items, totalPrice)
+          totalPrice = sort.rightCartPrice(items, totalPrice)
         }
 
-        return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems })
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId })
+        })
+
       })
-      
     })
   },
 
   getProduct: (req, res) => {
-    Product.findOne({ where: 
-      { 
+    Product.findOne({ 
+      where: { 
         id: req.params.id
-      } 
+      },
+      include: [{ model: User, as: 'FavoritedUsers' }]
     })
     .then(product => {
+      //右側購物車
       Cart.findByPk(
         req.session.cartId,
         { include: [{ model: Product, as: 'items' }] }
         )
-      .then(cart => {     
+      .then(cart => {
         let noItems
         let items
         let totalPrice = 0
-        items = rightCartItem(cart)
+        items = sort.rightCartItem(cart)
         if (!items || (items.length === 0)) {
           noItems = true
         }
         else {
-          totalPrice = rightCartPrice(items, totalPrice)
+          totalPrice = sort.rightCartPrice(items, totalPrice)
         }
-        return res.render('product', { product: product.toJSON(), items, totalPrice, noItems })
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories })
+        })
+        
+      })
+    })
+  },
+
+  getFavorite: (req, res) => {
+    //現在是第幾頁及要偏移多少資料，以及預設為第1頁
+    let currentPage = Number(req.query.page) || 1
+    let offset = 0
+
+    //若點選分頁
+    if (currentPage) {
+      offset = (currentPage-1) * pageLimit
+    }
+
+    User.findByPk(req.user.id, {
+      include: [{ model: Product, as: 'FavoritedProducts' }]
+    }).then(user => {
+      var FavoritedProducts = user ? user.toJSON().FavoritedProducts : null
+
+      //分頁
+      let pages = Math.ceil(FavoritedProducts.length/pageLimit)
+      let page = Array.from({ length: pages }).map((item, index) => index + 1)
+      let prev = (currentPage === 1) ? currentPage : currentPage - 1
+      let post = (currentPage === pages) ? currentPage : currentPage + 1
+
+      //一頁出現的喜愛商品
+      FavoritedProducts = FavoritedProducts.slice(offset, offset + pageLimit)      
+
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => { 
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories })
+        })
+      })
+    })
+  },
+
+  postFavorite: (req, res) => {
+    Favorite.create({
+      UserId: req.user.id,
+      ProductId: req.params.id
+    })
+    .then(favorite => {
+      req.flash('success_msg', 'The product has been added into the wishlist!')
+      return res.redirect('back')
+    })
+  },
+
+  removeFavorite: (req, res) => {
+    Favorite.findOne({ where: {
+      UserId: req.user.id,
+      ProductId: req.params.id
+    }})
+    .then(favorite => {
+      favorite.destroy().then(favorite => {
+        req.flash('success_msg', 'The product has been removed from the wishlist!')
+        return res.redirect('back')
       })
     })
   }
-}
-
-//顯示在購物上的商品
-function rightCartItem(cart) {
-  return items = cart ? cart.dataValues.items.map(item => ({
-    ...item.dataValues,
-    cartItemId: item.CartItem.dataValues.id,
-    quantity: item.CartItem.dataValues.quantity
-  })) : null
-}
-
-//總計
-function rightCartPrice(items, totalPrice) {
-  items.forEach(item => {
-    totalPrice += item.price * item.quantity
-  })
-  return totalPrice
-
 }
 
 module.exports = productController

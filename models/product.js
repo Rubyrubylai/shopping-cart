@@ -19,6 +19,12 @@ module.exports = (sequelize, DataTypes) => {
         through: models.OrderItem,
         foreignKey: 'ProductId',
         as: 'orders'
+      }),
+      Product.belongsTo(models.Category),
+      Product.belongsToMany(models.User, {
+        through: models.Favorite,
+        foreignKey: 'ProductId',
+        as: 'FavoritedUsers'
       })
     }
   };
@@ -26,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     price: DataTypes.INTEGER,
     description: DataTypes.TEXT,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    CategoryId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Product',

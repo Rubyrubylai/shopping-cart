@@ -1,23 +1,43 @@
-{{> alert}}
-<div class="row">
-  <div class="col-8">
-    <img src="{{product.image}}" alt="product photo" style="width: 90%">
-  </div>
-  <div class="col-4">
-    <h5>{{product.name}}</h5>
-    <p>${{product.price}}</p>
-    <p>{{product.description}}</p>
-    <form action="/cart/{{product.id}}" method="POST">
-      <div class="add-min-button">
-        <input id="min" type="button" value="-" >
-        <input id="num" name="num" value="1" readonly="true">
-        <input id="add" type="button" value="+">
+<div class="container">
+  {{> alert}}
+
+  <div class="wrapper">
+    <section>
+      <div class="product-photo">
+        <img src="{{product.image}}" alt="product photo" class="photo">
       </div>
-      <input type="hidden" name="productId" value="{{product.id}}">
-      <button type="submit" class="btn btn-primary">Add To Cart</button>
-    </form>
+      <div class="product-description">
+        <h5>{{product.name}}</h5>
+        <p>${{product.price}}</p>
+        <p>{{product.description}}</p>
+        <form action="/cart/{{product.id}}" method="POST">
+          <div class="add-min-button">
+            <button type="button" id="min" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
+            <input id="num" name="num" value="1" readonly="true" class="cart-btn">
+            <button type="button" id="plus" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
+          </div>
+          <input type="hidden" id="productId" name="productId" value="{{product.id}}">
+          <button id="cart" type="submit" class="btn btn-secondary">Add To Cart</button>
+        </form>
+        {{#if product.FavoritedUsers}}
+        <form action="/favorite/{{product.id}}?_method=DELETE" method="POST" class="unfavorite-btn">
+          <button type="submit" class="btn btn-secondary">
+            <i class="fas fa-heart fa-lg"></i> Already At Wishlist
+          </button>
+        </form>
+        {{else}}
+        <form action="/favorite/{{product.id}}" method="POST" class="favorite-btn">
+          <button type="submit" class="btn btn-secondary">
+            <i class="far fa-heart fa-lg"></i> Add To Wishlist  
+          </button>
+        </form>
+        {{/if}}
+      </div>
+    </section>
   </div>
 </div>
 
 <!-- cart modal at right side -->
 {{> rightCart}}
+
+<script src="/index.js"></script>

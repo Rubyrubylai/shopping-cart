@@ -1,10 +1,12 @@
-<a href="/orders" type="button" class="btn btn-outline-secondary orders-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
+<div class="container">
+  {{>alert}}
+  
+  <div class="list-information">
+    <a href="/orders" type="button" class="btn btn-outline-secondary order-btn"><i class="fas fa-arrow-left mr-4"></i>View all orders</a>
 
-<div class="row">
-  <div class="col-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
-        <strong>Order Number: #{{order.sn}}</strong>
+        <strong>Order Number: #{{order.id}}</strong>
       </li>
       <li class="list-group-item">
         <table class="table">
@@ -41,9 +43,9 @@
             <td>
               {{#ifEquals payment.payment_method 'CREDIT'}}Credit card{{/ifEquals}}
               {{#ifEquals payment.payment_method 'WEBATM'}}WebATM{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'VACC'}}ATM{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'CVS'}}Super business code payment{{/ifEquals}}
-              {{#ifEquals payment.payment_method 'BARCODE'}}Super business barcode payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'ATM'}}ATM{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'VACC'}}Super business code payment{{/ifEquals}}
+              {{#ifEquals payment.payment_method 'Barcode'}}Super business barcode payment{{/ifEquals}}
             </td>
           </tr>
         </table>
@@ -59,6 +61,10 @@
             <th scope="row">Name</th>
             <td>{{order.name}}</td>
           </tr>
+           <tr>
+            <th scope="row">Email</th>
+            <td>{{order.email}}</td>
+          </tr>
           <tr>
             <th scope="row">Phone</th>
             <td>{{order.phone}}</td>
@@ -71,7 +77,8 @@
       </li>
     </ul>
   </div>
-  <div class="col-6">
+
+  <div class="list-detail">
     <ul class="list-group">
       <li class="list-group-item list-group-item-secondary">
         <strong>Order Details</strong>
@@ -85,7 +92,7 @@
               <th scope="col" class="table-custom">Price</th>
             </tr>
           </thead>
-          {{#each items}}
+          {{#each orderItems}}
           <tr>
             <td scope="row">{{this.name}}</td>
             <td class="table-custom">{{this.quantity}}</td>
@@ -94,27 +101,32 @@
           {{/each}}
           <tr>
             <td scope="row">Total</td>
-            <td class="table-custom">{{totalQty}}</td>
-            <td class="table-custom">${{totalPrice}}</td>
+            <td class="table-custom">{{orderTotalQty}}</td>
+            <td class="table-custom">${{orderTotalPrice}}</td>
           </tr>
         </table>
       </li>
     </ul>
   </div>
-</div>
 
-<center>
-  {{#ifEquals order.payment_status 0}}
-  <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" style="display: inline-block;">
-    <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
-    <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
-    <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
-    <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
-    <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
-    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
-  </form>
-  {{/ifEquals}}
-  <form action="/order/{{order.id}}/cancel" method="POST" style="display: inline-block;">
-    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
-  </form>
-</center>
+  <div class="clearfix"></div>
+
+  <center>
+    {{#ifEquals order.payment_status 0}}
+    <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" class="payment">
+      <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
+      <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
+      <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
+      <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
+      <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
+      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
+    </form>
+    {{/ifEquals}}
+    <form action="/order/{{order.id}}/cancel" method="POST" class="payment">
+      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
+    </form>
+  </center>
+
+  <!-- cart modal at right side -->
+  {{> rightCart}}
+</div>

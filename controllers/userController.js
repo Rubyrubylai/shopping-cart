@@ -1,12 +1,42 @@
 const db = require('../models')
 const User = db.User
+const Category = db.Category
+const Cart = db.Cart
+const Product = db.Product
 const bcrypt = require('bcrypt')
+
+const sort = require('../config/sort')
 
 const userController = {
   getAccount: (req, res) => {
     User.findByPk(req.user.id)
     .then(user => {
-      res.render('user/account', { user: user.toJSON() })
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => {     
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('user/account', { user: user.toJSON(), categories, noItems, items, totalPrice })
+        })
+      })
     })
   },
 
@@ -15,21 +45,56 @@ const userController = {
     .then(user => {
       const { name, email, account, address, phone, oldPassword, newPassword, confirmPassword } = req.body
       let errors = []
-      console.log(oldPassword)
-      if (oldPassword) {
+      //如果有輸入到密碼欄位
+      if (oldPassword || newPassword || confirmPassword) {
         if (!bcrypt.compareSync(oldPassword, user.password)) {
           errors.push({ error_msg: 'The old password is incorrect. Please enter again.' })
         }
-        if(!newPassword || !confirmPassword) {
-          errors.push({ error_msg: 'Please fill in password.' })
+        if(!newPassword || !confirmPassword || !oldPassword) {
+          errors.push({ error_msg: 'Please fill in all password fields.' })
         }
         if (newPassword !== confirmPassword) {
           errors.push({ error_msg: 'The new password does not match with the confirmed one. Please enter again.' })
         }
-        if (errors.length > 0) {
-          return res.render('user/account', { user: { name, email, account, address, phone }, errors })
+        if (oldPassword === newPassword) {
+          errors.push({ error_msg: 'The new password cannot be the same as the old one. Please enter again.' })
         }
-        else{
+        if (!email) {
+          errors.push({ error_msg: 'The email field is required.' })
+        }
+        if (errors.length > 0) {
+          //右側購物車
+          Cart.findByPk(
+            req.session.cartId,
+            { include: [{ model: Product, as: 'items' }] }
+            )
+          .then(cart => {     
+            let noItems
+            let items
+            let totalPrice = 0
+            items = sort.rightCartItem(cart)
+            if (!items || (items.length === 0)) {
+              noItems = true
+            }
+            else {
+              totalPrice = sort.rightCartPrice(items, totalPrice)
+            }
+            let cartId
+            if (req.session.cartId) {
+              cartId = req.session.cartId
+            }
+
+            //上方導覽列的分類
+            Category.findAll({
+              raw: true,
+              nest: true
+            })
+            .then(categories => {
+              return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories, noItems, items, totalPrice })
+            })
+          })
+        }
+        else{  
           user.update({
             name,
             email,
@@ -39,10 +104,14 @@ const userController = {
             password: bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10))
           })
           .then(user => {
-            req.flash('success_msg', 'The account is updated successfully.')
+            req.flash('success_msg', 'The account has been updated successfully!')
             return res.redirect('/user/account')
           })
         }
+      }
+      else if (!email) {
+        req.flash('warning_msg', 'The email field is required!')
+        return res.redirect('back')
       }
       else {
         user.update({
@@ -53,7 +122,7 @@ const userController = {
           phone
         })
         .then(user => {
-          req.flash('success_msg', 'The account is updated successfully.')
+          req.flash('success_msg', 'The account has been updated successfully!')
           return res.redirect('/user/account')
         })
       }
@@ -61,11 +130,61 @@ const userController = {
   },
 
   loginPage: (req, res) => {
-    res.render('user/login')
+    //上方導覽列的分類
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+    .then(categories => {
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => {     
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
+
+        return res.render('user/login', { categories, noItems, items, totalPrice })
+      })
+    })
   },
 
   registerPage: (req, res) => {
-    res.render('user/register')
+    //上方導覽列的分類
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+    .then(categories => {
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => {     
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
+
+        return res.render('user/register', { categories, noItems, items, totalPrice })
+      })
+    })
   },
 
   login: (req, res) => {
@@ -82,7 +201,32 @@ const userController = {
       errors.push({ error_msg: 'Passwords are not matched!' })
     }
     if (errors.length > 0) {
-      return res.render('user/register', { errors, account, email, password, confirmPassword })
+      //右側購物車
+      Cart.findByPk(
+        req.session.cartId,
+        { include: [{ model: Product, as: 'items' }] }
+        )
+      .then(cart => {     
+        let noItems
+        let items
+        let totalPrice = 0
+        items = sort.rightCartItem(cart)
+        if (!items || (items.length === 0)) {
+          noItems = true
+        }
+        else {
+          totalPrice = sort.rightCartPrice(items, totalPrice)
+        }
+
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('user/register', { errors, account, email, password, confirmPassword, categories, noItems, items, totalPrice })
+        })
+      })
     }
     else {
       User.findOne({ where: { email: email} })

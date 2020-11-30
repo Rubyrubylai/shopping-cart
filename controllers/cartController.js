@@ -3,6 +3,9 @@ const CartItem = db.CartItem
 const Cart = db.Cart
 const Product = db.Product
 const User = db.User
+const Category = db.Category
+
+const sort = require('../config/sort')
 
 const cartController = {
   getCart: (req, res) => {
@@ -11,25 +14,33 @@ const cartController = {
       { include: [{ model: Product, as: 'items' }] }
       )
     .then(cart => { 
-      let noItems
-      let items
       let totalPrice = 0
       let totalQty = 0
-      items = rightCartItem(cart)
+      
+      //右側購物車
+      let items = sort.rightCartItem(cart)
       if (!items || (items.length === 0)) {
         noItems = true
       }
       else {
-        totalPrice = rightCartPrice(items, totalPrice)
+        totalPrice = sort.rightCartPrice(items, totalPrice)
         items.forEach(item => {
           totalQty += item.quantity
         })
       }
-    
-      return res.render('cart', { cart, items, totalPrice, totalQty, noItems })
+
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('cart', { cart, items, totalPrice, totalQty, categories })
+      })
     })
   },
 
+  //將商品加入購物車
   postCart: (req, res) => {
     Cart.findOrCreate({
       where: { id: req.session.cartId || 0 }
@@ -52,8 +63,8 @@ const cartController = {
         .then(cartItem => {
           req.session.cartId = cart.id
           return req.session.save(() => {
-            req.flash('success_msg', 'The item has been successfully added!')
-            return res.redirect('back')
+            req.flash('success_msg', 'The item has been added into the cart!')
+            return res.redirect('back')            
           })
         })
         .catch(err => console.error(err))
@@ -61,54 +72,19 @@ const cartController = {
     })
   },
 
-  removeCartItem: (req, res) => {
-    CartItem.findByPk(req.body.cartItemId)
-    .then(cartItem => {
-      cartItem.destroy().then(cartItem => {
-        req.flash('success_msg', 'The item has been successfully removed!')
-        return res.redirect('back')
-      })
-      
-    })
-  },
-
-  addCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id)
-    .then(cartItem => {
-      cartItem.update({
-        quantity: cartItem.quantity + 1
-      })
-      .then(cartItem => {
-        return res.redirect('back')
-      })
-    })
-  },
-
-  minCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id)
-    .then(cartItem => {
-      cartItem.update({
-        quantity: (cartItem.quantity = 1) ? 1 : cartItem.quantity
-      })
-      .then(cartItem => {
-        return res.redirect('back')
-      })
-    })
-  },
-
+  //確認訂單
   checkCart: (req, res) => {
-    //購物車
+    //右側購物車
     Cart.findByPk(
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }
       )
     .then(cart => {
-      let items
       let totalPrice = 0
       let totalQty = 0
-      items = rightCartItem(cart)
+      let items = sort.rightCartItem(cart)
       if (items) {
-        totalPrice = rightCartPrice(items, totalPrice)
+        totalPrice = sort.rightCartPrice(items, totalPrice)
         items.forEach(item => {
           totalQty += item.quantity
         })
@@ -116,28 +92,17 @@ const cartController = {
 
       User.findByPk(req.user.id)
       .then(user => {
-        return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON() })
+        //上方導覽列的分類
+        Category.findAll({
+          raw: true,
+          nest: true
+        })
+        .then(categories => {
+          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories })
+        })
       }) 
     })
   }
-}
-
-//顯示在購物上的商品
-function rightCartItem(cart) {
-  return items = cart ? cart.dataValues.items.map(item => ({
-    ...item.dataValues,
-    cartItemId: item.CartItem.dataValues.id,
-    quantity: item.CartItem.dataValues.quantity,
-    subtotalPrice: item.CartItem.dataValues.quantity * item.dataValues.price, 
-  })) : null
-}
-
-//總計
-function rightCartPrice(items, totalPrice) {
-  items.forEach(item => {
-    totalPrice += item.price * item.quantity
-  })
-  return totalPrice
 }
 
 module.exports = cartController

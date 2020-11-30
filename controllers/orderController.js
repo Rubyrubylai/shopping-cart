@@ -84,7 +84,7 @@ const orderController = {
       payment = sort.payment(order)
 
       //金流，產生交易參數
-      const tradeInfo = getTradeInfo.getTradeInfo(orderTotalPrice, '產品名稱', 'r844312@gmail.com')
+      const tradeInfo = getTradeInfo.getTradeInfo(orderTotalPrice, order.id, order.email)
       
       order.update({
         sn: tradeInfo.MerchantOrderNo
@@ -222,8 +222,6 @@ const orderController = {
 
   newebpayCallback: (req, res) => {
     const data = JSON.parse(encrypt.create_mpg_aes_decrypt(req.body.TradeInfo))
-    console.log(data)
-
     return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } })
     .then(orders => {
       
@@ -231,38 +229,23 @@ const orderController = {
       console.log('====================================')
       const time = data['Result']['PayTime']
       const payTime = new Date(time.slice(0,10) + ' ' + time.slice(10))
-      
-      if (data['Result']['PaymentType'] === 'CREDIT' || 'WEBATM') {
-        orders[0].update({
-          payment_status: 1,
-        }).then(order => {
-          Payment.create({
-            OrderId: order.id,
-            sn: order.sn,
-            amount: order.amount,
-            payment_method: data['Result']['PaymentType'],
-            paid_at: payTime,
-            params: 'success'
-          })
-          .then(payment => {
-            req.flash('Thank you for your payment.')
-            return res.redirect(`/order/${order.id}`)
-          })
+
+      orders[0].update({
+        payment_status: 1,
+      }).then(order => {
+        Payment.create({
+          OrderId: order.id,
+          sn: order.sn,
+          amount: order.amount,
+          payment_method: data['Result']['PaymentType'],
+          paid_at: payTime,
+          params: 'success'
         })
-      }
-      else {
-          Payment.create({
-            OrderId: order.id,
-            sn: order.sn,
-            amount: order.amount,
-            payment_method: 'Others',
-            params: 'success'
-          })
-          .then(payment => {
-            req.flash('Thank you for your payment.')
-            return res.redirect(`/order/${order.id}`)
-          })
-      }
+        .then(payment => {
+          console.log(order.id)
+          return res.redirect(`/order/${order.id}`)
+        })
+      })
     })
   }
 }

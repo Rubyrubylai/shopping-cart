@@ -10,6 +10,7 @@ module.exports = {
         price: faker.commerce.price(),
         description: faker.commerce.productDescription(),
         image: `https://picsum.photos/320/240?random=${index+1}`,
+        CategoryId: Math.floor(Math.random()*3+1),
         createdAt: new Date(),
         updatedAt: new Date()
       }))

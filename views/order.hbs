@@ -122,9 +122,12 @@
       <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
     </form>
     {{/ifEquals}}
-    <form action="/order/{{order.id}}/cancel" method="POST" class="payment">
+    {{#ifEquals order.shipping_status -2}}
+    {{else}}
+    <form action="/order/{{../order.id}}/cancel" method="POST" class="payment">
       <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
     </form>
+    {{/ifEquals}}
   </center>
 
   <!-- cart modal at right side -->

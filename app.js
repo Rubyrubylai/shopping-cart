@@ -2,7 +2,7 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-
+var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(methodOverride('_method'))
 
-
+app.use(cookieParser())
 app.use(session({
   secret: 'ac',
     name: 'ac',

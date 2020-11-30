@@ -28,7 +28,7 @@ npm install
 
 3. 在 https://cwww.newebpay.com/ 上創建商店
 
-4. 在 Imgur 上創建專案
+4. 在Imgur上創建專案
 
 5. 在專案的根目錄新增.env檔
 

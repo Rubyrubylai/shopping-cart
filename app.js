@@ -5,11 +5,14 @@ const methodOverride = require('method-override')
 var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
-require('dotenv').config()
 const passport = require('passport')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const app = express()
-const port = 3000
+const port = 3000 || process.env.PORT
 
 app.engine('hbs', exphbs({
   extname: '.hbs', 

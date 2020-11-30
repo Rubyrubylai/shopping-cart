@@ -79,7 +79,15 @@
   margin-top: 10px;
 }
 
+.right-cart-btn {
+  vertical-align: center;
+  background-color: white;
+  border: none;
+  width: 20px;
+}
+
 .cart-btn {
+  vertical-align: center;
   background-color: white;
   border: none;
 }
@@ -88,7 +96,7 @@
   color: #7e4e50;
   position: relative;
   left: 40px;
-  top: -70px;
+  top: -14px;
 }
 
 .trash {

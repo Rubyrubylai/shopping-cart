@@ -9,8 +9,8 @@
 
 ## 測試帳號
 
-|role||name|email|password|
-|----||----|-----|--------|
+|role|name|email|password|
+|----|----|-----|--------|
 |admin|Admin|admin@example.com|a123456|
 |customer|Tony|tony@example.com|a123456|
 |customer|Emily|emily@example.com|a123456|

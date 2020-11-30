@@ -111,24 +111,50 @@
 
   <div class="clearfix"></div>
 
+  
+  {{#ifEquals order.payment_status 0}}
+  <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" class="payment">
+    <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
+    <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
+    <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
+    <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
+    <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
+    <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
+  </form>
+  {{/ifEquals}}
+  {{#ifEquals order.shipping_status -2}}
+  {{else}}
+     <!-- Button trigger modal -->
   <center>
-    {{#ifEquals order.payment_status 0}}
-    <form name="Newebpay" action="{{../tradeInfo.PayGateWay}}" method="POST" class="payment">
-      <input type="hidden" name="MerchantID" value="{{../tradeInfo.MerchantID}}">
-      <input type="hidden" name="TradeInfo" value="{{../tradeInfo.TradeInfo}}">
-      <input type="hidden" name="TradeSha" value="{{../tradeInfo.TradeSha}}">
-      <input type="hidden" name="Version" value="{{../tradeInfo.Version}}">
-      <input type="hidden" name="MerchantOrderNo" value="{{../tradeInfo.MerchantOrderNo}}">
-      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Confirm Payment</button>
-    </form>
-    {{/ifEquals}}
-    {{#ifEquals order.shipping_status -2}}
-    {{else}}
-    <form action="/order/{{../order.id}}/cancel" method="POST" class="payment">
-      <button type="submit" class="btn btn-secondary custom-btn beside-btn">Cancel Order</button>
-    </form>
-    {{/ifEquals}}
+    <button type="button" class="btn btn-secondary custom-btn beside-btn" data-toggle="modal" data-target="#c{{order.id}}">
+      Cancel Order
+    </button>
   </center>
+  <!-- Modal -->
+  <div class="modal fade" id="c{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cancel Order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure if you want to cancel the order?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="/order/{{../order.id}}/cancel" method="POST" class="payment">
+            <button type="submit" class="btn btn-primary">Yes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/ifEquals}}
+
+ 
 
   <!-- cart modal at right side -->
   {{> rightCart}}

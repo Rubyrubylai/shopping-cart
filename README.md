@@ -1,22 +1,24 @@
 # SHOP
-使用者可以新增、刪除、過濾及查看支出和收入的紀錄資訊，並且透過圓餅圖分析各支出或收入所佔的百分比，是管理財務的好幫手
+仿效一般電商平台，使用Nodemailer發送訂單確認信，並串接藍新金流進行付款。
+區分visitor、customer、admin三種角色，visitor可以瀏覽商店中的商品並加進購物車，但若要購買，則須登入為customer，而admin為店家的帳號，可以進行上架商品等後台動作。
 
-![image](https://github.com/Rubyrubylai/expense-tracker-sequelize/blob/master/picture/expense.PNG)
+![image](https://github.com/Rubyrubylai/shopping-cart/blob/feature/order/picture/SHOP.PNG)
 
 ## 環境
 + Node.js v10.15.0
 
 ## 測試帳號
 
-|name|email|password|
-|----|---|----|
-|Amy|amy@example.com|a123456|
-|Nick|nick@example.com|a123456|
+|role||name|email|password|
+|----||----|----|----|
+|admin|Admin|admin@example.com|a123456|
+|customer|Tony|tony@example.com|a123456|
+|customer|Emily|emily@example.com|a123456|
 
 ## 安裝
 1. 開啟終端機，cd到存放專案位置並執行:
 ```
-git clone https://github.com/Rubyrubylai/expense-tracker-sequelize.git
+git clone https://github.com/Rubyrubylai/shopping-cart.git
 ```
 
 2. 安裝套件
@@ -24,60 +26,64 @@ git clone https://github.com/Rubyrubylai/expense-tracker-sequelize.git
 npm install
 ```
 
-3. 在 https://developers.facebook.com/ 上創建一個專案
+3. 在 https://cwww.newebpay.com/ 上創建商店
 
-4. 在專案的根目錄新增.env檔，以存放第三方登入設定
-```
-FACEBOOK_ID = "YOUR FACEBOOK ID"
-FACEBOOK_SECRET = "YOUR SECRET KEY"
-FACEBOOK_CALLBACK = http://localhost:3000/auth/facebook/callback
-```
+4. 在Imgur上創建專案
 
-5. 在workbrench中新增database
+5. 在專案的根目錄新增.env檔
+
+6. 在workbrench中新增database
 ```
-create database record_sequelize
+create database cart_sequelize
 ```
 
-6. 新增migrate
+7. 新增migrate
 ```
 npx sequelize db:migrate
 ```
 
-7. 新增種子資料
+8. 新增種子資料
 ```
 npx sequelize db:seed:all
 ```
 
-8. 執行專案
+9. 執行專案
 ```
 npm run dev
 ```
 
-9. 在本機端 http://localhost:3000 開啟網址
+10. 在本機端 http://localhost:3000 開啟網址
 
 ## 功能列表
-+ 網站功能
++ 前台功能
 
 |功能|URL|描述|
 |----|---|----|
-|首頁|/|查看當月的收入及支出，並篩選月份及類別|
-|新增|records/newDeduct|點選右下角的新增符號，新增支出|
-|新增|records/newDeposit|進入新增支出頁面後，可以切換為新增收入|
-|編輯|/records/:id/editDeduct|點選編輯按鈕，編輯支出的名稱、日期、類別及金額|
-|編輯|/records/:id/editDeposit|進入編輯支出頁面後，可以切換為編輯收入|
+|首頁|/product|商店的商品總覽，並可透過導覽列上的分類去做篩選|
+|瀏覽|/product/:id|查看特定商品，並可將其加入購物車及喜愛列表|
+|瀏覽|/favorite|喜愛列表，可進行移除及將商品加入購物車|
+|瀏覽|/cart|瀏覽購物車內的商品，並可將增減其數量|
+|新增|/cart/check|成立訂單，系統會寄訂單確認信|
+|瀏覽|/order/:id|瀏覽特定訂單，並可進行付款或取消訂單|
+|瀏覽|/orders|瀏覽所有訂單|
 
-+ 統計圖表
++ 後台功能
 
 |功能|URL|描述|
 |----|---|----|
-|首頁|/pieChart/deduct|查看該月的支出分析，並可切換月份|
-|首頁|/pieChart/deposit|查看該月的收入分析，並可切換月份|
+|瀏覽|/admin/products|瀏覽所有上架的商品|
+|新增|/admin/products/new|新增商品|
+|修改|/admin/products/:id|修改已上架商品的資訊|
+|瀏覽|/admin/orders|瀏覽所有訂單|
+|瀏覽|/admin/orders/:id|修改訂單的寄送及付款資訊|
+|瀏覽|/admin/categories|瀏覽所有商品分類|
+|瀏覽|/admin/categories/:id|修改特定分類的名字|
 
 + 使用者功能
 
 |功能|URL|描述|
 |----|---|----|
-|登入|/users/login|使用者登入|
-|登入|/auth/facebook|FB使用者登入|
-|登出|/users/logout|登入後即可藉由右上角的登出按鈕登出|
-|註冊|/users/register|填寫姓名、帳號及密碼以註冊帳戶|
+|登入|/user/login|使用者登入|
+|登出|/user/logout|登入後即可藉由右上角的登出按鈕登出|
+|註冊|/user/register|填寫姓名、帳號及密碼以註冊帳戶|
+|修改|/user/account|修改基本資料|

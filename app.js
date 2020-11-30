@@ -5,11 +5,14 @@ const methodOverride = require('method-override')
 var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
-require('dotenv').config()
 const passport = require('passport')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const app = express()
-const port = 3000
+const port = process.env.PORT
 
 app.engine('hbs', exphbs({
   extname: '.hbs', 
@@ -54,6 +57,6 @@ require('./routes/cart')(app)
 require('./routes')(app)
 
 app.listen(port, () => {
-  console.log(`app is running on http://localhost:${port}`)
+  console.log(`app is running on http://localhost:3000`)
 })
 

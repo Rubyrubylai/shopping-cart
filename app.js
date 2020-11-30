@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
+var MemoryStore = require('memorystore')(session)
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -32,6 +33,9 @@ app.use(session({
   secret: 'ac',
     name: 'ac',
     cookie: { maxAge: null },
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
     resave: false,
     saveUninitialized: true,
 }))

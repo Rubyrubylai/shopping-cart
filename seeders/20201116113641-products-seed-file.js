@@ -9,7 +9,7 @@ module.exports = {
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
         description: faker.commerce.productDescription(),
-        image: faker.image.imageUrl(),
+        image: `https://picsum.photos/320/240?random=${index+1}`,
         createdAt: new Date(),
         updatedAt: new Date()
       }))

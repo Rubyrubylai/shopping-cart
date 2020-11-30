@@ -4,11 +4,7 @@ const CartItem = db.CartItem
 
 module.exports = (app) => {
   app.post('/cart', (req, res) => {
-    CartItem.findOne({ where: {
-        ProductId: req.body.productId,
-        CartId: req.body.cartId
-      }
-    })
+    CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
       cartItem.update({
         quantity: req.body.num

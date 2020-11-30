@@ -1,93 +1,29 @@
-//右側購物車的增減
-function rightCart(obj){
-  var cartId = $("#cartId").val()
-  var totalPrice = $("#totalPrice")
-
-  if ($(obj).val() === 'minus') {
-    var productId = parseInt($(obj).prev().val())
-    //數量
-    var showNum = $(obj).next()
-    var num = parseInt($(obj).next().val())
-    //某商品的價格
-    var price = parseInt($(obj).parent().prev().text())
-    if (num > 1) {
-      num -= 1
-      $.ajax({
-        method: 'POST',
-        url: '/cart',
-        data: { cartId, productId, num },
-        dataType: 'text',
-        
-        success: function(response) {
-          showNum.val(num)
-          //購物車商品的總價
-          const minAmount = parseInt(totalPrice.text()) - price
-          totalPrice.text(minAmount)
-          alert('Reduced!')
-        },
-        error: function(err) {
-          console.error(err)
-        }
-      })
-    }
-    else {
-      alert('Please at least buy one!')
-    }
-  }
-  else if ($(obj).val() === 'plus') {
-    var productId = parseInt($(obj).prev().prev().prev().val())
-    var showNum = $(obj).prev()
-    var num = parseInt($(obj).prev().val())
-    var price = parseInt($(obj).parent().prev().text())
-   
-    num += 1
-
-    $.ajax({
-      method: 'POST',
-      url: '/cart',
-      data: { cartId, productId, num },
-      dataType: 'text',
-      
-      success: function(response) {
-        showNum.val(num)
-        const plusAmount = parseInt(totalPrice.text()) + price
-        totalPrice.text(plusAmount)
-        alert('Added!')
-      },
-      error: function(err) {
-        console.error(err)
-      }
-    })    
-  }
-  return false
-}
-
 //購物車的增減
 function cart(obj){
-  var cartId = $("#cartId").val()
+  var cartItemId = parseInt($(obj).parent().siblings("#cart-item-id").val())
   var totalPrice = $("#totalPrice").children()
   var totalQty = $("#totalQty")
+  //數量
+  var num = parseInt($(obj).siblings("#num").val())
+  var showNum = $(obj).siblings("#num")
+  //某商品的價格
+  var price = parseInt($(obj).parent().prev().children().text())
+  //某商品的總價
+  var subTotalPrice = $(obj).parent().next().children()
 
   if ($(obj).val() === 'minus') {
-    var productId = parseInt($(obj).prev().val())
-    //數量
-    var showNum = $(obj).next()
-    var num = parseInt($(obj).next().val())
-    //某商品的價格
-    var price = parseInt($(obj).parent().prev().children().text())
-    //某商品的總價
-    var subTotalPrice = $(obj).parent().next().children()
-    
     if (num > 1) {
       num -= 1
       $.ajax({
         method: 'POST',
         url: '/cart',
-        data: { cartId, productId, num },
+        data: { cartItemId, num },
         dataType: 'text',
         
         success: function(response) {
+          //總量
           showNum.val(num)
+          //某商品的總價
           const minSubAmount = parseInt(subTotalPrice.text()) - price
           subTotalPrice.text(minSubAmount)
           //購物車商品的總價
@@ -96,7 +32,6 @@ function cart(obj){
           //購物車商品的總數量
           const minTotal = parseInt(totalQty.text()) - 1
           totalQty.text(minTotal)
-          alert('Reduced!')
         },
         error: function(err) {
           console.error(err)
@@ -108,18 +43,12 @@ function cart(obj){
     }
   }
   else if ($(obj).val() === 'plus') {
-    var productId = parseInt($(obj).prev().prev().prev().val())
-    var showNum = $(obj).prev()
-    var num = parseInt($(obj).prev().val())
-    var price = parseInt($(obj).parent().prev().children().text())
-    var subTotalPrice = $(obj).parent().next().children()
-   
     num += 1
 
     $.ajax({
       method: 'POST',
       url: '/cart',
-      data: { cartId, productId, num },
+      data: { cartItemId, num },
       dataType: 'text',
       
       success: function(response) {
@@ -130,7 +59,6 @@ function cart(obj){
         totalPrice.text(plusTotalAmount)
         const plusTotal = parseInt(totalQty.text()) + 1
         totalQty.text(plusTotal)
-        alert('Added!')
       },
       error: function(err) {
         console.error(err)
@@ -141,14 +69,14 @@ function cart(obj){
 }
 
 function remove(obj) {
-  var cartItemId = parseInt($(obj).prev().val())
+  var cartItemId = parseInt($(obj).parent().siblings("#cart-item-id").val())
   var totalPrice = $("#totalPrice").children()
   var totalQty = $("#totalQty")
-  var subTotalPrice = parseInt($(obj).parent().prev().children().text())
-  var subTotalQty = parseInt($(obj).parent().prevAll().find(".cart").val())
+  var subTotalPrice = parseInt($(obj).parents("td .subtotalPrice").children().text())
+  var subTotalQty = parseInt($(obj).parents("td").find(".cart").val())
   //右側購物車
-  var rightQty = parseInt($(obj).siblings(".right-add-min-button").find(".cart").val())
-  var rightPrice = parseInt($(obj).siblings("p").children().text())
+  var rightQty = parseInt($(obj).parent().siblings(".right-add-min-button").find(".cart").val())
+  var rightPrice = parseInt($(obj).parent().siblings("p").children().text())
   var rightTotalPrice = rightQty * rightPrice
   $.ajax({
     method: 'POST',
@@ -156,7 +84,7 @@ function remove(obj) {
     data: { cartItemId },
     dataType: 'text',
     success: function(response) {
-      $(obj).parent().parent().remove()
+      $(obj).parent().parent().parent().remove()
       let minusAmount
       if(isNaN(rightTotalPrice)){
         minusAmount = parseInt(totalPrice.text()) - subTotalPrice

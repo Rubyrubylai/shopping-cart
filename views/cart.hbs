@@ -28,15 +28,17 @@
             <td>
               <input type="hidden" name="productId" value="{{this.id}}">
               <button onclick="cart(this)" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
-              <input id="right-num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
+              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
               <button onclick="cart(this)" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
             </td>
-            <td>
+            <td class="subtotalPrice">
               $<span>{{this.subtotalPrice}}</span>
             </td>
+            <input type="hidden" id="cart-item-id" name="cartItemId" value="{{this.cartItemId}}">
             <td>
-              <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
-              <button onclick="remove(this)" class="btn trash"><i class="fas fa-trash-alt fa-lg"></i></button>
+              <div>
+                <button onclick="remove(this)" class="btn trash"><i class="fas fa-trash-alt fa-lg"></i></button>
+              </div>
             </td>
           </tr>
           {{/each}}

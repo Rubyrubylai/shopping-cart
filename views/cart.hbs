@@ -26,26 +26,20 @@
               $<span>{{this.price}}</span>
             </td>
             <td>
-               
               <input type="hidden" name="productId" value="{{this.id}}">
               <button onclick="cart(this)" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
               <input id="right-num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
               <button onclick="cart(this)" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
-            
             </td>
             <td>
-              $<span>{{this.subtotalPrice}}</span></td>
+              $<span>{{this.subtotalPrice}}</span>
+            </td>
             <td>
-              <div class="trash">
-                <form action="/cartItem?_method=DELETE" method="POST">
-                  <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
-                  <button type="submit" class="btn trash-cart"><i class="fas fa-trash-alt fa-lg"></i></button>
-                </form>
-              </div>
+              <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
+              <button onclick="remove(this)" class="btn trash"><i class="fas fa-trash-alt fa-lg"></i></button>
             </td>
           </tr>
           {{/each}}
-          {{!-- <input type="hidden" id="cartId" value="{{cartId}}"> --}}
           <tr>
             <th scope="col"></th>
             <th scope="col"></th>

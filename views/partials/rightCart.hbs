@@ -19,8 +19,9 @@
           </div>
           <div class="col-5">
             <h6>{{this.name}}</h6>
-            <p style="display: inline;">$</p>
-            <p style="display: inline;">{{this.price}}</p>
+            <p>
+              $<span>{{this.price}}</span>
+            </p>
             {{#if ../order}}
             x {{this.quantity}}
             {{else}}
@@ -30,12 +31,8 @@
               <input id="right-num" name="num" value="{{this.quantity}}" readonly="true" class="cart">
               <button onclick="rightCart(this)" id="right-min" class="cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
             </div>
-            <div class="trash">
-              <form action="/cartItem?_method=DELETE" method="POST">
-                <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
-                <button type="submit" class="btn trash-right"><i class="fas fa-trash-alt fa-lg"></i></button>
-              </form>
-            </div>
+            <input type="hidden" name="cartItemId" value="{{this.cartItemId}}">
+            <button onclick="remove(this)" class="btn trash-right"><i class="fas fa-trash-alt fa-lg"></i></button>
             {{/if}}  
           </div>
         </div>
@@ -48,8 +45,7 @@
         {{else}}
         <div class="div-subtotal">
           <h6 class="total">Total: </h6>
-          <p style="display: inline;">$</p>
-          <p class="total" id="totalPrice" style="display: inline;">{{totalPrice}}</p>
+          <p class="total" id="totalPrice" style="display: inline;">$<span>{{totalPrice}}</span></p>
         </div>
         <form action="/cart" method="GET">
           <button type="submit" class="btn btn-secondary">check out</button>

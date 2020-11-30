@@ -1,35 +1,3 @@
-// $("#wishlist").on('submit', (e) => {
-//   var that = $(this)
-//   url = that.attr('action')
-//   type = that.attr('method')
-//   console.log(that)
-
-//   console.log(url)
-//   var productId = $(".product-id").val()
-  
-//   var userId = $(".user-id").val()
-
-//   $.ajax({
-//     method: 'POST',
-//     url: '/favorite',
-//     dataType: 'text',
-//     data: { productId, userId },
-//     success: function(response) {
-//       console.log(response)
-//       var product = $(".product-id")
-//       window.location.href="{:url('index/index')
-//       product.innerHTML = '<button class="btn btn-secondary"><i class="fas fa-heart fa-lg"></i> Already At Wishlist</button>'
-//       console.log(product)
-//     },
-//     error: function(err) {
-//       console.error(err)
-//     }
-//   })
-//   console.log(product.innerHTML)
-//   console.log(userId)
-//   return false
-// })
-
 //右側購物車的增減
 function rightCart(obj){
   var cartId = $("#cartId").val()
@@ -172,6 +140,43 @@ function cart(obj){
   return false
 }
 
+function remove(obj) {
+  var cartItemId = parseInt($(obj).prev().val())
+  var totalPrice = $("#totalPrice").children()
+  var totalQty = $("#totalQty")
+  var subTotalPrice = parseInt($(obj).parent().prev().children().text())
+  var subTotalQty = parseInt($(obj).parent().prevAll().find(".cart").val())
+  //右側購物車
+  var rightQty = parseInt($(obj).siblings(".right-add-min-button").find(".cart").val())
+  var rightPrice = parseInt($(obj).siblings("p").children().text())
+  var rightTotalPrice = rightQty * rightPrice
+  $.ajax({
+    method: 'POST',
+    url: '/cart/remove',
+    data: { cartItemId },
+    dataType: 'text',
+    success: function(response) {
+      $(obj).parent().parent().remove()
+      let minusAmount
+      if(isNaN(rightTotalPrice)){
+        minusAmount = parseInt(totalPrice.text()) - subTotalPrice
+      }
+      else {
+        //右側購物車
+        minusAmount = parseInt(totalPrice.text()) - rightTotalPrice
+      }
+      totalPrice.text(minusAmount)
+      const minusQty = parseInt(totalQty.text()) - subTotalQty
+      totalQty.text(minusQty)
+
+      alert('The item has been removed form the cart!')
+    },
+    error: function(err) {
+      console.log(err)
+    }
+  })
+  return false
+}
 
 // $('#cart').unbind('click').click(() => {
 //   console.log('---------------------cart')
@@ -198,4 +203,36 @@ function cart(obj){
 //       console.error(err)
 //     }
 //   })
+// })
+
+// $("#wishlist").on('submit', (e) => {
+//   var that = $(this)
+//   url = that.attr('action')
+//   type = that.attr('method')
+//   console.log(that)
+
+//   console.log(url)
+//   var productId = $(".product-id").val()
+  
+//   var userId = $(".user-id").val()
+
+//   $.ajax({
+//     method: 'POST',
+//     url: '/favorite',
+//     dataType: 'text',
+//     data: { productId, userId },
+//     success: function(response) {
+//       console.log(response)
+//       var product = $(".product-id")
+//       window.location.href="{:url('index/index')
+//       product.innerHTML = '<button class="btn btn-secondary"><i class="fas fa-heart fa-lg"></i> Already At Wishlist</button>'
+//       console.log(product)
+//     },
+//     error: function(err) {
+//       console.error(err)
+//     }
+//   })
+//   console.log(product.innerHTML)
+//   console.log(userId)
+//   return false
 // })

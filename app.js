@@ -49,43 +49,26 @@ app.use((req, res, next) => {
 
 app.use('/upload', express.static(__dirname + '/upload'))
 
-const db = require('./models')
-const Favorite = db.Favorite
-const Cart = db.Cart
-const CartItem = db.CartItem
-const auth = require('./config/auth')
+// const db = require('./models')
+// const Favorite = db.Favorite
+// const Cart = db.Cart
+// const CartItem = db.CartItem
+// const auth = require('./config/auth')
 
-app.post('/favorite', auth.authenticated, (req, res) => {
-  console.log(req.body.productId)
-  Favorite.create({
-    UserId: req.user.id,
-    ProductId: req.body.productId
-  })
+// app.post('/favorite', auth.authenticated, (req, res) => {
+//   console.log(req.body.productId)
+//   Favorite.create({
+//     UserId: req.user.id,
+//     ProductId: req.body.productId
+//   })
   // .then(favorite => {
     //console.log(favorite)
     // req.flash('success_msg', 'The product has been added into the wishlist!')
     // return res.redirect('back')
   // })
-})
+// })
 
-app.post('/cart', (req, res) => {
-  console.log('------------')
-  console.log(req.body.cartId)
-  console.log(req.body.productId)
-  CartItem.findOne({ where: {
-      ProductId: Number(req.body.productId),
-      CartId: Number(req.body.cartId)
-    }
-  })
-  .then(cartItem => {
-    cartItem.update({
-      quantity: req.body.num
-    })
-    .then(cartItem => {
-      return res.redirect('back')
-    })
-  })
-})
+require('./routes/cart')(app)
 
 // app.post('/cart', (req, res) => {
   

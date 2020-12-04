@@ -102,6 +102,28 @@ const cartController = {
         })
       }) 
     })
+  },
+
+  updateCart:  (req, res) => {
+    CartItem.findByPk(req.body.cartItemId)
+    .then(cartItem => {
+      cartItem.update({
+        quantity: req.body.num
+      })
+      .then(cartItem => {
+        return res.redirect('back')
+      })
+    })
+  },
+
+  removeCart: (req, res) => {
+    CartItem.findByPk(req.body.cartItemId)
+    .then(cartItem => {
+      cartItem.destroy().then(cartItem => {
+        return res.redirect('back')
+      })
+      
+    })
   }
 }
 

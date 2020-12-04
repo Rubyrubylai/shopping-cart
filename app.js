@@ -52,8 +52,6 @@ app.use((req, res, next) => {
 
 app.use('/upload', express.static(__dirname + '/upload'))
 
-require('./routes/cart')(app)
-
 require('./routes')(app)
 
 app.listen(port, () => {

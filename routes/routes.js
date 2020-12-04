@@ -11,8 +11,11 @@ router.get('/product', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
 
 router.get('/cart', cartController.getCart)
-router.post('/cart/:id', cartController.postCart)
+router.post('/cart', cartController.updateCart)
+router.post('/cart/remove', cartController.removeCart)
 router.get('/cart/check', auth.authenticated, cartController.checkCart)
+router.post('/cart/:id', cartController.postCart)
+
 
 router.get('/orders', auth.authenticated, orderController.getOrders)
 router.get('/order/:id', auth.authenticated, orderController.getOrder)

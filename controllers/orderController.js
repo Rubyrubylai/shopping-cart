@@ -240,7 +240,7 @@ const orderController = {
         })
         .then(payment => {
           req.flash('success_msg', 'Thank you for your ordering. We will prepare the shipment ASAP!')
-          // return res.redirect(`/order/${order.id}`)
+          return res.redirect(`/order/${order.id}`)
         })
       })
     })

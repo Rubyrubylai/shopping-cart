@@ -5,9 +5,9 @@ const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const auth = require('../config/auth')
 
-router.get('/', (req, res) => { return res.redirect('/product')})
+router.get('/', (req, res) => { return res.redirect('/products')})
 
-router.get('/product', productController.getProducts)
+router.get('/products', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
 
 router.get('/cart', cartController.getCart)
@@ -20,10 +20,10 @@ router.post('/cart/:id', cartController.postCart)
 router.get('/orders', auth.authenticated, orderController.getOrders)
 router.get('/order/:id', auth.authenticated, orderController.getOrder)
 router.post('/order', auth.authenticated, orderController.postOrder)
-router.post('/order/:id/cancel', auth.authenticated, orderController.cancelOrder)
+router.delete('/order/:id', auth.authenticated, orderController.cancelOrder)
 router.post('/newebpay/callback', orderController.newebpayCallback)
 
-router.get('/favorite', auth.authenticated, productController.getFavorite)
+router.get('/favorites', auth.authenticated, productController.getFavorites)
 router.post('/favorite/:id', auth.authenticated, productController.postFavorite)
 router.delete('/favorite/:id', auth.authenticated, productController.removeFavorite)
 

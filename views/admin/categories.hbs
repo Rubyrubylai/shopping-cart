@@ -7,13 +7,13 @@
   <br>
 
   {{#if edit}}
-  <form action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
+  <form action="/admin/category/{{category.id}}?_method=PUT" method="POST">
     <input type="text" name="name" value="{{category.name}}" placeholder="Category name" class="form-control add-category-input"> 
     <button type="submit" class="btn btn-secondary category-btn">Update</button>
     <a type="button" href="javascript:history.back()" class="btn btn-secondary category-btn">cancel</a>
   </form>
   {{else}}
-  <form action="/admin/categories/new" method="POST">
+  <form action="/admin/category" method="POST">
     <input type="text" name="name" placeholder="Category name" class="form-control add-category-input"> 
     <button type="submit" class="btn btn-secondary category-btn">Add new category</button>
   </form>
@@ -32,7 +32,7 @@
       <tr class="text-center">
         <td>{{this.name}}</td>
         <td>
-          <a href="/admin/categories/{{this.id}}" class="edit-btn">Edit</a>
+          <a href="/admin/category/{{this.id}}" class="edit-btn">Edit</a>
         </td>
         <td>
           <!-- Button trigger modal -->
@@ -56,7 +56,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST">
+              <form action="/admin/category/{{this.id}}?_method=DELETE" method="POST">
                 <button type="submit" class="btn btn-primary">Yes</button>
               </form>
             </div>

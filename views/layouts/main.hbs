@@ -20,7 +20,7 @@
         </button>
         <div class="dropdown-menu">
           {{#each categories}}
-          <form action="/product" method="GET">
+          <form action="/products" method="GET">
             <button type="submit" class="dropdown-item" name="CategoryId" value="{{this.id}}">{{this.name}}</button>
           </form>
           {{/each}}
@@ -61,7 +61,7 @@
       </div>
       {{else}}
       <div class="nav-item">
-        <a class="dropdown-item nav-btn" href="/favorite">
+        <a class="dropdown-item nav-btn" href="/favorites">
           <i class="far fa-heart fa-lg"></i>   
         </a>
       </div>

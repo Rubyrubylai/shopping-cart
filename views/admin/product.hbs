@@ -4,10 +4,10 @@
   <div class="new-product">
   {{#if newProduct}}
   <h2 class="title">Add New Product</h2>
-  <form action="/admin/products/new" method="POST" enctype="multipart/form-data">
+  <form action="/admin/newProduct" method="POST" enctype="multipart/form-data">
   {{else}}
   <h2 class="title">Edit Product</h2>
-  <form action="/admin/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+  <form action="/admin/product/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
   {{/if}}
     <div class="form-group">
       <label for="name">Name</label>

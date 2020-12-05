@@ -111,7 +111,7 @@ const productController = {
     })
   },
 
-  getFavorite: (req, res) => {
+  getFavorites: (req, res) => {
     //現在是第幾頁及要偏移多少資料，以及預設為第1頁
     let currentPage = Number(req.query.page) || 1
     let offset = 0

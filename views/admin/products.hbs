@@ -6,7 +6,7 @@
   <a href="/admin/orders" style="text-decoration: none;" class="subtitle">Order</a> |
   <a href="/admin/categories" style="text-decoration: none;" class="subtitle">Category</a>
   <br>
-  <a href="/admin/products/new" type="button" class="btn btn-secondary add-btn">Add new product</a>
+  <a href="/admin/newProduct" type="button" class="btn btn-secondary add-btn">Add new product</a>
 
   <table class="table table-bordered custom-product-table table-responsive-sm">
     <thead class="thead thead-custom">
@@ -29,7 +29,7 @@
         </td>
         <td>${{this.price}}</td>
         <td>
-          <a href="/admin/products/{{this.id}}" class="edit-btn">Edit</a>
+          <a href="/admin/product/{{this.id}}" class="edit-btn">Edit</a>
         </td>
         <td>
           <!-- Button trigger modal -->
@@ -54,7 +54,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <form action="/admin/products/{{this.id}}?_method=DELETE" method="POST">
+              <form action="/admin/product/{{this.id}}?_method=DELETE" method="POST">
                 <button type="submit" class="btn btn-primary">Yes</button>
               </form>
             </div>

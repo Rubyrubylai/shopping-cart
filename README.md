@@ -62,10 +62,15 @@ npm run dev
 |首頁|/product|商店的商品總覽，並可透過導覽列上的分類去做篩選|
 |瀏覽|/product/:id|查看特定商品，並可將其加入購物車及喜愛列表|
 |瀏覽|/favorite|喜愛列表，可進行移除及將商品加入購物車|
-|瀏覽|/cart|瀏覽購物車內的商品，並可將增減其數量|
+|新增、移除|/favorite/:id|將商品加入或從喜愛列表移除||
+|瀏覽、修改|/cart|瀏覽購物車內的商品，並可新增或減少其數量|
+|新增|/cart/:id|將商品加入購物車內|
+|移除|/cart/remove|移除購物車內的商品|
 |新增|/cart/check|成立訂單，系統會寄訂單確認信|
-|瀏覽|/order/:id|瀏覽特定訂單，並可進行付款或取消訂單|
 |瀏覽|/orders|瀏覽所有訂單|
+|瀏覽|/order/:id|瀏覽特定訂單，並可進行付款或取消訂單|
+|新增|/order|新增一筆訂單|
+|取消|/order/:id/cancel|取消一筆訂單|
 
 + 後台功能
 
@@ -73,11 +78,11 @@ npm run dev
 |----|---|----|
 |瀏覽|/admin/products|瀏覽所有上架的商品|
 |新增|/admin/products/new|新增商品|
-|修改|/admin/products/:id|修改已上架商品的資訊|
+|修改、移除|/admin/products/:id|修改已上架商品的資訊，或移除商品|
 |瀏覽|/admin/orders|瀏覽所有訂單|
 |瀏覽|/admin/orders/:id|修改訂單的寄送及付款資訊|
-|瀏覽|/admin/categories|瀏覽所有商品分類|
-|瀏覽|/admin/categories/:id|修改特定分類的名字|
+|瀏覽|/admin/categories|瀏覽所有商品分類，並可進行新增|
+|瀏覽、移除|/admin/categories/:id|修改特定分類的名字，並可進行移除|
 
 + 使用者功能
 

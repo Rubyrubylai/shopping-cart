@@ -34,7 +34,7 @@ npm install
 
 6. 在workbrench中新增database
 ```
-create database cart_sequelize
+create database shopping_cart
 ```
 
 7. 新增migrate

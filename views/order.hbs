@@ -17,7 +17,7 @@
           <tr>
             <th scope="row">Shipping Status</th>
             <td>
-              {{#ifEquals order.shipping_status -2}}Order Cancelled{{/ifEquals}}
+              {{#ifEquals order.shipping_status -2}}Order cancelled{{/ifEquals}}
               {{#ifEquals order.shipping_status -1}}Preparing{{/ifEquals}}
               {{#ifEquals order.shipping_status 0}}Shipping{{/ifEquals}}
               {{#ifEquals order.shipping_status 1}}Arrived{{/ifEquals}}
@@ -26,15 +26,19 @@
           <tr>
             <th scope="row">Shipping Date</th>
             <td>
-              {{Date order.shipping_date}}
+              {{#if order.shipping_date}}
+                {{Date order.shipping_date}}
+              {{else}}
+                Not shipped yet
+              {{/if}}
             </td>
           </tr>
           <tr>
             <th scope="row">Payment Status</th>
             <td>
-              {{#ifEquals order.payment_status -2}}Refund Completed{{/ifEquals}}
-              {{#ifEquals order.payment_status -1}}Request Refund{{/ifEquals}}
-              {{#ifEquals order.payment_status 0}}Not Paid{{/ifEquals}}
+              {{#ifEquals order.payment_status -2}}Refund completed{{/ifEquals}}
+              {{#ifEquals order.payment_status -1}}Request refund{{/ifEquals}}
+              {{#ifEquals order.payment_status 0}}Not paid{{/ifEquals}}
               {{#ifEquals order.payment_status 1}}Paid{{/ifEquals}}
             </td>
           </tr>

@@ -36,9 +36,9 @@
               <th scope="row">Payment Status</th>
               <td>
                 <select class="form-control" name="payment_status">
-                  <option value="-2" {{#ifEquals order.payment_status -2}}selected{{/ifEquals}}>Refund Completed</option>
-                  <option value="-1" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Request Refund</option>
-                  <option value="0" {{#ifEquals order.payment_status 0}}selected{{/ifEquals}}>Not Paid</option>
+                  <option value="-2" {{#ifEquals order.payment_status -2}}selected{{/ifEquals}}>Refund completed</option>
+                  <option value="-1" {{#ifEquals order.payment_status -1}}selected{{/ifEquals}}>Request refund</option>
+                  <option value="0" {{#ifEquals order.payment_status 0}}selected{{/ifEquals}}>Not paid</option>
                   <option value="1" {{#ifEquals order.payment_status 1}}selected{{/ifEquals}}>Paid</option>
                 </select>
               </td>

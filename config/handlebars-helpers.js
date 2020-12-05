@@ -3,7 +3,6 @@ module.exports = {
     if (a) {
       return a.toISOString().slice(0, 10)
     }
-
   },
 
   ifEquals: (a, b, options) => {
@@ -19,7 +18,6 @@ module.exports = {
     if (a) {
       return a.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
     }
-
   },
 
   ifEqualsOr: (a, b, c, options) => {

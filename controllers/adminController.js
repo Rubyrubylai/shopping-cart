@@ -76,7 +76,6 @@ adminController = {
           shipping_date: shipping_date || null //有些商品尚未出貨，因此不會有shipping date
         })
         .then(order => {
-          console.log(order)
           Payment.create({
             paid_at: paid_at,
             OrderId: order.id,

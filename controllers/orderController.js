@@ -146,6 +146,7 @@ const orderController = {
           email
         })
         .then(order => {
+          
           //訂單通知信
           const items = cart.toJSON().items
           let text = `

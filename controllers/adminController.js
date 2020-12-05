@@ -86,7 +86,7 @@ adminController = {
           })
           .then(payment => {
             req.flash('success_msg', `The order has been updated!`)
-            return res.redirect(`/admin/orders/${order.id}`)
+            return res.redirect(`/admin/order/${order.id}`)
           })
           
         })
@@ -99,7 +99,7 @@ adminController = {
         })
         .then(order => {
           req.flash('success_msg', `The order has been updated!`)
-          return res.redirect(`/admin/orders/${order.id}`)
+          return res.redirect(`/admin/order/${order.id}`)
           
         })
       }
@@ -151,7 +151,7 @@ adminController = {
       })
       .then(categories => {
         let errors = [{ error_msg: 'All fields are required!'}]
-        return res.render('admin/product', { product : { name, image, description, price }, newProduct, categories, errors })
+        return res.render('admin/product', { product : { name, image, description, price, CategoryId }, newProduct, categories, errors })
       })
     }
     else {
@@ -161,7 +161,8 @@ adminController = {
           name,
           price,
           description,
-          image: file ? img.data.link : null
+          image: file ? img.data.link : null,
+          CategoryId
         }).then(product => {
           req.flash('success_msg', `${product.name} has been added!`)
           return res.redirect('/admin/products')
@@ -214,7 +215,7 @@ adminController = {
             })
             .then(product => {
               req.flash('success_msg', `The product has been updated!`)
-              return res.redirect('back')
+              return res.redirect('/admin/products')
             })
           })
         }
@@ -228,7 +229,7 @@ adminController = {
             })
             .then(product => {
               req.flash('success_msg', `The product has been updated!`)
-              return res.redirect('back')
+              return res.redirect('/admin/products')
             })
           
         }

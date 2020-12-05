@@ -10,7 +10,7 @@ module.exports = {
     payment = order.Payments.map(payment => ({
       ...payment.dataValues
     }))
-    return payment.filter(payment => { return payment.params === 'success'})
+    return payment.filter(payment => { return payment.params === 'success' })
   },
 
   //右側購物車

@@ -1,8 +1,9 @@
 module.exports = {
   Date: (a) => {
     if (a) {
-      return a.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' })
+      return a.toISOString().slice(0, 10)
     }
+
   },
 
   ifEquals: (a, b, options) => {
@@ -15,7 +16,10 @@ module.exports = {
   },
 
   DateTime: (a) => {
-    return a.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    if (a) {
+      return a.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    }
+
   },
 
   ifEqualsOr: (a, b, c, options) => {

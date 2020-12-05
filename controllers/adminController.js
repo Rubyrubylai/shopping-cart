@@ -49,7 +49,6 @@ adminController = {
           totalQty += item.quantity
         })
       }
-
       //取得payment
       var payment = sort.payment(order)
 
@@ -67,18 +66,19 @@ adminController = {
   putOrder: (req, res) => {
     Order.findByPk(req.params.id)
     .then(order => {
-      const { shipping_status, payment_status, shipping_date, payment_date, payment_method } = req.body
+      const { shipping_status, payment_status, shipping_date, paid_at, payment_method, paymentId } = req.body
 
-      //有些商品尚未出貨，因此不會有shipping date
-      if (shipping_date) {
+      //如果有付款日期，才需成立一筆payment
+      if (paid_at) {
         order.update({
           shipping_status,
           payment_status,
-          shipping_date
+          shipping_date: shipping_date || null //有些商品尚未出貨，因此不會有shipping date
         })
         .then(order => {
+          console.log(order)
           Payment.create({
-            paid_at: payment_date,
+            paid_at: paid_at,
             OrderId: order.id,
             sn: order.sn,
             amount: order.amount,
@@ -95,21 +95,13 @@ adminController = {
       else {
         order.update({
           shipping_status,
-          payment_status
+          payment_status,
+          shipping_date: shipping_date || null
         })
         .then(order => {
-          Payment.create({
-            paid_at: payment_date,
-            OrderId: order.id,
-            sn: order.sn,
-            amount: order.amount,
-            params: 'success',
-            payment_method
-          })
-          .then(payment => {
-            req.flash('success_msg', `The order has been updated!`)
-            return res.redirect(`/admin/orders/${order.id}`)
-          })
+          req.flash('success_msg', `The order has been updated!`)
+          return res.redirect(`/admin/orders/${order.id}`)
+          
         })
       }
       

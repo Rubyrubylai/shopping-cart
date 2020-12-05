@@ -64,11 +64,19 @@
             <tr>
               <th scope="row">Payment Date</th>
               <td>
+                {{!-- <input type="hidden" name="paymentId" value="payment.id"> --}}
                 {{#if payment}}
-                  {{DateTime payment.paid_at}}
+                  {{DateTime ../payment.paid_at}}
                 {{else}}
-                  <input type="datetime-local" name="payment_date" value="{{Date payment_date}}" class="form-control">
+                  <input type="datetime-local" name="paid_at" value="{{DateTime ../payment.paid_at}}" class="form-control">
                 {{/if}}
+                {{#ifEquals payment.paid_at null}}
+                  <input type="datetime-local" name="paid_at" value="{{DateTime ../payment.paid_at}}" class="form-control">
+                  
+                {{else}}
+                  {{DateTime ../payment.paid_at}}
+                {{/ifEquals}}
+                
               </td>
             </tr>
           </table>

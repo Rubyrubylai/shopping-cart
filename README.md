@@ -1,6 +1,8 @@
 # SHOP
-仿效一般電商平台，使用Nodemailer發送訂單確認信，並串接藍新金流進行付款。  
-區分visitor、customer、admin三種角色，visitor可以瀏覽商店中的商品並加進購物車，但若要購買，則須登入為customer，而admin為店家的帳號，可以進行上架商品等後台動作。
+仿效一般電商平台，使用 Nodemailer 發送訂單確認信，並串接藍新金流進行付款。  
+區分 visitor、customer、admin 三種角色，visitor 可以瀏覽商店中的商品並加進購物車，但若要購買，則須登入為 customer，而 admin 為店家，可以進行上架商品等後台動作。
+
+[要進入網站請按此](https://morning-brushlands-96269.herokuapp.com/)
 
 ![image](https://github.com/Rubyrubylai/shopping-cart/blob/feature/order/picture/SHOP.PNG)
 
@@ -11,9 +13,9 @@
 
 |role|name|email|password|
 |----|----|-----|--------|
-|admin|Admin|admin@example.com|a123456|
-|customer|Tony|tony@example.com|a123456|
-|customer|Emily|emily@example.com|a123456|
+|admin|Root|root@example.com|a123456|
+|customer|User1|user1@example.com|a123456|
+|customer|User2|user2@example.com|a123456|
 
 ## 安裝
 1. 開啟終端機，cd到存放專案位置並執行:

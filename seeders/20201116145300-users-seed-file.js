@@ -6,9 +6,9 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Users', [{
       id: 1,
-      name: 'Tony',
-      email: 'tony@example.com',
-      account: '@Tony',
+      name: 'User1',
+      email: 'user1@example.com',
+      account: '@User1',
       password: bcrypt.hashSync('a123456', bcrypt.genSaltSync(10)),
       phone: faker.phone.phoneNumber(),
       address: faker.address.streetAddress(),
@@ -18,9 +18,9 @@ module.exports = {
     },
     {
       id: 2,
-      name: 'Emily',
-      email: 'emily@example.com',
-      account: '@Emily',
+      name: 'User2',
+      email: 'user2@example.com',
+      account: '@User2',
       password: bcrypt.hashSync('a123456', bcrypt.genSaltSync(10)),
       phone: faker.phone.phoneNumber(),
       address: faker.address.streetAddress(),
@@ -30,9 +30,9 @@ module.exports = {
     },
     {
       id: 3,
-      name: 'Admin',
-      email: 'admin@example.com',
-      account: '@Admin',
+      name: 'Root',
+      email: 'root@example.com',
+      account: '@Root',
       password: bcrypt.hashSync('a123456', bcrypt.genSaltSync(10)),
       phone: faker.phone.phoneNumber(),
       address: faker.address.streetAddress(),

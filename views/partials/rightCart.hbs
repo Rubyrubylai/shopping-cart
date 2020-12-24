@@ -45,6 +45,7 @@
           <p class="total" id="totalPrice" style="display: inline;">$<span>{{totalPrice}}</span></p>
         </div>
         <form action="/cart" method="GET">
+          <input type="hidden" name="redirect" value="check">
           <button type="submit" class="btn btn-secondary">check out</button>
         </form>
         {{/if}}

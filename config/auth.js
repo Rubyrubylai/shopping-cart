@@ -3,7 +3,9 @@ module.exports = {
     if (req.isAuthenticated()) {
         return next()   
     }
-    return res.redirect('/user/login') 
+
+    const redirect = req.query.redirect
+    return res.redirect(`/user/login?redirect=${redirect}`) 
   },
 
   adminAuthenticated: (req, res, next) => {

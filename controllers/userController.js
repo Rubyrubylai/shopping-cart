@@ -4,6 +4,7 @@ const Category = db.Category
 const Cart = db.Cart
 const Product = db.Product
 const bcrypt = require('bcrypt')
+const passport = require('../config/passport')
 
 const sort = require('../config/sort')
 
@@ -140,7 +141,7 @@ const userController = {
       Cart.findByPk(
         req.session.cartId,
         { include: [{ model: Product, as: 'items' }] }
-        )
+      )
       .then(cart => {     
         let noItems
         let items
@@ -153,7 +154,8 @@ const userController = {
           totalPrice = sort.rightCartPrice(items, totalPrice)
         }
 
-        return res.render('user/login', { categories, noItems, items, totalPrice })
+        const redirect = req.query.redirect
+        return res.render('user/login', { categories, noItems, items, totalPrice, redirect })
       })
     })
   },
@@ -187,8 +189,30 @@ const userController = {
     })
   },
 
-  login: (req, res) => {
-    return res.redirect('/')
+  login: (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) { return next(err) }
+      if (!user) { 
+        const redirect = req.body.redirect
+        return res.redirect(`/user/login?redirect=${redirect}`)
+      }
+      req.logIn(user, (err) => {
+        if (req.body.redirect === 'favorites') {
+          return res.redirect('/favorites')
+        }
+        if (req.body.redirect === 'account') {
+          return res.redirect('/user/account')
+        }
+        if (req.body.redirect === 'orders') {
+          return res.redirect('/orders')
+        }
+        if (req.body.redirect === 'check') {
+          return res.redirect('/cart/check')
+        }
+        return res.redirect('/')
+      })
+    })(req, res, next)
+    
   },
 
   register: (req, res) => {

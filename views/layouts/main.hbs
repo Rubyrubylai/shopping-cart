@@ -44,9 +44,9 @@
           <div class="dropdown-menu">
             {{#ifEquals user.role 'admin'}}
             {{else}}
-            <a class="dropdown-item" href="/orders">Order Tracking</a>
+            <a class="dropdown-item" href="/orders?redirect=orders">Order Tracking</a>
             {{/ifEquals}}
-            <a class="dropdown-item" href="/user/account">Account</a>
+            <a class="dropdown-item" href="/user/account?redirect=account">Account</a>
             {{#if isAuthenticated}}
             <form action="/user/logout" method="POST">
               <button type="submit" class="dropdown-item" href="/user/logout">Log Out</button>
@@ -61,7 +61,7 @@
       </div>
       {{else}}
       <div class="nav-item">
-        <a class="dropdown-item nav-btn" href="/favorites">
+        <a class="dropdown-item nav-btn" href="/favorites?redirect=favorites">
           <i class="far fa-heart fa-lg"></i>   
         </a>
       </div>

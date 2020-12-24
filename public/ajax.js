@@ -15,12 +15,12 @@ function cart(obj){
     if (num > 1) {
       num -= 1
       $.ajax({
-        method: 'POST',
+        method: 'PUT',
         url: '/cart',
         data: { cartItemId, num },
         dataType: 'text',
         
-        success: function(response) {
+        success: function() {
           //總量
           showNum.val(num)
           //某商品的總價
@@ -46,12 +46,12 @@ function cart(obj){
     num += 1
 
     $.ajax({
-      method: 'POST',
+      method: 'PUT',
       url: '/cart',
       data: { cartItemId, num },
       dataType: 'text',
       
-      success: function(response) {
+      success: function() {
         showNum.val(num)
         const plusSubAmount = parseInt(subTotalPrice.text()) + price
         subTotalPrice.text(plusSubAmount)
@@ -79,8 +79,8 @@ function remove(obj) {
   var rightPrice = parseInt($(obj).parent().siblings("p").children().text())
   var rightTotalPrice = rightQty * rightPrice
   $.ajax({
-    method: 'POST',
-    url: '/cart/remove',
+    method: 'DELETE',
+    url: '/cart',
     data: { cartItemId },
     dataType: 'text',
     success: function(response) {

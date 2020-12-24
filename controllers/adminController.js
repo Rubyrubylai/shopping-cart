@@ -142,7 +142,8 @@ adminController = {
   postProduct: (req, res) => {
     let newProduct = true
     const { file } = req
-    const { name, price, description, image, CategoryId } = req.body
+    const { name, price, description, image } = req.body
+    const CategoryId = Number(req.body.CategoryId)
     if (!name || !price || !description || !file || !CategoryId) {
       //上方導覽列的分類
       Category.findAll({
@@ -190,7 +191,8 @@ adminController = {
     .then(product => {
       const { file } = req
       const { id } = req.params
-      const { name, image, description, price, CategoryId } = req.body
+      const { name, image, description, price } = req.body
+      const CategoryId = Number(req.body.CategoryId)
       if(!name ||　!description || !price || !CategoryId) {
         Category.findAll({
           raw: true,

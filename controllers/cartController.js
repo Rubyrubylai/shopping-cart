@@ -111,7 +111,7 @@ const cartController = {
         quantity: req.body.num
       })
       .then(cartItem => {
-        return res.redirect('back')
+        return res.send('update cart')
       })
     })
   },
@@ -120,7 +120,7 @@ const cartController = {
     CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
       cartItem.destroy().then(cartItem => {
-        return res.redirect('back')
+        return res.send('delete cart')
       })
       
     })

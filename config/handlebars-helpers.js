@@ -27,5 +27,5 @@ module.exports = {
     else {
       return options.inverse(this)
     }
-  },
+  }
 }

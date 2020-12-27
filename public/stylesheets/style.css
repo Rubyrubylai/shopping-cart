@@ -154,11 +154,6 @@
   margin-bottom: 20px;
 }
 
-.admin-product-card {
-  width: 300px;
-  margin-right: 10px;
-}
-
 .table-custom {
   text-align: center;
   margin-top: 20px;
@@ -227,7 +222,7 @@
 }
 
 .photo {
-  width: 100%;
+  width: 90%;
 }
 
 .admin-photo {

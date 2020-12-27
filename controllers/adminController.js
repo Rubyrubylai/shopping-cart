@@ -4,6 +4,7 @@ const Order = db.Order
 const Payment = db.Payment
 const Category = db.Category
 
+const sharp = require('sharp')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const sort = require('../config/sort')
@@ -139,7 +140,7 @@ adminController = {
     })
   },
 
-  postProduct: (req, res) => {
+  postProduct: async (req, res) => {
     let newProduct = true
     const { file } = req
     const { name, price, description, image } = req.body
@@ -157,7 +158,10 @@ adminController = {
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
+      const buffer = await sharp(file.path)
+          .resize({ width: 320, height: 240 })
+          .toFile(`./public/images/${file.originalname}`)
+      imgur.upload(`./public/images/${file.originalname}`, (err, img) => {
         return Product.create({
           name,
           price,
@@ -186,10 +190,15 @@ adminController = {
     })
   },
 
-  putProduct: (req, res) => {
+  putProduct: async (req, res) => {
+    const { file } = req
+    if (file) {
+      const buffer = await sharp(file.path)
+        .resize({ width: 320, height: 240 })
+        .toFile(`./public/images/${file.originalname}`)
+    }
     Product.findByPk(req.params.id)
     .then(product => {
-      const { file } = req
       const { id } = req.params
       const { name, image, description, price } = req.body
       const CategoryId = Number(req.body.CategoryId)
@@ -207,7 +216,7 @@ adminController = {
       else {
         imgur.setClientID(IMGUR_CLIENT_ID)
         if (file) {
-          imgur.upload(file.path, (err, img) => {
+          imgur.upload(`./public/images/${file.originalname}`, (err, img) => {
             return product.update({
               name,
               image: file ? img.data.link : null,

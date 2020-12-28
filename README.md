@@ -18,7 +18,7 @@
 |customer|User2|user2@example.com|a123456|
 
 ## 安裝
-1. 開啟終端機，cd到存放專案位置並執行:
+1. 開啟終端機，cd 到存放專案位置並執行:
 ```
 git clone https://github.com/Rubyrubylai/shopping-cart.git
 ```
@@ -30,16 +30,16 @@ npm install
 
 3. 在 https://cwww.newebpay.com/ 上創建商店
 
-4. 在Imgur上創建專案
+4. 在 Imgur 上創建專案
 
-5. 在專案的根目錄新增.env檔
+5. 在專案的根目錄新增 .env 檔
 
-6. 在workbrench中新增database
+6. 在 workbrench 中新增database
 ```
 create database shopping_cart
 ```
 
-7. 新增migrate
+7. 新增 migrate
 ```
 npx sequelize db:migrate
 ```

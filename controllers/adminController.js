@@ -159,7 +159,7 @@ adminController = {
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
       const buffer = await sharp(file.path)
-          .resize({ width: 320, height: 240 })
+          .resize({ width: 640, height: 480 })
           .toFile(`./public/images/${file.originalname}`)
       imgur.upload(`./public/images/${file.originalname}`, (err, img) => {
         return Product.create({
@@ -194,7 +194,7 @@ adminController = {
     const { file } = req
     if (file) {
       const buffer = await sharp(file.path)
-        .resize({ width: 320, height: 240 })
+        .resize({ width: 640, height: 480 })
         .toFile(`./public/images/${file.originalname}`)
     }
     Product.findByPk(req.params.id)

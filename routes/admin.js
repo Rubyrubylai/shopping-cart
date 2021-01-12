@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const passport = require('../config/passport')
 const adminController = require('../controllers/adminController')
 const multer= require('multer')
 const upload = multer({ dest: 'temp/' })

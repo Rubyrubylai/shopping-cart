@@ -10,6 +10,8 @@
         <h5>{{product.name}}</h5>
         <p>${{product.price}}</p>
         <p>{{product.description}}</p>
+        {{#ifEquals user.role 'admin'}}
+        {{else}}
         <form action="/cart/{{product.id}}" method="POST">
           <div class="add-min-button">
             <button type="button" id="min" class="cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
@@ -32,6 +34,7 @@
           </button>
         </form>
         {{/if}}
+        {{/ifEquals}}
       </div>
     </section>
   </div>

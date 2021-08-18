@@ -4,7 +4,7 @@ const Cart = db.Cart
 const Category = db.Category
 const Favorite = db.Favorite
 const User = db.User
-
+const helpers = require('../_helpers');
 const sort = require('../config/sort')
 
 let pageLimit = 16
@@ -166,7 +166,7 @@ const productController = {
 
   postFavorite: (req, res) => {
     Favorite.create({
-      UserId: req.user.id,
+      UserId: helpers.getUser(req).id,
       ProductId: req.params.id
     })
     .then(favorite => {
@@ -177,7 +177,7 @@ const productController = {
 
   removeFavorite: (req, res) => {
     Favorite.findOne({ where: {
-      UserId: req.user.id,
+      UserId: helpers.getUser(req).id,
       ProductId: req.params.id
     }})
     .then(favorite => {

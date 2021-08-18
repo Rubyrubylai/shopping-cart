@@ -1,7 +1,9 @@
+const helpers = require('../_helpers');
+
 module.exports = {
   authenticated: (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next()   
+    if (helpers.ensureAuthenticated(req)) {  
+      return next()   
     }
 
     const redirect = req.query.redirect
@@ -9,8 +11,8 @@ module.exports = {
   },
 
   adminAuthenticated: (req, res, next) => {
-    if (req.isAuthenticated()) {
-      if (req.user.role === 'admin') {
+    if (helpers.ensureAuthenticated(req)) {
+      if (helpers.getUser(req).role === 'admin') {
         return next()
       }
       else {

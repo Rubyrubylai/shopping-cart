@@ -55,6 +55,7 @@ app.use('/upload', express.static(__dirname + '/upload'))
 require('./routes')(app)
 
 app.listen(port, () => {
-  console.log(`app is running on http://localhost:3000`)
+  console.log(`app is running on http://localhost:${port}`)
 })
 
+module.exports = app;

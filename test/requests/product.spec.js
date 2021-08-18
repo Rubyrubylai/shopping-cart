@@ -7,7 +7,7 @@ const app = require('../../app');
 const db = require('../../models');
 const helpers = require('../../_helpers');
 
-describe('# product request', () => {
+describe('#product request', () => {
     context('#index', () => {
         describe('go to products page', () => {
             it('will list all the products', (done) => {

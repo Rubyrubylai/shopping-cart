@@ -107,6 +107,8 @@ const cartController = {
   updateCart:  (req, res) => {
     CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
+      console.log('---update')
+      console.log(req.body)
       cartItem.update({
         quantity: req.body.num
       })

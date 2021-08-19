@@ -32,14 +32,14 @@ describe('#product request', () => {
                 ).returns(true);
                 this.getUser = sinon.stub(
                     helpers, 'getUser'
-                ).returns({id: 4});
-                await db.User.create({id: 4});
-                await db.Product.create({id: 21});
+                ).returns({id: 1});
+                await db.User.create({});
+                await db.Product.create({});
             });
 
             it ('will redirect index', (done) => {
                 request(app)
-                    .post('/favorite/21')
+                    .post('/favorite/1')
                     .set('Accept', 'application/json')
                     .expect(302)
                     .end((err, res) => {
@@ -49,7 +49,7 @@ describe('#product request', () => {
             });
             it ('will save favorite', (done) => {
                 db.Favorite.findOne({
-                    where: {UserId: 4, ProductId: 21}
+                    where: {UserId: 1, ProductId: 1}
                 }).then(favorite => {
                     expect(favorite).to.not.be.null;
                     return done();
@@ -61,9 +61,9 @@ describe('#product request', () => {
             after(async() => {
                 this.ensureAuthenticated.restore();
                 this.getUser.restore();
-                await db.User.destroy({where: {id: 4}});
-                await db.Product.destroy({where: {id: 21}});
-                await db.Favorite.destroy({where: {UserId: 4, ProductId: 21}});
+                await db.User.destroy({where: {id: 1}, truncate: true});
+                await db.Product.destroy({where: {id: 1}, truncate: true});
+                await db.Favorite.destroy({where: {UserId: 1, ProductId: 1}, truncate: true});
             });
         });
     });
@@ -76,15 +76,15 @@ describe('#product request', () => {
                 ).returns(true);
                 this.getUser = sinon.stub(
                     helpers, 'getUser'
-                ).returns({id: 4});
-                await db.User.create({id: 4});
-                await db.Product.create({id: 21});
-                await db.Favorite.create({UserId: 4, ProductId: 21});
+                ).returns({id: 1});
+                await db.User.create({});
+                await db.Product.create({});
+                await db.Favorite.create({UserId: 1, ProductId: 1});
             });
 
             it('will redirect to index', (done) => {
                 request(app)
-                    .delete('/favorite/21')
+                    .delete('/favorite/1')
                     .set('Accept', 'application/json')
                     .expect(302)
                     .end((err, res) => {
@@ -94,7 +94,7 @@ describe('#product request', () => {
             })
             it('will remove favorite', (done) => {
                 db.Favorite.findOne({
-                    where: {UserId: 4, ProductId: 21}
+                    where: {UserId: 1, ProductId: 1}
                 }).then(favorite => {
                     expect(favorite).to.be.null;
                     return done()
@@ -106,8 +106,8 @@ describe('#product request', () => {
             after(async() => {
                 this.ensureAuthenticated.restore();
                 this.getUser.restore();
-                await db.User.destroy({where: {id: 4}});
-                await db.Product.destroy({where: {id: 21}});
+                await db.User.destroy({where: {id: 1}, truncate: true});
+                await db.Product.destroy({where: {id: 1}, truncate: true});
             });
         });
     });

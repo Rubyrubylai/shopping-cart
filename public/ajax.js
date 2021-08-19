@@ -69,15 +69,16 @@ function cart(obj){
 }
 
 function remove(obj) {
-  var cartItemId = parseInt($(obj).parent().siblings("#cart-item-id").val())
+  var cartItemId = parseInt($("#cart-item-id").val())
   var totalPrice = $("#totalPrice").children()
   var totalQty = $("#totalQty")
-  var subTotalPrice = parseInt($(obj).parents("td .subtotalPrice").children().text())
-  var subTotalQty = parseInt($(obj).parents("td").find(".cart").val())
+  var subTotalPrice = parseInt($(obj).closest("td").siblings(".subtotalPrice").children().text())
+  var subTotalQty = parseInt($(obj).closest("td").siblings(".subTotalQty").children("#num").val())
   //右側購物車
-  var rightQty = parseInt($(obj).parent().siblings(".right-add-min-button").find(".cart").val())
+  var rightQty = parseInt($(obj).parent().siblings(".right-add-min-button").children("#num").val())
   var rightPrice = parseInt($(obj).parent().siblings("p").children().text())
   var rightTotalPrice = rightQty * rightPrice
+
   $.ajax({
     method: 'DELETE',
     url: '/cart',

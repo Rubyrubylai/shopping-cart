@@ -15,9 +15,11 @@ describe('#cart request', () => {
                     .end((err, res) => {
                         if (err) return done(err);
                         res.text.should.include('Check Order');
+                        res.text.should.include('Price');
+                        res.text.should.include('Quantity');
                         return done();
-                    })
-            })
-        })
+                    });
+            });
+        });
     });
 });

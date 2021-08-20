@@ -37,7 +37,7 @@ describe('#product request', () => {
                 await db.Product.create({});
             });
 
-            it ('will redirect index', (done) => {
+            it ('will redirect to index', (done) => {
                 request(app)
                     .post('/favorite/1')
                     .set('Accept', 'application/json')

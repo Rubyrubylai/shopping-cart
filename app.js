@@ -30,10 +30,10 @@ app.use(methodOverride('_method'))
 app.use(cookieParser())
 app.use(session({
   secret: 'ac',
-    name: 'ac',
-    cookie: { maxAge: null },
-    resave: false,
-    saveUninitialized: true,
+  name: 'ac',
+  cookie: { maxAge: null },
+  resave: false,
+  saveUninitialized: true,
 }))
 
 app.use(passport.initialize())

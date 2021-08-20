@@ -42,6 +42,7 @@ const cartController = {
 
   //將商品加入購物車
   postCart: (req, res) => {
+    console.log(req.session)
     Cart.findOrCreate({
       where: { id: req.session.cartId || 0 }
     })
@@ -107,8 +108,6 @@ const cartController = {
   updateCart:  (req, res) => {
     CartItem.findByPk(req.body.cartItemId)
     .then(cartItem => {
-      console.log('---update')
-      console.log(req.body)
       cartItem.update({
         quantity: req.body.num
       })
@@ -124,7 +123,6 @@ const cartController = {
       cartItem.destroy().then(cartItem => {
         return res.send('delete cart')
       })
-      
     })
   }
 }

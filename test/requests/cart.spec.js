@@ -25,17 +25,54 @@ describe('#cart request', () => {
         });
     });
 
+    context('#create', () => {
+        describe('#create cart', () => {
+            it('will redirect to index', (done) => {
+                request(app)
+                    .post('/cart/1')
+                    .send('num=2')
+                    .set('Accept', 'application/json')
+                    .expect(302)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        return done();
+                    });
+            });
+            it('will create cart', (done) => {
+                db.Cart.findByPk(1)
+                .then(cart => {
+                    expect(cart).to.not.be.null;
+                }).catch(err => {
+                    return done(err);
+                });
+
+                db.CartItem.findOne({
+                    where: {CartId: 1, ProductId: 1}
+                }).then(cartItem => {
+                    expect(cartItem.quantity).to.equal(2);
+                    return done();
+                }).catch(err => {
+                    return done(err);
+                });
+            });
+
+            after(async() => {
+                await db.CartItem.destroy({where: {id: 1}, truncate: true});
+                await db.Cart.destroy({where: {id: 1}, truncate: true});
+            });
+        });
+    });
+
     context('#update', () => {
-        describe('#update cart', () => {
+        describe('#update cart item', () => {
             before(async() => {
                 await db.CartItem.create({ProductId: 1, CartId: 1, quantity: 1});
             });
 
-            it('will send data', (done) => {
-                const updateQty = {cartItemId: 1}
+            it('will render index', (done) => {
                 request(app)
                     .put('/cart')
-                    .send(updateQty)
+                    .send('cartItemId=1&num=2')
                     .set('Accept', '/application/json')
                     .expect(200)
                     .end((err, res) => {
@@ -43,7 +80,7 @@ describe('#cart request', () => {
                         return done();
                     });
             });
-            it('will update cart', (done) => {
+            it('will update cart item', (done) => {
                 db.CartItem.findOne({
                     where: {ProductId: 1, CartId: 1}
                 }).then(cartItem => {
@@ -56,6 +93,36 @@ describe('#cart request', () => {
 
             after(async() => {
                 await db.CartItem.destroy({where: {id: 1}, truncate: true});
+            });
+        });
+    });
+
+    context('#delete', () => {
+        describe('#delete cart item', () => {
+            before(async() => {
+                await db.CartItem.create({});
+            });
+
+            it('will render index', (done) => {
+                request(app)
+                    .delete('/cart')
+                    .send('cartItemId=1')
+                    .set('Accept', 'application/json')
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        return done();
+                    });
+            });
+            it('will delete cart item', (done) => {
+                db.CartItem.findOne({
+                    where: {id: 1}
+                }).then(cartItem => {
+                    expect(cartItem).to.be.null;
+                    return done();
+                }).catch(err => {
+                    return done(err);
+                })
             });
         });
     });

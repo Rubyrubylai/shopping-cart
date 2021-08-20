@@ -6,7 +6,6 @@ const expect = chai.expect;
 const app = require('../../../app');
 const db = require('../../../models');
 const helpers = require('../../../_helpers');
-const upload = require('../../../config/multer');
 
 describe('#admin product request', () => {
     context('go to admin products page', () => {
@@ -46,27 +45,7 @@ describe('#admin product request', () => {
                 this.getUser = sinon.stub(
                     helpers, 'getUser'
                 ).returns({id: 1, role: 'admin'});
-                this.upload = sinon.stub(
-                  upload, 'upload'
-                ).callsFake(() => {
-                  return {
-                    single() {
-                      return (req, res, next) => {
-                        req.file = {
-                          fieldname: 'image',
-                          originalname: 'skirt.PNG',
-                          encoding: '7bit',
-                          mimetype: 'image/png',
-                          destination: 'temp/',
-                          filename: 'd63da171a353650c4bafadc13a3dd8e2',
-                          path: 'temp\\d63da171a353650c4bafadc13a3dd8e2',
-                          size: 97840
-                        };
-                        return next()
-                      };
-                    }
-                  };
-                });
+              
                 await db.Product.create({name: 'dress'});
             });
     
@@ -82,22 +61,27 @@ describe('#admin product request', () => {
                     });
             });
             it('can create product', (done) => {
-              request(app)
-                  .post('/admin/newProduct')
-                  .send('name=skirt&price=500&description=pretty skirt&CategoryId=1')
-                  .set('Accept', 'application/json')
-                  .expect(302)
-                  .end((err, res) => {
-                      if (err) return done(err);
-                      db.Product.findOne({
-                          where: {id: 2}
-                      }).then(product => {
-                          expect(product.name).to.equal('skirt');
-                          return done();
-                      }).catch(err => {
-                          if (err) return done(err);
-                      });
-                  });
+                request(app)
+                    .post('/admin/newProduct')
+                    .field('name', 'skirt')
+                    .field('price', 500)
+                    .field('description', 'pretty skirt')
+                    .field('CategoryId', 1)
+                    .attach('image', './temp/test.jpeg')
+                    .set('Accept', 'multipart/form-data')
+                    .expect(302)
+                    .end((err, res) => {
+                        console.log(res)
+                        if (err) return done(err);
+                        db.Product.findOne({
+                            where: {id: 2}
+                        }).then(product => {
+                            expect(product.name).to.equal('skirt');
+                            return done();
+                        }).catch(err => {
+                            if (err) return done(err);
+                        });
+                    });
             });
             it('can update product', (done) => {
                 request(app)
@@ -118,21 +102,21 @@ describe('#admin product request', () => {
                     });
             });
             it('can delete product', (done) => {
-              request(app)
-                  .delete('/admin/product/2')
-                  .set('Accept', 'application/json')
-                  .expect(302)
-                  .end((err, res) => {
-                      if (err) return done(err);
-                      db.Product.findAll()
-                      .then(product => {
-                          expect(product[0].id).to.equal(1);
-                          expect(product[1]).to.be.undefined;
-                          return done();
-                      }).catch(err => {
-                          if (err) return done(err);
-                      });
-                  });
+                request(app)
+                    .delete('/admin/product/2')
+                    .set('Accept', 'application/json')
+                    .expect(302)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        db.Product.findAll()
+                        .then(product => {
+                            expect(product[0].id).to.equal(1);
+                            expect(product[1]).to.be.undefined;
+                            return done();
+                        }).catch(err => {
+                            if (err) return done(err);
+                        });
+                    });
             });
     
             after(async() => {

@@ -143,8 +143,10 @@ adminController = {
   postProduct: async (req, res) => {
     let newProduct = true
     const { file } = req
+    console.log(req.file)
     const { name, price, description, image } = req.body
     const CategoryId = Number(req.body.CategoryId)
+
     if (!name || !price || !description || !file || !CategoryId) {
       //上方導覽列的分類
       Category.findAll({

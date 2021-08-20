@@ -30,10 +30,10 @@ app.use(methodOverride('_method'))
 app.use(cookieParser())
 app.use(session({
   secret: 'ac',
-    name: 'ac',
-    cookie: { maxAge: null },
-    resave: false,
-    saveUninitialized: true,
+  name: 'ac',
+  cookie: { maxAge: null },
+  resave: false,
+  saveUninitialized: true,
 }))
 
 app.use(passport.initialize())
@@ -55,6 +55,7 @@ app.use('/upload', express.static(__dirname + '/upload'))
 require('./routes')(app)
 
 app.listen(port, () => {
-  console.log(`app is running on http://localhost:3000`)
+  console.log(`app is running on http://localhost:${port}`)
 })
 
+module.exports = app;

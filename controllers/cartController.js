@@ -122,7 +122,6 @@ const cartController = {
       cartItem.destroy().then(cartItem => {
         return res.send('delete cart')
       })
-      
     })
   }
 }

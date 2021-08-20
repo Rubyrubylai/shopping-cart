@@ -42,7 +42,6 @@ const cartController = {
 
   //將商品加入購物車
   postCart: (req, res) => {
-    console.log(req.session)
     Cart.findOrCreate({
       where: { id: req.session.cartId || 0 }
     })

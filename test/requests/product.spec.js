@@ -61,9 +61,9 @@ describe('#product request', () => {
             after(async() => {
                 this.ensureAuthenticated.restore();
                 this.getUser.restore();
-                await db.User.destroy({where: {id: 1}, truncate: true});
-                await db.Product.destroy({where: {id: 1}, truncate: true});
-                await db.Favorite.destroy({where: {UserId: 1, ProductId: 1}, truncate: true});
+                await db.User.destroy({where: {}, truncate: true});
+                await db.Product.destroy({where: {}, truncate: true});
+                await db.Favorite.destroy({where: {}, truncate: true});
             });
         });
     });
@@ -106,8 +106,8 @@ describe('#product request', () => {
             after(async() => {
                 this.ensureAuthenticated.restore();
                 this.getUser.restore();
-                await db.User.destroy({where: {id: 1}, truncate: true});
-                await db.Product.destroy({where: {id: 1}, truncate: true});
+                await db.User.destroy({where: {}, truncate: true});
+                await db.Product.destroy({where: {}, truncate: true});
             });
         });
     });

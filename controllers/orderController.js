@@ -9,8 +9,10 @@ const Category = db.Category
 const sort = require('../config/sort')
 const encrypt = require('../config/encrypt')
 const getTradeInfo = require('../config/getTradeInfo')
+const helpers = require('../_helpers')
 
 const nodemailer = require('nodemailer')
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -23,7 +25,7 @@ const orderController = {
   getOrders: (req, res) => {
     Order.findAll({ 
       where: {
-        UserId: req.user.id
+        UserId: helpers.getUser(req).id
       },
       order: [ ['createdAt', 'DESC'] ],
       include: [ Payment ]
@@ -142,11 +144,10 @@ const orderController = {
           amount,
           payment_status: 0,
           shipping_status: -1,
-          UserId: req.user.id,
+          UserId: helpers.getUser(req).id,
           email
         })
         .then(order => {
-          
           //訂單通知信
           const items = cart.toJSON().items
           let text = `
@@ -168,7 +169,6 @@ const orderController = {
             <span>Best regards,</span>
             <span>SHOP</span>
           `
-
           var mailOptions = {
             from: process.env.Email,
             to: order.email,

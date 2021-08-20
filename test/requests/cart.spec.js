@@ -1,5 +1,4 @@
 const request = require('supertest');
-const sinon = require('sinon');
 const chai = require('chai');
 const should = chai.should();
 const expect = chai.expect;
@@ -42,10 +41,12 @@ describe('#cart request', () => {
                 db.Cart.findByPk(1)
                 .then(cart => {
                     expect(cart).to.not.be.null;
+                    return done();
                 }).catch(err => {
                     return done(err);
                 });
-
+            });
+            it ('will create cart items', (done) => {
                 db.CartItem.findOne({
                     where: {CartId: 1, ProductId: 1}
                 }).then(cartItem => {
@@ -57,8 +58,8 @@ describe('#cart request', () => {
             });
 
             after(async() => {
-                await db.CartItem.destroy({where: {id: 1}, truncate: true});
-                await db.Cart.destroy({where: {id: 1}, truncate: true});
+                await db.CartItem.destroy({where: {}, truncate: true});
+                await db.Cart.destroy({where: {}, truncate: true});
             });
         });
     });
@@ -92,7 +93,7 @@ describe('#cart request', () => {
             });
 
             after(async() => {
-                await db.CartItem.destroy({where: {id: 1}, truncate: true});
+                await db.CartItem.destroy({where: {}, truncate: true});
             });
         });
     });

@@ -5,12 +5,12 @@ const Cart = db.Cart
 const Product = db.Product
 const bcrypt = require('bcrypt')
 const passport = require('../config/passport')
-
 const sort = require('../config/sort')
+const helpers = require('../_helpers')
 
 const userController = {
   getAccount: (req, res) => {
-    User.findByPk(req.user.id)
+    User.findByPk(helpers.getUser(req).id)
     .then(user => {
       //右側購物車
       Cart.findByPk(
@@ -42,7 +42,7 @@ const userController = {
   },
 
   putAccount: (req, res) => {
-    User.findByPk(req.user.id)
+    User.findByPk(helpers.getUser(req).id)
     .then(user => {
       const { name, email, account, address, phone, oldPassword, newPassword, confirmPassword } = req.body
       let errors = []
@@ -257,7 +257,7 @@ const userController = {
       .then(user => {
         if (user) {
           req.flash('warning_msg', 'The email is already existed. Please log in directly.')
-          return res.redirect('back')
+          return res.redirect('/user/register')
         }
         else {
           User.create({

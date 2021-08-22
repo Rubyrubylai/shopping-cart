@@ -16,8 +16,6 @@ const cartController = {
     .then(cart => { 
       let totalPrice = 0
       let totalQty = 0
-      
-      //右側購物車
       let items = sort.rightCartItem(cart)
       if (!items || (items.length === 0)) {
         noItems = true
@@ -37,6 +35,29 @@ const cartController = {
       .then(categories => {
         return res.render('cart', { cart, items, totalPrice, totalQty, categories })
       })
+    })
+  },
+
+  getRightCart: (req, res) => {
+    Cart.findByPk(
+      req.session.cartId,
+      { include: [{ model: Product, as: 'items' }] }
+      )
+    .then(cart => { 
+      let totalPrice = 0
+      let totalQty = 0
+      let items = sort.rightCartItem(cart)
+      if (!items || (items.length === 0)) {
+        noItems = true
+      }
+      else {
+        totalPrice = sort.rightCartPrice(items, totalPrice)
+        items.forEach(item => {
+          totalQty += item.quantity
+        })
+      }
+
+      return res.json({ cart, items, totalPrice, totalQty })
     })
   },
 
@@ -74,7 +95,6 @@ const cartController = {
 
   //確認訂單
   checkCart: (req, res) => {
-    //右側購物車
     Cart.findByPk(
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }

@@ -106,3 +106,56 @@ function remove(obj) {
   })
   return false
 }
+
+//右側購物車
+$.ajax({
+  method: 'GET',
+  url: '/rightCart',
+  dataType: 'text',
+  success: function(data) {
+    let source = $('#template').html()
+    let templateMissions = Handlebars.compile(source)
+    data = JSON.parse(data)
+
+    if (!data.items) {
+      $('#cart-footer').html(`
+        <a type="button" class="btn btn-secondary" href="/product" style="text-decoration: none;">Keep Shopping</a>
+      `)
+
+      $('#cart-body').append(`
+      <div>
+        <p>The cart is empty.</p>
+      </div>
+      `)
+    }
+    else {
+      for (let cartItem of data.items) {
+        let dataStamp = {
+          image: cartItem.image,
+          name: cartItem.name,
+          price: cartItem.price,
+          id: cartItem.id,
+          quantity: cartItem.quantity,
+          cartItemId: cartItem.cartItemId
+        }
+      
+        let template = templateMissions(dataStamp)
+        $('#cart-body').append(template)
+
+        $('#cart-footer').html(`
+        <div class="div-subtotal">
+          <h6 class="total">Total: </h6>
+          <p class="total" id="totalPrice" style="display: inline;">$<span>${data.totalPrice}</span></p>
+        </div>
+        <form action="/cart" method="GET">
+          <input type="hidden" name="redirect" value="check">
+          <button type="submit" class="btn btn-secondary">check out</button>
+        </form>
+        `)
+      } 
+    }
+  },
+  error: function(err) {
+    console.error(err)
+  }
+})

@@ -12,31 +12,13 @@ const userController = {
   getAccount: (req, res) => {
     User.findByPk(helpers.getUser(req).id)
     .then(user => {
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-        )
-      .then(cart => {     
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('user/account', { user: user.toJSON(), categories, noItems, items, totalPrice })
-        })
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('user/account', { user: user.toJSON(), categories })
       })
     })
   },
@@ -64,35 +46,18 @@ const userController = {
           errors.push({ error_msg: 'The email field is required.' })
         }
         if (errors.length > 0) {
-          //右側購物車
-          Cart.findByPk(
-            req.session.cartId,
-            { include: [{ model: Product, as: 'items' }] }
-            )
-          .then(cart => {     
-            let noItems
-            let items
-            let totalPrice = 0
-            items = sort.rightCartItem(cart)
-            if (!items || (items.length === 0)) {
-              noItems = true
-            }
-            else {
-              totalPrice = sort.rightCartPrice(items, totalPrice)
-            }
-            let cartId
-            if (req.session.cartId) {
-              cartId = req.session.cartId
-            }
+          let cartId
+          if (req.session.cartId) {
+            cartId = req.session.cartId
+          }
 
-            //上方導覽列的分類
-            Category.findAll({
-              raw: true,
-              nest: true
-            })
-            .then(categories => {
-              return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories, noItems, items, totalPrice })
-            })
+          //上方導覽列的分類
+          Category.findAll({
+            raw: true,
+            nest: true
+          })
+          .then(categories => {
+            return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories })
           })
         }
         else{  
@@ -137,26 +102,8 @@ const userController = {
       nest: true
     })
     .then(categories => {
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-      )
-      .then(cart => {     
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        const redirect = req.query.redirect
-        return res.render('user/login', { categories, noItems, items, totalPrice, redirect })
-      })
+      const redirect = req.query.redirect
+      return res.render('user/login', { categories, redirect })
     })
   },
 
@@ -167,25 +114,7 @@ const userController = {
       nest: true
     })
     .then(categories => {
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-        )
-      .then(cart => {     
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        return res.render('user/register', { categories, noItems, items, totalPrice })
-      })
+      return res.render('user/register', { categories })
     })
   },
 
@@ -225,31 +154,13 @@ const userController = {
       errors.push({ error_msg: 'Passwords are not matched!' })
     }
     if (errors.length > 0) {
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-        )
-      .then(cart => {     
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('user/register', { errors, account, email, password, confirmPassword, categories, noItems, items, totalPrice })
-        })
+      //上方導覽列的分類
+      Category.findAll({
+        raw: true,
+        nest: true
+      })
+      .then(categories => {
+        return res.render('user/register', { errors, account, email, password, confirmPassword, categories })
       })
     }
     else {

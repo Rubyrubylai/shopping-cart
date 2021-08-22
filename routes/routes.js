@@ -15,7 +15,7 @@ router.put('/cart', cartController.updateCart)
 router.delete('/cart', cartController.removeCart)
 router.get('/cart/check', auth.authenticated, cartController.checkCart)
 router.post('/cart/:id', cartController.postCart)
-
+router.get('/rightCart', cartController.getRightCart)
 
 router.get('/orders', auth.authenticated, orderController.getOrders)
 router.get('/order/:id', auth.authenticated, orderController.getOrder)

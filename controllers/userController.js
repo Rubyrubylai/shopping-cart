@@ -12,14 +12,7 @@ const userController = {
   getAccount: (req, res) => {
     User.findByPk(helpers.getUser(req).id)
     .then(user => {
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('user/account', { user: user.toJSON(), categories })
-      })
+      return res.render('user/account', { user: user.toJSON() })
     })
   },
 
@@ -51,14 +44,7 @@ const userController = {
             cartId = req.session.cartId
           }
 
-          //上方導覽列的分類
-          Category.findAll({
-            raw: true,
-            nest: true
-          })
-          .then(categories => {
-            return res.render('user/account', { user: { name, email, account, address, phone }, errors, categories })
-          })
+          return res.render('user/account', { user: { name, email, account, address, phone }, errors })
         }
         else{  
           user.update({
@@ -96,26 +82,12 @@ const userController = {
   },
 
   loginPage: (req, res) => {
-    //上方導覽列的分類
-    Category.findAll({
-      raw: true,
-      nest: true
-    })
-    .then(categories => {
-      const redirect = req.query.redirect
-      return res.render('user/login', { categories, redirect })
-    })
+    const redirect = req.query.redirect
+    return res.render('user/login', { redirect })
   },
 
   registerPage: (req, res) => {
-    //上方導覽列的分類
-    Category.findAll({
-      raw: true,
-      nest: true
-    })
-    .then(categories => {
-      return res.render('user/register', { categories })
-    })
+    return res.render('user/register')
   },
 
   login: (req, res, next) => {
@@ -154,14 +126,7 @@ const userController = {
       errors.push({ error_msg: 'Passwords are not matched!' })
     }
     if (errors.length > 0) {
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('user/register', { errors, account, email, password, confirmPassword, categories })
-      })
+      return res.render('user/register', { errors, account, email, password, confirmPassword })
     }
     else {
       User.findOne({ where: { email: email} })

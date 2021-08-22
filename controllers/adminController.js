@@ -20,14 +20,7 @@ adminController = {
       //取得payment
       orders = sort.payments(orders)
 
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('admin/orders', { orders, categories })
-      })
+      return res.render('admin/orders', { orders })
     })
   },
 
@@ -53,14 +46,7 @@ adminController = {
       //取得payment
       var payment = sort.payment(order)
 
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0], categories })
-      })
+      return res.render('admin/order', { order: order.toJSON(), items, totalPrice, totalQty, payment: payment[0] })
     })
   },
 
@@ -117,20 +103,12 @@ adminController = {
       include: [ Category ]
     })
     .then(products => {
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('admin/products', { products, categories })
-      })
+      return res.render('admin/products', { products })
     })
   },
 
   getNewProduct: (req, res) => {
     let newProduct = true
-    //上方導覽列的分類
     Category.findAll({
       raw: true,
       nest: true
@@ -147,15 +125,8 @@ adminController = {
     const CategoryId = Number(req.body.CategoryId)
 
     if (!name || !price || !description || !file || !CategoryId) {
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        let errors = [{ error_msg: 'All fields are required!'}]
-        return res.render('admin/product', { product : { name, image, description, price, CategoryId }, newProduct, categories, errors })
-      })
+      let errors = [{ error_msg: 'All fields are required!'}]
+      return res.render('admin/product', { product : { name, image, description, price, CategoryId }, newProduct, errors })
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
@@ -180,7 +151,6 @@ adminController = {
   editProduct: (req, res) => {
     Product.findByPk(req.params.id)
     .then(product => {
-      //上方導覽列的分類
       Category.findAll({
         raw: true,
         nest: true

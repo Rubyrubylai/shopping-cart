@@ -17,6 +17,7 @@ const cartController = {
       let totalPrice = 0
       let totalQty = 0
       let items = sort.rightCartItem(cart)
+      let noItems = false
       if (!items || (items.length === 0)) {
         noItems = true
       }
@@ -27,14 +28,7 @@ const cartController = {
         })
       }
 
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('cart', { cart, items, totalPrice, totalQty, categories })
-      })
+      return res.render('cart', { cart, items, totalPrice, totalQty, noItems })
     })
   },
 
@@ -47,6 +41,7 @@ const cartController = {
       let totalPrice = 0
       let totalQty = 0
       let items = sort.rightCartItem(cart)
+      let noItems = false
       if (!items || (items.length === 0)) {
         noItems = true
       }
@@ -57,7 +52,7 @@ const cartController = {
         })
       }
 
-      return res.json({ cart, items, totalPrice, totalQty })
+      return res.json({ cart, items, totalPrice, totalQty, noItems })
     })
   },
 
@@ -112,14 +107,7 @@ const cartController = {
 
       User.findByPk(req.user.id)
       .then(user => {
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories })
-        })
+        return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON() })
       }) 
     })
   },

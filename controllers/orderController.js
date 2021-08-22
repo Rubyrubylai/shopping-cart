@@ -34,14 +34,7 @@ const orderController = {
       //取得payment
       orders = sort.payments(orders)
       
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('orders', { orders, categories })
-      })
+      return res.render('orders', { orders })
     })
   },
 
@@ -82,14 +75,7 @@ const orderController = {
           cartId = req.session.cartId
         }
 
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], categories, cartId })
-        })
+        return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], cartId })
       })
     })
   },

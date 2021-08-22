@@ -9,6 +9,7 @@ router.get('/', (req, res) => { return res.redirect('/products')})
 
 router.get('/products', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
+router.get('/category', productController.getCategories)
 
 router.get('/cart', cartController.getCart)
 router.put('/cart', cartController.updateCart)

@@ -118,11 +118,11 @@ $.ajax({
     data = JSON.parse(data)
 
     if (!data.items) {
-      $('#cart-footer').html(`
-        <a type="button" class="btn btn-secondary" href="/product" style="text-decoration: none;">Keep Shopping</a>
+      $('#cartFooter').html(`
+        <a type="button" class="btn btn-secondary" href="/" style="text-decoration: none;">Keep Shopping</a>
       `)
 
-      $('#cart-body').append(`
+      $('#cartBody').append(`
       <div>
         <p>The cart is empty.</p>
       </div>
@@ -140,9 +140,9 @@ $.ajax({
         }
       
         let template = templateMissions(dataStamp)
-        $('#cart-body').append(template)
+        $('#cartBody').append(template)
 
-        $('#cart-footer').html(`
+        $('#cartFooter').html(`
         <div class="div-subtotal">
           <h6 class="total">Total: </h6>
           <p class="total" id="totalPrice" style="display: inline;">$<span>${data.totalPrice}</span></p>

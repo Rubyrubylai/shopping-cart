@@ -1,57 +1,38 @@
 <div class="modal right fade" id="cartModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" >
       <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel2">Cart</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
-        {{#if noItems}}
-        <div>
-          <p>The cart is empty.</p>
-        </div>
-        {{/if}}
-        {{#each items}}
-        <div class="row right-item">
-          <div class="col-6 col-sm-7">
-            <img class="card-img-top" src="{{this.image}}" alt="cartItem photo">
-          </div>
-          <div class="col-6 col-sm-5">
-            <h6>{{this.name}}</h6>
-            <p>
-              $<span>{{this.price}}</span>
-            </p>
-            <div class="right-add-min-button">  
-              <input type="hidden" name="productId" value="{{this.id}}">
-              <button onclick="cart(this)" class="right-cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
-              <input id="num" name="num" value="{{this.quantity}}" readonly="true" class="right-cart-btn">
-              <button onclick="cart(this)" class="right-cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
-            </div>
-            <input type="hidden" name="cartItemId" id="cart-item-id" value="{{this.cartItemId}}">
-            <div>  
-              <button onclick="remove(this)" class="btn trash-right"><i class="fas fa-trash-alt fa-lg"></i></button>
-            </div>
-          </div>
-        </div>
-        {{/each}}
+      <div class="modal-body" id="cartBody">
       </div>
-      <input type="hidden" id="cartId" value="{{cartId}}">
-      <div class="modal-footer">
-        {{#if noItems}}
-        <a type="button" class="btn btn-secondary" href="/product" style="text-decoration: none;">Keep Shopping</a>
-        {{else}}
-        <div class="div-subtotal">
-          <h6 class="total">Total: </h6>
-          <p class="total" id="totalPrice" style="display: inline;">$<span>{{totalPrice}}</span></p>
-        </div>
-        <form action="/cart" method="GET">
-          <input type="hidden" name="redirect" value="check">
-          <button type="submit" class="btn btn-secondary">check out</button>
-        </form>
-        {{/if}}
+      <div class="modal-footer" id="cartFooter">
       </div>
     </div>
   </div>
 </div>
 
-<script src="/ajax.js"></script>
+<script id="template" type="text/x-handlebars-template">
+  <div class="row right-item">
+    <div class="col-6 col-sm-7">
+      <img class="card-img-top" src="\{{image}}" alt="cartItem photo">
+    </div>
+    <div class="col-6 col-sm-5">
+      <h6>\{{name}}</h6>
+      <p>
+        $<span>\{{price}}</span>
+      </p>
+      <div class="right-add-min-button">  
+        <input type="hidden" name="productId" value="\{{id}}">
+        <button onclick="cart(this)" class="right-cart-btn" value="minus"><i class="fas fa-minus icon"></i></button>
+        <input id="num" name="num" value="\{{quantity}}" readonly="true" class="right-cart-btn">
+        <button onclick="cart(this)" class="right-cart-btn" value="plus"><i class="fas fa-plus icon"></i></button>
+      </div>
+      <input type="hidden" name="cartItemId" id="cart-item-id" value="\{{cartItemId}}">
+      <div>  
+        <button onclick="remove(this)" class="btn trash-right"><i class="fas fa-trash-alt fa-lg"></i></button>
+      </div>
+    </div>
+  </div>
+</script>

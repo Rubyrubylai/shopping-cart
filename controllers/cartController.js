@@ -16,9 +16,8 @@ const cartController = {
     .then(cart => { 
       let totalPrice = 0
       let totalQty = 0
-      
-      //右側購物車
       let items = sort.rightCartItem(cart)
+      let noItems = false
       if (!items || (items.length === 0)) {
         noItems = true
       }
@@ -29,14 +28,31 @@ const cartController = {
         })
       }
 
-      //上方導覽列的分類
-      Category.findAll({
-        raw: true,
-        nest: true
-      })
-      .then(categories => {
-        return res.render('cart', { cart, items, totalPrice, totalQty, categories })
-      })
+      return res.render('cart', { cart, items, totalPrice, totalQty, noItems })
+    })
+  },
+
+  getRightCart: (req, res) => {
+    Cart.findByPk(
+      req.session.cartId,
+      { include: [{ model: Product, as: 'items' }] }
+      )
+    .then(cart => { 
+      let totalPrice = 0
+      let totalQty = 0
+      let items = sort.rightCartItem(cart)
+      let noItems = false
+      if (!items || (items.length === 0)) {
+        noItems = true
+      }
+      else {
+        totalPrice = sort.rightCartPrice(items, totalPrice)
+        items.forEach(item => {
+          totalQty += item.quantity
+        })
+      }
+
+      return res.json({ cart, items, totalPrice, totalQty, noItems })
     })
   },
 
@@ -74,7 +90,6 @@ const cartController = {
 
   //確認訂單
   checkCart: (req, res) => {
-    //右側購物車
     Cart.findByPk(
       req.session.cartId,
       { include: [{ model: Product, as: 'items' }] }
@@ -92,14 +107,7 @@ const cartController = {
 
       User.findByPk(req.user.id)
       .then(user => {
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON(), categories })
-        })
+        return res.render('check', { cart, items, totalPrice, totalQty, user: user.toJSON() })
       }) 
     })
   },

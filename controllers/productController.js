@@ -35,41 +35,14 @@ const productController = {
       offset: offset,
       order: [ ['createdAt', 'DESC'] ]
     })
-    .then(products => {
-      
+    .then(products => {   
       //分頁功能
       let pages = Math.ceil(products.count/pageLimit)
       let page = Array.from({ length: pages }).map((item, index) => index + 1)
       let prev = (currentPage === 1) ? currentPage : currentPage - 1
       let post = (currentPage === pages) ? currentPage : currentPage + 1
 
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-        )
-      .then(cart => {     
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('products', { products: products.rows, page, prev, post, items, totalPrice, noItems, categories, CategoryId })
-        })
-
-      })
+      return res.render('products', { products: products.rows, page, prev, post })
     })
   },
 
@@ -81,33 +54,17 @@ const productController = {
       include: [{ model: User, as: 'FavoritedUsers' }]
     })
     .then(product => {
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-        )
-      .then(cart => {
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
+      return res.render('product', { product: product.toJSON() })
+    })
+  },
 
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('product', { product: product.toJSON(), items, totalPrice, noItems, categories })
-        })
-        
-      })
+  getCategories: (req, res) => {
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+    .then(categories => {
+      return res.json({ categories })
     })
   },
 
@@ -135,32 +92,7 @@ const productController = {
       //一頁出現的喜愛商品
       FavoritedProducts = FavoritedProducts.slice(offset, offset + pageLimit)      
 
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-        )
-      .then(cart => { 
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('favorite', { FavoritedProducts, pages, page, prev, post, items, totalPrice, noItems, categories })
-        })
-      })
+      return res.render('favorite', { FavoritedProducts, pages, page, prev, post })
     })
   },
 

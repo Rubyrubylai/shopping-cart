@@ -5,6 +5,7 @@ const Product = db.Product
 const Cart = db.Cart
 const OrderItem = db.OrderItem
 const Category = db.Category
+const CartItem = db.CartItem
 
 const sort = require('../config/sort')
 const encrypt = require('../config/encrypt')
@@ -32,32 +33,8 @@ const orderController = {
     }).then(orders => {
       //取得payment
       orders = sort.payments(orders)
-      //右側購物車
-      Cart.findByPk(
-        req.session.cartId,
-        { include: [{ model: Product, as: 'items' }] }
-      )
-      .then(cart => {     
-        let noItems
-        let items
-        let totalPrice = 0
-        items = sort.rightCartItem(cart)
-        if (!items || (items.length === 0)) {
-          noItems = true
-        }
-        else {
-          totalPrice = sort.rightCartPrice(items, totalPrice)
-        }
-
-        //上方導覽列的分類
-        Category.findAll({
-          raw: true,
-          nest: true
-        })
-        .then(categories => {
-          return res.render('orders', { orders, categories, noItems, items, totalPrice })
-        })
-      })
+      
+      return res.render('orders', { orders })
     })
   },
 
@@ -93,35 +70,12 @@ const orderController = {
       })
       .then(order => {
         //右側購物車
-        Cart.findByPk(
-          req.session.cartId,
-          { include: [{ model: Product, as: 'items' }] }
-        )
-        .then(cart => {     
-          let noItems
-          let items
-          let totalPrice = 0
-          items = sort.rightCartItem(cart)
-          if (!items || (items.length === 0)) {
-            noItems = true
-          }
-          else {
-            totalPrice = sort.rightCartPrice(items, totalPrice)
-          }
-          let cartId
-          if (req.session.cartId) {
-            cartId = req.session.cartId
-          }
+        let cartId
+        if (req.session.cartId) {
+          cartId = req.session.cartId
+        }
 
-          //上方導覽列的分類
-          Category.findAll({
-            raw: true,
-            nest: true
-          })
-          .then(categories => {
-            return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], categories, noItems, items, totalPrice, cartId })
-          })
-        })
+        return res.render('order', { order: order.toJSON(), orderItems, orderTotalPrice, orderTotalQty, tradeInfo, payment: payment[0], cartId })
       })
     })
   },
@@ -198,8 +152,10 @@ const orderController = {
 
           return Promise.all(results).then(() => {
             //訂單成立後，清空購物車內的商品
-            cart.destroy().then(cart => {
-              return res.redirect(`/order/${order.id}`)
+            CartItem.destroy({where: {CartId: req.body.cartId}}).then(cartItem => {
+              cart.destroy().then(cart => {
+                return res.redirect(`/order/${order.id}`)
+              })
             })
           })
         })

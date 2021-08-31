@@ -49,9 +49,7 @@ describe('#order request', () => {
                 ).returns({id: 1});
                 await db.Cart.create({});
                 await db.CartItem.create({CartId: 1, ProductId: 1, quantity: 1});
-                await db.CartItem.create({CartId: 1, ProductId: 2, quantity: 2});
                 await db.Product.create({price: 500});
-                await db.Product.create({price: 250});
             });
 
             it('will redirect to index', (done) => {
@@ -84,15 +82,14 @@ describe('#order request', () => {
             });
             it('will create order items', (done) => {
                 db.OrderItem.findAll({
-                    where: {OrderId: 1}
+                    where: {OrderId: 1},
+                    raw: true,
+                    nest: true
                 }).then(orderItem => {
                     expect(orderItem[0].quantity).to.equal(1);
                     expect(orderItem[0].price).to.equal(500);
                     expect(orderItem[0].ProductId).to.equal(1);
 
-                    expect(orderItem[1].quantity).to.equal(2);
-                    expect(orderItem[1].price).to.equal(250);
-                    expect(orderItem[1].ProductId).to.equal(2);
                     return done();
                 }).catch(err => {
                     return done(err);

@@ -71,7 +71,6 @@ describe('#admin product request', () => {
                     .set('Accept', 'multipart/form-data')
                     .expect(302)
                     .end((err, res) => {
-                        console.log(res)
                         if (err) return done(err);
                         db.Product.findOne({
                             where: {id: 2}

@@ -1,4 +1,5 @@
 sudo: required
+language: node_js
 services:
   - docker
 
@@ -6,7 +7,7 @@ env:
   DOCKER_COMPOSE_VERSION: 3.8
 
 before_install:
-  - curl https://docs.anchore.com/current/docs/engine/quickstart/docker-compose.yaml > docker-compose.yaml
+  - curl https://docs.anchore.com/current/docs/engine/quickstart/docker-compose.yaml > docker-compose-dev.yml
 
 before_script:
   - docker-compose -f docker-compose-dev.yml up -d --build

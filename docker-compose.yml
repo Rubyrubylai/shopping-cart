@@ -1,0 +1,59 @@
+version: '3'
+services:
+  db:
+    image: "mysql:latest"
+    platform: linux/amd64
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./init.sql:/data/application/init.sql
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - /app/usr/wait-for-it.sh
+      - /app/usr/entrypoint.sh
+      - .:/app
+    depends_on:
+      - db
+    command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && /usr/entrypoint.sh"
+    # command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && npx sequelize db:migrate && npx sequelize db:seed:all && npm run dev"
+    environment:
+      - PORT=$PORT
+      - NODE_ENV=development
+      - IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID
+      - Email=$Email
+      - Password=$Password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=shopping_cart
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+  testweb:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - /app/usr/wait-for-it.sh
+      - /app/usr/entrypoint.sh
+      - .:/app
+    depends_on:
+      - db
+    command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && npx sequelize db:migrate && npm run test"
+    environment:
+      - PORT=$PORT
+      - NODE_ENV=test
+      - IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID
+      - Email=$Email
+      - Password=$Password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_TEST_DATABASE=shopping_cart_test
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306

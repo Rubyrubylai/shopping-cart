@@ -8,8 +8,8 @@ module.exports = {
     return queryInterface.bulkInsert('Payments', 
       Array.from({ length: 5 }).map((item, index) => ({
         id: index + 1,
-        sn: faker.random.number(),
-        amount: faker.random.number(),
+        sn: faker.datatype.number(),
+        amount: faker.datatype.number(),
         payment_method: payment[Math.floor(Math.random()*3)],
         paid_at: new Date(),
         params: null,

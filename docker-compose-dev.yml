@@ -21,7 +21,7 @@ services:
       - .:/app
     depends_on:
       - db
-    command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && /usr/entrypoint.sh"
+    command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && /usr/entrypoint.sh && npm run dev"
     environment:
       - PORT=$PORT
       - NODE_ENV=development

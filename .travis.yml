@@ -1,9 +1,12 @@
 sudo: required
+language: node_js
+node_js:
+  - "14.14.0"
 services:
   - docker
 
 before_install:
-  - curl https://docs.anchore.com/current/docs/engine/quickstart/docker-compose.yaml > docker-compose.yaml
+  - npm i docker-compose
 
 before_script:
   - docker-compose -f docker-compose-dev.yml up --build --exit-code-from testweb

@@ -9,4 +9,4 @@ before_install:
   - curl https://docs.anchore.com/current/docs/engine/quickstart/docker-compose.yaml > docker-compose.yaml
 
 before_script:
-  - docker-compose -f docker-compose-dev.yml up --build --exit-code-from testweb
+  - docker-compose -f docker-compose-dev.yml up -d --build

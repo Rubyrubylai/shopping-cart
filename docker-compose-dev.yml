@@ -2,7 +2,7 @@ version: '3'
 services:
   db:
     image: "mysql:latest"
-    platform: linux/amd64
+    # platform: linux/amd64
     environment:
       - MYSQL_ROOT_PASSWORD=password
     command: --init-file /data/application/init.sql

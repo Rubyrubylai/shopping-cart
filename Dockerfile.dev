@@ -6,14 +6,6 @@ COPY package.json .
 RUN npm install && npm install --g nodemon
 COPY ./entrypoint.sh /usr/entrypoint.sh
 COPY ./wait-for-it.sh /usr/wait-for-it.sh
-# RUN chmod 555 ./entrypoint.sh
 RUN ["chmod", "+x", "/usr/wait-for-it.sh"]
 RUN ["chmod", "+x", "/usr/entrypoint.sh"]
-
-# RUN ["chmod", "+x", "./wait-for-it.sh", "./docker-entrypoint.sh"]
-# ENTRYPOINT ["docker-entrypoint.sh"]
-# ENTRYPOINT ["bash", "-c", "/usr/wait-for-it.sh", "--timeout=0", "db:3306", "npx", "sequelize", "db:migrate"]
-# ENTRYPOINT ["bash", "-c", "/usr/wait-for-it.sh", "--timeout=0", "db:3306", "npx", "sequelize", "db:seed:all"]
-
-# CMD ["bash", "-c", "/usr/wait-for-it.sh", "--timeout=0", "db:3306", "&&", "./entrypoint.sh"]
 CMD ["npm", "run", "dev"]

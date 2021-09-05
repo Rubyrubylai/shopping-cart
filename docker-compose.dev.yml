@@ -22,7 +22,6 @@ services:
     depends_on:
       - db
     command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && /usr/entrypoint.sh"
-    # command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && npx sequelize db:migrate && npx sequelize db:seed:all && npm run dev"
     environment:
       - PORT=$PORT
       - NODE_ENV=development

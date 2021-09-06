@@ -124,16 +124,20 @@ adminController = {
     const { name, price, description, image } = req.body
     const CategoryId = Number(req.body.CategoryId)
 
-    if (!name || !price || !description || !file || !CategoryId) {
+    if (!name || !price || !description || !CategoryId) {
       let errors = [{ error_msg: 'All fields are required!'}]
       return res.render('admin/product', { product : { name, image, description, price, CategoryId }, newProduct, errors })
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      const buffer = await sharp(file.path)
-          .resize({ width: 640, height: 480 })
-          .toFile(`./public/images/${file.originalname}`)
+      await sharp(file.path)
+        .resize({ width: 640, height: 480 })
+        .toFile(`./public/images/${file.originalname}`)
+  
       imgur.upload(`./public/images/${file.originalname}`, (err, img) => {
+        console.log('=====imgur======')
+        console.log(img)
+        console.log(img.data)
         return Product.create({
           name,
           price,
@@ -213,9 +217,7 @@ adminController = {
               req.flash('success_msg', `The product has been updated!`)
               return res.redirect('/admin/products')
             })
-          
         }
-        
       }
     })
   },

@@ -6,7 +6,7 @@ services:
   - docker
 
 before_install:
-  - rm -f package-lock.json && npm install docker-compose
+  - rm -f package-lock.json && npm install --g docker-compose
 
 before_script:
   - docker-compose -f docker-compose-dev.yml up --build --exit-code-from testweb

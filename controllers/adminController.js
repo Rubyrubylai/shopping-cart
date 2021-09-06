@@ -130,25 +130,36 @@ adminController = {
     }
     else {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      await sharp(file.path)
-        .resize({ width: 640, height: 480 })
-        .toFile(`./public/images/${file.originalname}`)
-  
-      imgur.upload(`./public/images/${file.originalname}`, (err, img) => {
-        console.log('=====imgur======')
-        console.log(img)
-        console.log(img.data)
-        return Product.create({
+      if (file) {
+        await sharp(file.path)
+          .resize({ width: 640, height: 480 })
+          .toFile(`./public/images/${file.originalname}`)
+
+        imgur.upload(`./public/images/${file.originalname}`, (err, img) => {
+        Product.create({
           name,
           price,
           description,
-          image: file ? img.data.link : null,
+          image: img.data.link,
           CategoryId
         }).then(product => {
           req.flash('success_msg', `${product.name} has been added!`)
           return res.redirect('/admin/products')
         })
       })
+      }
+      else {
+        Product.create({
+          name,
+          price,
+          description,
+          image: `https://picsum.photos/640/480?random=1`,
+          CategoryId
+        }).then(product => {
+          req.flash('success_msg', `${product.name} has been added!`)
+          return res.redirect('/admin/products')
+        })
+      }
     }
   },
 

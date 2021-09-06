@@ -67,7 +67,7 @@ describe('#admin product request', () => {
                     .field('price', 500)
                     .field('description', 'pretty skirt')
                     .field('CategoryId', 1)
-                    .attach('image', './temp/test.jpeg')
+                    //.attach('image', './temp/test.jpeg')
                     .set('Accept', 'multipart/form-data')
                     .expect(302)
                     .end((err, res) => {

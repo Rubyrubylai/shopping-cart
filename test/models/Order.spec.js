@@ -6,7 +6,7 @@ const { sequelize, Sequelize } = require('sequelize-test-helpers');
 
 describe('# Order model', () => {
     const { DataTypes } = Sequelize;
-    const OrderFactory = proxyquire('../../models/Order', {
+    const OrderFactory = proxyquire('../../models/order', {
         sequelize: Sequelize,
         DataTypes: DataTypes
     });

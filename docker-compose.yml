@@ -15,6 +15,10 @@ services:
       - MYSQL_DATABASE=$MYSQL_DATABASE
       - MYSQL_HOST=$MYSQL_HOST
       - MYSQL_PORT=$MYSQL_PORT
+      - URL=$URL
+      - MerchantID=$MerchantID
+      - HashKey=$HashKey
+      - HashIV=$HashIV
   nginx:
     image: "ruru0403/shopping-cart-nginx"
     mem_limit: 128m

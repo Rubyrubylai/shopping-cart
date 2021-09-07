@@ -25,7 +25,7 @@ deploy:
   provider: elasticbeanstalk
   region: "ap-northeast-1"
   app: "shopping-cart-docker"
-  environment: "Shoppingcartdocker-env"
+  env: "Shoppingcartdocker-env"
   bucket_name: "elasticbeanstalk-ap-northeast-1-964218111192"
   path: "shopping-cart-docker"
   on:

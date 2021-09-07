@@ -2,3 +2,4 @@
 .env
 temp/
 ！temp/test.jpeg
+ngrok.exe

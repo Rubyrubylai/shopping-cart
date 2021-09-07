@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    image: "ruru0403/shopping-cart-web"
+    mem_limit: 128m
+    hostname: web
+    environment:
+      - PORT=$PORT
+      - NODE_ENV=production
+      - IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID
+      - Email=$Email
+      - Password=$Password
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_HOST=db
+      - MYSQL_PORT=$MYSQL_PORT
+  nginx:
+    image: "ruru0403/shopping-cart-nginx"
+    mem_limit: 128m
+    ports:
+      - "80:80"

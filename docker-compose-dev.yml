@@ -7,18 +7,19 @@ services:
       - MYSQL_ROOT_PASSWORD=password
     command: --init-file /data/application/init.sql
     volumes:
-      - ./init.sql:/data/application/init.sql
+      - ./web/init.sql:/data/application/init.sql
   web:
     build:
-      context: .
+      context: ./web
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
+    # hostname: web
     volumes:
       - /app/node_modules
       - /app/usr/wait-for-it.sh
       - /app/usr/entrypoint.sh
-      - .:/app
+      - ./web:/app
     depends_on:
       - db
     command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && /usr/entrypoint.sh && npm run dev"
@@ -35,13 +36,13 @@ services:
       - MYSQL_PORT=3306
   testweb:
     build:
-      context: .
+      context: ./web
       dockerfile: Dockerfile.dev
     volumes:
       - /app/node_modules
       - /app/usr/wait-for-it.sh
       - /app/usr/entrypoint.sh
-      - .:/app
+      - ./web:/app
     depends_on:
       - db
     command: bash -c "/usr/wait-for-it.sh --timeout=0 db:3306 && npx sequelize db:migrate && npm run test"
@@ -56,3 +57,10 @@ services:
       - MYSQL_TEST_DATABASE=shopping_cart_test
       - MYSQL_HOST=db
       - MYSQL_PORT=3306
+  # nginx:
+  #   restart: always
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #     - "3000:80"

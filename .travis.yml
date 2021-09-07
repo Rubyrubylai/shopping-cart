@@ -13,3 +13,21 @@ before_install:
 
 before_script:
   - docker-compose -f docker-compose-dev.yml up --build --exit-code-from testweb
+
+after_success:
+  - docker build -t ruru0403/shopping-cart-web ./web
+  - docker build -t ruru0403/nginx ./nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push ruru0403/shopping-cart-web
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "ap-northeast-1"
+#   app:
+#   environment:
+#   bucket_name:
+#   path: "shopping-cart-docker"
+#   on:
+#       branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   access_secret_key: $AWS_SECRET_KEY

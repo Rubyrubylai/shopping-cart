@@ -16,18 +16,19 @@ before_script:
 
 after_success:
   - docker build -t ruru0403/shopping-cart-web ./web
-  - docker build -t ruru0403/nginx ./nginx
+  - docker build -t ruru0403/shopping-cart-nginx ./nginx
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push ruru0403/shopping-cart-web
+  - docker push ruru0403/shopping-cart-nginx
 
-# deploy:
-#   provider: elasticbeanstalk
-#   region: "ap-northeast-1"
-#   app:
-#   environment:
-#   bucket_name:
-#   path: "shopping-cart-docker"
-#   on:
-#       branch: master
-#   access_key_id: $AWS_ACCESS_KEY
-#   access_secret_key: $AWS_SECRET_KEY
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-northeast-1"
+  app: "shopping-cart-docker"
+  environment: "Shoppingcartdocker-env"
+  bucket_name: "elasticbeanstalk-ap-northeast-1-964218111192"
+  path: "shopping-cart-docker"
+  on:
+      branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  access_secret_key: $AWS_SECRET_KEY

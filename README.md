@@ -2,20 +2,20 @@
 仿效一般電商平台，使用 Nodemailer 發送訂單確認信，並串接藍新金流進行付款。  
 區分 visitor、customer、admin 三種角色，visitor 可以瀏覽商店中的商品並加進購物車，但若要購買，則須登入為 customer，而 admin 為店家，可以進行上架商品等後台動作。
 
-[點此進入網站](https://morning-brushlands-96269.herokuapp.com/)
+[點此進入網站](https://shop.gotoshop.cf/)
 
 ![image](https://github.com/Rubyrubylai/shopping-cart/blob/feature/order/picture/SHOP.PNG)
 
-## 環境
-+ Node.js v10.15.0
-
 ## 測試帳號
-
 |role|name|email|password|
 |----|----|-----|--------|
 |admin|Root|root@example.com|a123456|
 |customer|User1|user1@example.com|a123456|
 |customer|User2|user2@example.com|a123456|
+
+## 測試信用卡
+測試卡號: 4000-2211-1111-1111
+有效年月及卡片背面末三碼: 任意填寫
 
 ## 安裝
 1. 開啟終端機，cd 到存放專案位置並執行:
@@ -23,38 +23,18 @@
 git clone https://github.com/Rubyrubylai/shopping-cart.git
 ```
 
-2. 安裝套件
+2. 在 https://cwww.newebpay.com/ 上創建商店
+
+3. 在 Imgur 上創建專案
+
+4. 在專案的根目錄新增 .env 檔
+
+5. 下載 docker，使用 docker CLI
 ```
-npm install
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
-3. 在 https://cwww.newebpay.com/ 上創建商店
-
-4. 在 Imgur 上創建專案
-
-5. 在專案的根目錄新增 .env 檔
-
-6. 在 workbrench 中新增database
-```
-create database shopping_cart
-```
-
-7. 新增 migrate
-```
-npx sequelize db:migrate
-```
-
-8. 新增種子資料
-```
-npx sequelize db:seed:all
-```
-
-9. 執行專案
-```
-npm run dev
-```
-
-10. 在本機端 http://localhost:3000 開啟網址
+6. 在本機端 http://localhost:3000 開啟網址
 
 ## 功能列表
 + 前台功能
